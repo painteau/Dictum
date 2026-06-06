@@ -148,14 +148,17 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
         // Update tooltip + icône selon état
         let recording = *state.is_recording.lock().unwrap();
         let transcribing = *state.is_transcribing.lock().unwrap();
+        let count = *state.session_count.lock().unwrap();
         let tooltip = if recording {
-            "Dictum — Enregistrement..."
+            "Dictum — Enregistrement...".to_string()
         } else if transcribing {
-            "Dictum — Transcription..."
+            "Dictum — Transcription...".to_string()
+        } else if count > 0 {
+            format!("Dictum — {} dictée{} cette session", count, if count > 1 { "s" } else { "" })
         } else {
-            "Dictum — Dictée vocale"
+            "Dictum — Dictée vocale".to_string()
         };
-        let _ = _tray.set_tooltip(Some(tooltip));
+        let _ = _tray.set_tooltip(Some(&tooltip));
         let _ = _tray.set_icon(Some(make_icon(recording, transcribing)));
 
         std::thread::sleep(std::time::Duration::from_millis(50));

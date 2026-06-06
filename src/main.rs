@@ -118,6 +118,7 @@ pub struct AppState {
     pub history: Arc<Mutex<History>>,
     pub is_recording: Arc<Mutex<bool>>,
     pub is_transcribing: Arc<Mutex<bool>>,
+    pub session_count: Arc<Mutex<u32>>,
 }
 
 impl AppState {
@@ -127,6 +128,7 @@ impl AppState {
             history: Arc::new(Mutex::new(History::load()?)),
             is_recording: Arc::new(Mutex::new(false)),
             is_transcribing: Arc::new(Mutex::new(false)),
+            session_count: Arc::new(Mutex::new(0)),
         })
     }
 }
@@ -292,6 +294,7 @@ fn main() -> Result<()> {
                                             &text,
                                         );
                                         log::info!("Transcrit : {text}");
+                                        *state.session_count.lock().unwrap() += 1;
                                         let max_h = config.max_history;
                                         state.history.lock().unwrap().push_with_limit(text.clone(), max_h);
                                         let _ = state.history.lock().unwrap().save();
