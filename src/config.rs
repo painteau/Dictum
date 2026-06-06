@@ -131,6 +131,13 @@ impl Config {
         self.silence_threshold = self.silence_threshold.clamp(0.0, 1.0);
         if self.hotkey.key.is_empty() { self.hotkey.key = "F9".to_string(); }
         if self.language.is_empty() { self.language = "auto".to_string(); }
+        // model_path doit pointer vers un .bin
+        if let Some(ext) = self.model_path.extension() {
+            if ext != "bin" {
+                self.model_path = data_dir().join("models").join("ggml-medium.bin");
+                log::warn!("model_path invalide, réinitialisé au défaut");
+            }
+        }
     }
 
     pub fn save(&self) -> Result<()> {
