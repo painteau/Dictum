@@ -31,6 +31,7 @@ unsafe fn windows_beep(freq: u32, dur: u32) {
 impl RecordHandle {
     /// Start recording. The cpal stream lives in its own thread (Stream is !Send).
     pub fn start(device_name: Option<&str>, max_secs: u64) -> Result<Self> {
+        log::info!("Démarrage enregistrement (max {}s)", max_secs);
         let device_name = device_name.map(String::from);
         let (stop_tx, stop_rx) = bounded::<()>(1);
         let (samples_tx, samples_rx) = bounded::<Vec<f32>>(1);
