@@ -34,6 +34,12 @@ fn key_from_str(s: &str) -> Key {
         "BACKSPACE" => Key::Backspace,
         "DELETE" | "DEL" => Key::Delete,
         "ENTER" | "RETURN" => Key::Return,
+        "NUMLOCK" => Key::NumLock,
+        "KPMINUS" | "NUMPADMINUS" => Key::KpMinus,
+        "KPPLUS" | "NUMPADPLUS" => Key::KpPlus,
+        "KPMULTIPLY" | "NUMPADMULTIPLY" => Key::KpMultiply,
+        "KPDIVIDE" | "NUMPADDIVIDE" => Key::KpDivide,
+        "KPRETURN" | "NUMPADENTER" => Key::KpReturn,
         _ => {
             log::warn!("Touche '{}' inconnue, fallback F9. Valides : F1-F12, Space, Insert, Home, End, PageUp, PageDown, ScrollLock, Pause, CapsLock", s);
             Key::F9
