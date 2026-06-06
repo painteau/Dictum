@@ -51,17 +51,23 @@ fn cli_transcribe(input: &std::path::Path, lang_override: Option<&str>) -> Resul
             anyhow::bail!("Modèle introuvable : {}", model.display());
         }
     }
+    let quiet = args.iter().any(|a| a == "--quiet" || a == "-q");
+
     let samples = read_audio_file(input)?;
     let text = transcribe::transcribe(&samples, &config)?;
 
     if text.is_empty() {
-        println!("[Silence détecté — aucun texte transcrit]");
+        if !quiet { println!("[Silence détecté — aucun texte transcrit]"); }
         return Ok(());
     }
 
     std::fs::write(&output_path, &text)?;
-    println!("{}", text);
-    println!("\nSauvegardé : {}", output_path.display());
+    if quiet {
+        print!("{}", text); // stdout uniquement, pas de métadonnées
+    } else {
+        println!("{}", text);
+        println!("\nSauvegardé : {}", output_path.display());
+    }
     Ok(())
 }
 
