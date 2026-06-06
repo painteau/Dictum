@@ -28,7 +28,7 @@ fn key_from_str(s: &str) -> Key {
         "CAPSLOCK"    => Key::CapsLock,
         "BACKQUOTE" | "BACKTICK" => Key::BackQuote,
         _ => {
-            log::warn!("Unknown hotkey '{}', defaulting to F9", s);
+            log::warn!("Touche '{}' inconnue, fallback F9. Valides : F1-F12, Space, Insert, Home, End, PageUp, PageDown, ScrollLock, Pause, CapsLock", s);
             Key::F9
         }
     }
