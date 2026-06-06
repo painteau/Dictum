@@ -1,5 +1,27 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.3.0 — Stable
+
+### Milestone
+Première version considérée stable. Core complet, robuste, CLI riche.
+
+### Ajouté depuis v0.2.9
+- `hotkey.rs` : touches NumPad 0-9 supportées
+- `tray.rs` : Exporter historique ouvre Notepad automatiquement
+- `transcribe.rs` : normalisation espaces multiples dans output Whisper
+- `inject.rs` : délai injection adaptatif 60-80ms
+- `audio.rs` : log durée enregistrement à l'arrêt
+- `updater.rs` : vérif taille installateur avant lancement
+
+### État du projet v0.3.0
+**Core :** enregistrement, transcription, injection — stable  
+**CLI :** `--version`, `--help`, `--language`, `--model`, `--output`, `--quiet`, `--no-save`, `--stdout`, `--debug`, `--config`, `--list-devices`, `--list-languages`  
+**Tray :** 12 items de menu, 3 états icône, tooltip dynamique  
+**Config :** 14 champs configurables avec sanitize()  
+**Infra :** CI/CD GitHub Actions, auto-update, CDN manifest, Inno Setup  
+
+---
+
 ## 2026-06-07 — v0.2.9 — Robustesse réseau
 
 ### Ajouté
