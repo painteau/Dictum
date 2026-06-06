@@ -184,6 +184,7 @@ impl SetupWizard {
             pause_media: false,
             prefix_space: false,
             whisper_threads: 0,
+            inject_delay_ms: 80,
         }
     }
 

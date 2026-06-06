@@ -23,9 +23,8 @@ pub fn inject_text(text: &str, config: &Config) {
         text
     };
 
-    // Délai pour laisser le système traiter le key-release du hotkey
-    // Texte long → délai légèrement plus court (le système est prêt)
-    let delay_ms = if text.len() > 200 { 60 } else { 80 };
+    // Délai configurable pour laisser le système traiter le key-release
+    let delay_ms = if config.inject_delay_ms > 0 { config.inject_delay_ms } else { 80 };
     std::thread::sleep(std::time::Duration::from_millis(delay_ms));
 
     let settings = Settings::default();

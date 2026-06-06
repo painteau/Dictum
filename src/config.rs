@@ -62,6 +62,9 @@ pub struct Config {
     /// Nombre de threads CPU pour whisper-cli (0 = auto-détection)
     #[serde(default)]
     pub whisper_threads: u32,
+    /// Délai en ms avant injection texte (laisser le système traiter le key-release)
+    #[serde(default = "default_inject_delay")]
+    pub inject_delay_ms: u64,
 }
 
 impl Default for Config {
@@ -84,11 +87,13 @@ impl Default for Config {
             pause_media: false,
             prefix_space: false,
             whisper_threads: 0,
+            inject_delay_ms: 80,
         }
     }
 }
 
 fn default_config_version() -> u32 { 1 }
+fn default_inject_delay() -> u64 { 80 }
 
 fn data_dir() -> PathBuf {
     dirs::data_local_dir()
