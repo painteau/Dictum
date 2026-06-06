@@ -118,19 +118,32 @@ fn init_logger() {
     let log_dir = Config::data_dir();
     std::fs::create_dir_all(&log_dir).ok();
 
+    let level = if std::env::var("RUST_LOG").is_ok() {
+        std::env::var("RUST_LOG").unwrap()
+    } else {
+        "info".to_string()
+    };
+
     let file_spec = flexi_logger::FileSpec::default()
         .directory(&log_dir)
         .basename("dictum")
         .suffix("log")
         .suppress_timestamp();
 
-    flexi_logger::Logger::try_with_str("info")
-        .unwrap()
-        .log_to_file(file_spec)
-        .duplicate_to_stderr(flexi_logger::Duplicate::Warn)
-        .format(flexi_logger::opt_format)
-        .start()
-        .ok();
+    let started = flexi_logger::Logger::try_with_str(&level)
+        .map(|l| l
+            .log_to_file(file_spec)
+            .duplicate_to_stderr(flexi_logger::Duplicate::Warn)
+            .format(flexi_logger::opt_format)
+            .start()
+        );
+
+    if started.is_err() {
+        // Fallback console uniquement
+        env_logger::builder()
+            .filter_level(log::LevelFilter::Info)
+            .init();
+    }
 }
 
 static UPDATE_AVAILABLE: std::sync::Mutex<Option<UpdateInfo>> = std::sync::Mutex::new(None);
