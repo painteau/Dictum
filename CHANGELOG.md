@@ -1,5 +1,16 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.3.4 — Config avancée
+
+### Ajouté
+- `config.rs` : `inject_delay_ms` (défaut 80ms), `whisper_threads` (défaut 0=auto)
+- `tray.rs` : À propos affiche nb threads CPU whisper
+- `hotkey.rs` : log debug si hotkey pressée sans modificateurs requis
+- `main.rs` : log nb substitutions configurées au démarrage
+- README : `inject_delay_ms` et `whisper_threads` dans le tableau config
+
+---
+
 ## 2026-06-07 — v0.3.3 — Performances
 
 ### Ajouté
