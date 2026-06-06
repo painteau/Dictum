@@ -4,6 +4,7 @@ pub fn apply(rules: &[Substitution], text: &str) -> String {
     let mut result = text.to_string();
     for rule in rules {
         if rule.from.is_empty() { continue; }
+        let before = result.clone();
         if rule.case_insensitive {
             let lower = result.to_lowercase();
             let from_lower = rule.from.to_lowercase();
@@ -19,6 +20,9 @@ pub fn apply(rules: &[Substitution], text: &str) -> String {
             result = out;
         } else {
             result = result.replace(&rule.from, &rule.to);
+        }
+        if result != before {
+            log::debug!("Substitution : {:?} → {:?}", rule.from, rule.to);
         }
     }
     result
