@@ -274,6 +274,10 @@ fn main() -> Result<()> {
             config.hotkey.key,
             config.model_path.file_name().and_then(|n| n.to_str()).unwrap_or("?")
         );
+        if config.config_version < 1 {
+            log::warn!("Config version {} détectée — réinitialisation", config.config_version);
+            Config::default().save()?;
+        }
         if setup::needs_setup(&config) {
             log::info!("Premier lancement ou binaires manquants — démarrage du wizard");
             setup::run_wizard()?;
