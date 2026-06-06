@@ -149,8 +149,9 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                 let config = state.config.lock().unwrap();
                 let count = *state.session_count.lock().unwrap();
                 let log_path = crate::config::Config::data_dir().join("dictum.log");
+                let config_path = crate::config::Config::data_dir().join("config.json");
                 let msg = format!(
-                    "Dictum v{}\ngithub.com/painteau/Dictum\n\nModèle : {}\nLangue  : {}\nHotkey  : {}{}{}{}\n\nSession : {} transcription{}\nLog     : {}",
+                    "Dictum v{}\ngithub.com/painteau/Dictum\n\nModèle  : {}\nLangue  : {}\nHotkey  : {}{}{}{}\n\nSession : {} transcription{}\nConfig  : {}\nLog     : {}",
                     env!("CARGO_PKG_VERSION"),
                     config.model_path.file_name().and_then(|n| n.to_str()).unwrap_or("?"),
                     config.language,
@@ -160,6 +161,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                     config.hotkey.key,
                     count,
                     if count > 1 { "s" } else { "" },
+                    config_path.display(),
                     log_path.display()
                 );
                 show_dialog("À propos de Dictum", &msg);
