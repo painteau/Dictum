@@ -86,6 +86,7 @@ where
     let mut hasher = Sha256::new();
     let mut downloaded = existing_bytes;
     let total = entry.size_bytes;
+    let mut last_log_pct = 0u64;
     let mut buf = vec![0u8; 65_536];
 
     loop {
@@ -97,6 +98,15 @@ where
         hasher.update(&buf[..n]);
         downloaded += n as u64;
         on_progress(downloaded, total);
+        // Log tous les 10%
+        if total > 0 {
+            let pct = downloaded * 100 / total;
+            if pct >= last_log_pct + 10 {
+                last_log_pct = pct;
+                log::info!("Téléchargement : {}% ({:.0} MB / {:.0} MB)",
+                    pct, downloaded as f64 / 1_048_576.0, total as f64 / 1_048_576.0);
+            }
+        }
     }
 
     let actual_hash = hex::encode(hasher.finalize());
