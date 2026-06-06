@@ -63,10 +63,11 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
     }
     log::debug!("WAV temp : {} KB", wav_size / 1024);
 
-    let lang_args: Vec<&str> = if config.language == "auto" {
+    let lang_str = config.language.clone();
+    let lang_args: Vec<&str> = if lang_str == "auto" {
         vec![]
     } else {
-        vec!["--language", &config.language]
+        vec!["--language", &lang_str]
     };
 
     let cpu_threads = if config.whisper_threads > 0 {
