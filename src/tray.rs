@@ -14,7 +14,8 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
     let item_settings  = MenuItem::new("⚙  Paramètres", true, None);
     let item_history   = MenuItem::new("📋 Historique", true, None);
     let item_devices   = MenuItem::new("🎙  Microphones", true, None);
-    let item_copy_last  = MenuItem::new("📋 Copier dernière dictée", true, None);
+    let item_copy_last   = MenuItem::new("📋 Copier dernière dictée", true, None);
+    let item_export_hist = MenuItem::new("💾 Exporter historique", true, None);
     let item_reset_cfg  = MenuItem::new("🔧 Réinitialiser la config", true, None);
     let item_clear_hist = MenuItem::new("🗑  Effacer l'historique", true, None);
     let item_reload     = MenuItem::new("↺  Recharger la config", true, None);
@@ -37,6 +38,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
         // Historique
         &item_history,
         &item_copy_last,
+        &item_export_hist,
         &item_clear_hist,
         &PredefinedMenuItem::separator(),
         // Système
@@ -111,13 +113,16 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                     *state.config.lock().unwrap() = default_cfg;
                     show_dialog("Dictum", "Config réinitialisée aux valeurs par défaut.\nRedémarrer pour appliquer le hotkey.");
                 }
-            } else if event.id == item_clear_hist.id() {
-                // Propose export avant effacement
+            } else if event.id == item_export_hist.id() {
                 let export_path = crate::config::Config::data_dir().join("historique_export.txt");
-                let _ = state.history.lock().unwrap().export_to_file(&export_path);
+                match state.history.lock().unwrap().export_to_file(&export_path) {
+                    Ok(_) => show_dialog("Dictum", &format!("Export sauvegardé :\n{}", export_path.display())),
+                    Err(e) => show_dialog("Dictum", &format!("Erreur export : {e}")),
+                }
+            } else if event.id == item_clear_hist.id() {
                 state.history.lock().unwrap().clear();
                 let _ = state.history.lock().unwrap().save();
-                show_dialog("Dictum", &format!("Historique effacé.\nExport sauvegardé : {}", export_path.display()));
+                show_dialog("Dictum", "Historique effacé.");
             } else if event.id == item_reload.id() {
                 match crate::config::Config::load() {
                     Ok(new_cfg) => {
