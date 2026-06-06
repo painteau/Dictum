@@ -69,11 +69,16 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
         vec!["--language", &config.language]
     };
 
+    let cpu_threads = std::thread::available_parallelism()
+        .map(|n| n.get().min(8))
+        .unwrap_or(4);
+
     let mut cmd = Command::new(&cli);
     // current_dir = data_dir so Windows finds ggml.dll etc. in the same folder
     cmd.current_dir(Config::data_dir())
         .arg("--model").arg(&config.model_path)
         .arg("--no-timestamps")
+        .arg("--threads").arg(cpu_threads.to_string())
         .arg("--file").arg(&wav_path);
 
     for arg in &lang_args {
