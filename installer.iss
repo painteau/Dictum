@@ -1,5 +1,5 @@
 #define MyAppName "Dictum"
-#define MyAppVersion "0.1.2"
+#define MyAppVersion "0.2.4"
 #define MyAppPublisher "painteau"
 #define MyAppURL "https://github.com/painteau/Dictum"
 #define MyAppExeName "dictum.exe"
