@@ -145,11 +145,19 @@ fn main() -> Result<()> {
         None => {}
     }
 
-    // Premier lancement : wizard si aucun modèle présent
+    // Premier lancement : wizard si aucun modèle ou whisper-cli absent
     {
         let config = Config::load()?;
+        log::info!("Config : langue={}, hotkey={}{}{}{}, modèle={}",
+            config.language,
+            if config.hotkey.ctrl { "Ctrl+" } else { "" },
+            if config.hotkey.alt  { "Alt+"  } else { "" },
+            if config.hotkey.shift{ "Shift+"} else { "" },
+            config.hotkey.key,
+            config.model_path.file_name().and_then(|n| n.to_str()).unwrap_or("?")
+        );
         if setup::needs_setup(&config) {
-            log::info!("Premier lancement — démarrage du wizard");
+            log::info!("Premier lancement ou binaires manquants — démarrage du wizard");
             setup::run_wizard()?;
         }
     }
