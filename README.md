@@ -82,6 +82,19 @@ Touches supportées : `F1`...`F12`, `Space`, `Tab`
 
 Les modèles sont téléchargés automatiquement par le wizard depuis [HuggingFace](https://huggingface.co/ggerganov/whisper.cpp).
 
+## Mode CLI
+
+Transcrire un fichier audio directement :
+
+```powershell
+dictum.exe enregistrement.wav
+dictum.exe reunion.wav --language fr
+dictum.exe --version
+dictum.exe --help
+```
+
+Le résultat est affiché dans le terminal et sauvegardé dans `enregistrement.txt`.
+
 ## Prérequis système
 
 - Windows 10/11 x64
