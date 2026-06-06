@@ -187,17 +187,25 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
         let recording = *state.is_recording.lock().unwrap();
         let transcribing = *state.is_transcribing.lock().unwrap();
         let count = *state.session_count.lock().unwrap();
-        let model_name = state.config.lock().unwrap().model_path
-            .file_stem().and_then(|n| n.to_str())
-            .unwrap_or("?").to_string();
+        let (model_name, hotkey_str) = {
+            let cfg = state.config.lock().unwrap();
+            let m = cfg.model_path.file_stem().and_then(|n| n.to_str()).unwrap_or("?").to_string();
+            let h = format!("{}{}{}{}",
+                if cfg.hotkey.ctrl  { "Ctrl+" } else { "" },
+                if cfg.hotkey.alt   { "Alt+"  } else { "" },
+                if cfg.hotkey.shift { "Shift+"} else { "" },
+                cfg.hotkey.key
+            );
+            (m, h)
+        };
         let tooltip = if recording {
-            "Dictum — Enregistrement...".to_string()
+            format!("Dictum — Enregistrement... (relâcher {})", hotkey_str)
         } else if transcribing {
-            "Dictum — Transcription...".to_string()
+            "Dictum — Transcription en cours...".to_string()
         } else if count > 0 {
-            format!("Dictum [{}] — {} dictée{}", model_name, count, if count > 1 { "s" } else { "" })
+            format!("Dictum [{}] — {} dictée{} | {}", model_name, count, if count > 1 { "s" } else { "" }, hotkey_str)
         } else {
-            format!("Dictum [{}] — Prêt", model_name)
+            format!("Dictum [{}] — Maintenir {} pour dicter", model_name, hotkey_str)
         };
         let _ = _tray.set_tooltip(Some(&tooltip));
         let _ = _tray.set_icon(Some(make_icon(recording, transcribing)));
