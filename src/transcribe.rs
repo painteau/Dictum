@@ -65,7 +65,6 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
     // current_dir = data_dir so Windows finds ggml.dll etc. in the same folder
     cmd.current_dir(Config::data_dir())
         .arg("--model").arg(&config.model_path)
-        .arg("--output-txt")
         .arg("--no-timestamps")
         .arg("--file").arg(&wav_path);
 
@@ -76,7 +75,10 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
     let output = cmd.output()
         .map_err(|e| anyhow!("Impossible de lancer whisper-cli : {e}"))?;
 
+    // Nettoyage — whisper-cli génère parfois un .txt même sans --output-txt
     std::fs::remove_file(&wav_path).ok();
+    let txt_sidecar = wav_path.with_extension("wav.txt");
+    std::fs::remove_file(&txt_sidecar).ok();
 
     if !output.status.success() {
         let stderr = String::from_utf8_lossy(&output.stderr);
