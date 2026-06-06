@@ -61,11 +61,14 @@ where
     std::fs::create_dir_all(dest.parent().unwrap())?;
 
     // Reprise si fichier partiel existant
+    let filename = dest.file_name().and_then(|n| n.to_str()).unwrap_or("?");
+    log::info!("Téléchargement : {}", filename);
+
     let existing_bytes = if dest.exists() {
         let size = std::fs::metadata(dest).map(|m| m.len()).unwrap_or(0);
         // Si le fichier est déjà complet, skip direct
         if entry.size_bytes > 0 && size >= entry.size_bytes {
-            log::info!("Fichier déjà complet : {}", dest.display());
+            log::info!("Fichier déjà complet : {}", filename);
             on_progress(entry.size_bytes, entry.size_bytes);
             return Ok(());
         }
