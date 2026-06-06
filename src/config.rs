@@ -121,7 +121,10 @@ impl Config {
     }
 
     pub fn save(&self) -> Result<()> {
-        let path = config_path();
+        self.save_to(&config_path())
+    }
+
+    pub fn save_to(&self, path: &std::path::Path) -> Result<()> {
         std::fs::create_dir_all(path.parent().unwrap())?;
         let content = serde_json::to_string_pretty(self)?;
         std::fs::write(path, content)?;
