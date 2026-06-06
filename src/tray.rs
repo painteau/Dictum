@@ -106,8 +106,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                 let msg = state.history.lock().unwrap().as_display_string();
                 show_dialog("Dictum — Historique", &msg);
             } else if event.id == item_copy_last.id() {
-                let last = state.history.lock().unwrap()
-                    .entries().front().map(|e| e.text.clone());
+                let last = state.history.lock().unwrap().last_text();
                 match last {
                     Some(text) => {
                         match arboard::Clipboard::new().and_then(|mut c| c.set_text(&text)) {

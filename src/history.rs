@@ -59,6 +59,10 @@ impl History {
         self.entries.is_empty()
     }
 
+    pub fn last_text(&self) -> Option<String> {
+        self.entries.front().map(|e| e.text.clone())
+    }
+
     pub fn clear(&mut self) {
         self.entries.clear();
     }
