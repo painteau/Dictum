@@ -89,9 +89,12 @@ fn config_path() -> PathBuf {
 
 impl Config {
     pub fn load() -> Result<Self> {
-        let path = config_path();
+        Self::load_from(&config_path())
+    }
+
+    pub fn load_from(path: &std::path::Path) -> Result<Self> {
         if path.exists() {
-            let content = std::fs::read_to_string(&path)?;
+            let content = std::fs::read_to_string(path)?;
             let mut config: Config = serde_json::from_str(&content).unwrap_or_default();
             config.sanitize();
             Ok(config)
