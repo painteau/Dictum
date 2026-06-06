@@ -108,14 +108,21 @@ impl Config {
         }
     }
 
-    /// Corrige silencieusement les valeurs invalides.
+    /// Corrige les valeurs invalides et log les corrections.
     fn sanitize(&mut self) {
-        if self.max_record_secs == 0 { self.max_record_secs = 30; }
-        if self.min_record_ms > 5000 { self.min_record_ms = 5000; }
-        if self.max_history == 0 { self.max_history = 1; }
-        if self.max_history > 100 { self.max_history = 100; }
-        if self.silence_threshold < 0.0 { self.silence_threshold = 0.0; }
-        if self.silence_threshold > 1.0 { self.silence_threshold = 1.0; }
+        if self.max_record_secs == 0 {
+            self.max_record_secs = 30;
+            log::warn!("max_record_secs=0 invalide, réinitialisé à 30");
+        }
+        if self.min_record_ms > 5000 {
+            self.min_record_ms = 5000;
+            log::warn!("min_record_ms > 5000, limité à 5000");
+        }
+        if self.max_history == 0 || self.max_history > 100 {
+            self.max_history = 10;
+            log::warn!("max_history hors limites, réinitialisé à 10");
+        }
+        self.silence_threshold = self.silence_threshold.clamp(0.0, 1.0);
         if self.hotkey.key.is_empty() { self.hotkey.key = "F9".to_string(); }
         if self.language.is_empty() { self.language = "auto".to_string(); }
     }
