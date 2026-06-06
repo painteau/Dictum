@@ -35,17 +35,20 @@ Dictum est une app de dictée vocale Windows 100% locale. Elle capture le micro,
 
 | Fichier | Rôle |
 |---------|------|
-| `main.rs` | Point d'entrée, `AppState` partagé, spawn des threads |
+| `main.rs` | Point d'entrée, `AppState` partagé, spawn des threads, logger fichier |
 | `config.rs` | `Config` sérialisée JSON dans `%LOCALAPPDATA%\Dictum\config.json` |
-| `audio.rs` | Capture micro CPAL 16 kHz mono f32, stream isolé dans son propre thread |
-| `transcribe.rs` | Écrit WAV temp, appelle `whisper-cli.exe` en subprocess, parse stdout |
+| `audio.rs` | Capture micro CPAL 16 kHz mono f32, stream isolé, beep Beep API, timeout |
+| `transcribe.rs` | Détection silence RMS, écrit WAV temp, appelle `whisper-cli.exe` subprocess |
 | `inject.rs` | Injection texte via `enigo` (SendInput Win32), typographie française |
 | `hotkey.rs` | Écoute globale clavier via `rdev` (thread bloquant), hold-to-record |
-| `history.rs` | 10 dernières transcriptions, persistées dans `history.json` |
+| `history.rs` | 10 dernières transcriptions avec horodatage, persistées JSON |
 | `substitution.rs` | Remplacement abréviations/corrections après transcription |
-| `tray.rs` | Icône système tray, menu contextuel, message pump Windows natif |
-| `setup.rs` | Wizard egui premier lancement (détection GPU, choix modèle, download) |
-| `downloader.rs` | Fetch manifest JSON distant, téléchargement + vérification SHA256 |
+| `tray.rs` | Icône dynamique (bleu/rouge), menu : historique, clipboard, config, log |
+| `media.rs` | Toggle VK_MEDIA_PLAY_PAUSE (SendInput Win32) pour pause/reprise médias |
+| `setup.rs` | Wizard egui 5 étapes : GPU auto-détect, modèle, langue, hotkey, download |
+| `downloader.rs` | Fetch manifest JSON CDN, téléchargement binaires+modèles, SHA256 |
+| `updater.rs` | Check GitHub releases API, télécharge Setup.exe, lance `/SILENT` |
+| `build.rs` | Génère .ico 32x32, embed version info Windows via `winresource` |
 
 ## Modèle de threads
 
