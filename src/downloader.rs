@@ -53,7 +53,14 @@ where
 
     // Reprise si fichier partiel existant
     let existing_bytes = if dest.exists() {
-        std::fs::metadata(dest).map(|m| m.len()).unwrap_or(0)
+        let size = std::fs::metadata(dest).map(|m| m.len()).unwrap_or(0);
+        // Si le fichier est déjà complet, skip direct
+        if entry.size_bytes > 0 && size >= entry.size_bytes {
+            log::info!("Fichier déjà complet : {}", dest.display());
+            on_progress(entry.size_bytes, entry.size_bytes);
+            return Ok(());
+        }
+        size
     } else {
         0
     };
