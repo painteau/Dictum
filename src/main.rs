@@ -298,6 +298,8 @@ fn main() -> Result<()> {
     });
 
     let state = AppState::new()?;
+    log::info!("Historique : {} entrée(s) chargée(s)",
+        state.history.lock().unwrap().len());
     let (event_tx, event_rx) = bounded::<AppEvent>(32);
 
     // rdev::listen blocks — must live in its own thread
