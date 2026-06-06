@@ -26,6 +26,9 @@ pub struct Substitution {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Config {
+    /// Version du fichier config (pour migrations futures)
+    #[serde(default = "default_config_version")]
+    pub config_version: u32,
     /// Path to the .bin Whisper model (ggml format)
     pub model_path: PathBuf,
     /// Language code: "fr", "en", "auto"
@@ -61,7 +64,8 @@ pub struct Config {
 impl Default for Config {
     fn default() -> Self {
         Self {
-            model_path: data_dir().join("models").join("ggml-medium.bin"),
+            config_version: 1,
+        model_path: data_dir().join("models").join("ggml-medium.bin"),
             language: "auto".to_string(),
             hotkey: HotkeyConfig::default(),
             auto_enter: false,
@@ -79,6 +83,8 @@ impl Default for Config {
         }
     }
 }
+
+fn default_config_version() -> u32 { 1 }
 
 fn data_dir() -> PathBuf {
     dirs::data_local_dir()

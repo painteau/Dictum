@@ -175,6 +175,7 @@ impl SetupWizard {
             auto_enter: false,
             substitutions: vec![],
             microphone: None,
+            config_version: 1,
             max_record_secs: 30,
             min_record_ms: 300,
             max_history: 10,
