@@ -89,6 +89,18 @@ pub fn check_update() -> Option<UpdateInfo> {
 /// Télécharge le nouvel installateur dans %TEMP% et le lance en /SILENT.
 /// L'installateur Inno Setup gère la mise à jour par-dessus l'existant.
 pub fn apply_update(info: &UpdateInfo) -> Result<()> {
+    // Nettoyer les anciens installateurs dans %TEMP%
+    if let Ok(entries) = std::fs::read_dir(std::env::temp_dir()) {
+        for entry in entries.flatten() {
+            let name = entry.file_name();
+            let s = name.to_string_lossy();
+            if s.starts_with("Dictum-Setup-") && s.ends_with(".exe") && !s.contains(&info.version) {
+                std::fs::remove_file(entry.path()).ok();
+                log::debug!("Ancienne install supprimée : {}", s);
+            }
+        }
+    }
+
     let dest = std::env::temp_dir()
         .join(format!("Dictum-Setup-{}.exe", info.version));
 
