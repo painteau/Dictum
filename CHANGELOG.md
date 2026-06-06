@@ -1,5 +1,22 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.2.7 — Finitions finales
+
+### Ajouté
+- `history.rs` : `export_to_file()`, export auto avant effacement depuis le tray
+- `transcribe.rs` : log durée transcription vs durée audio (facteur temps réel)
+- `tray.rs` : item update affiche version + taille MB
+- `substitution.rs` : log debug quand règle appliquée
+- `downloader.rs` : skip si fichier déjà complet (taille exacte)
+- `setup.rs` : titre wizard différent binaires vs modèle
+- `config.rs` : `prefix_space` — espace avant injection
+- CLI `--stdout` : alias de `--quiet --no-save` pour scripts pipe
+
+### Corrigé
+- Aucun warning `cargo build`
+
+---
+
 ## 2026-06-07 — v0.2.6 — CLI robuste
 
 ### Ajouté
