@@ -309,6 +309,12 @@ fn main() -> Result<()> {
         if !cfg.substitutions.is_empty() {
             log::info!("Substitutions : {} règle(s)", cfg.substitutions.len());
         }
+        if cfg.pause_media { log::info!("Pause médias : activée"); }
+        if cfg.beep_enabled { log::info!("Beep : activé"); }
+        log::info!("Threads whisper : {} | Délai injection : {}ms",
+            if cfg.whisper_threads == 0 { "auto".to_string() } else { cfg.whisper_threads.to_string() },
+            cfg.inject_delay_ms
+        );
     }
     let (event_tx, event_rx) = bounded::<AppEvent>(32);
 
