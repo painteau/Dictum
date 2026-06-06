@@ -56,6 +56,13 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
     let wav_path = std::env::temp_dir().join("dictum_record.wav");
     write_wav(samples, &wav_path)?;
 
+    // Vérifier que le WAV a bien été écrit
+    let wav_size = std::fs::metadata(&wav_path).map(|m| m.len()).unwrap_or(0);
+    if wav_size < 100 {
+        return Err(anyhow!("Fichier WAV temp invalide ({} bytes)", wav_size));
+    }
+    log::debug!("WAV temp : {} KB", wav_size / 1024);
+
     let lang_args: Vec<&str> = if config.language == "auto" {
         vec![]
     } else {
