@@ -12,7 +12,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
     let item_update    = MenuItem::new("🔄 Mise à jour disponible !", false, None);
     let item_sep_up    = PredefinedMenuItem::separator();
     let item_settings  = MenuItem::new("⚙  Paramètres", true, None);
-    let item_history   = MenuItem::new("📋 Historique", true, None);
+    let item_history   = MenuItem::new("📋 Historique (0)", true, None);
     let item_devices   = MenuItem::new("🎙  Microphones", true, None);
     let item_copy_last   = MenuItem::new("📋 Copier dernière dictée", true, None);
     let item_export_hist = MenuItem::new("💾 Exporter historique", true, None);
@@ -178,6 +178,10 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                 show_dialog("Dictum — Microphones disponibles", &msg);
             }
         }
+
+        // Mettre à jour le label historique avec le nombre d'entrées
+        let hist_count = state.history.lock().unwrap().len();
+        item_history.set_text(format!("📋 Historique ({})", hist_count));
 
         // Update tooltip + icône selon état
         let recording = *state.is_recording.lock().unwrap();
