@@ -183,6 +183,7 @@ impl SetupWizard {
             silence_threshold: 0.005,
             pause_media: false,
             prefix_space: false,
+            whisper_threads: 0,
         }
     }
 

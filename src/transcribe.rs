@@ -69,9 +69,13 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
         vec!["--language", &config.language]
     };
 
-    let cpu_threads = std::thread::available_parallelism()
-        .map(|n| n.get().min(8))
-        .unwrap_or(4);
+    let cpu_threads = if config.whisper_threads > 0 {
+        config.whisper_threads as usize
+    } else {
+        std::thread::available_parallelism()
+            .map(|n| n.get().min(8))
+            .unwrap_or(4)
+    };
 
     let mut cmd = Command::new(&cli);
     // current_dir = data_dir so Windows finds ggml.dll etc. in the same folder

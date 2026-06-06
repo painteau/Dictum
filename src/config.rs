@@ -59,6 +59,9 @@ pub struct Config {
     pub pause_media: bool,
     /// Ajouter un espace avant le texte injecté (utile si curseur milieu de phrase)
     pub prefix_space: bool,
+    /// Nombre de threads CPU pour whisper-cli (0 = auto-détection)
+    #[serde(default)]
+    pub whisper_threads: u32,
 }
 
 impl Default for Config {
@@ -80,6 +83,7 @@ impl Default for Config {
             silence_threshold: 0.005,
             pause_media: false,
             prefix_space: false,
+            whisper_threads: 0,
         }
     }
 }
