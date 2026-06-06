@@ -127,6 +127,7 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
         })
         // Filtre les numéros de séquence SRT (lignes purement numériques)
         .filter(|l| !l.trim().chars().all(|c| c.is_ascii_digit()))
+        .map(|l| l.trim())
         .collect::<Vec<_>>()
         .join(" ")
         .trim()
