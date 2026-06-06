@@ -117,6 +117,8 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
                 && !t.starts_with("-->")
                 && t != "BLANK_AUDIO"
         })
+        // Filtre les numéros de séquence SRT (lignes purement numériques)
+        .filter(|l| !l.trim().chars().all(|c| c.is_ascii_digit()))
         .collect::<Vec<_>>()
         .join(" ")
         .trim()
