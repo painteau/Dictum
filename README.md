@@ -36,9 +36,13 @@ Compatible avec n'importe quelle application : navigateur, éditeur de code, mes
 - Typographie française (espaces insécables avant `? ! : ;`)
 - Substitutions automatiques (abréviations, corrections personnalisées)
 - Historique des 10 dernières transcriptions
-- Icône barre des tâches système (bleue au repos, grise en transcription)
+- Icône barre des tâches système (bleue/orange/rouge selon état)
 - Auto-Enter optionnel
-- Mise à jour automatique (vérification silencieuse au démarrage)
+- Mise à jour automatique silencieuse (GitHub releases)
+- Pause médias automatique (Spotify, VLC...)
+- Beep configurable début/fin enregistrement
+- Détection silence automatique (évite transcriptions vides)
+- Mode CLI : `dictum.exe fichier.wav`, `--list-devices`, `--list-languages`
 
 ## Configuration
 
@@ -53,25 +57,36 @@ Cliquer **"Paramètres"** dans le menu tray pour l'ouvrir dans Notepad.
 {
   "model_path": "C:\\Users\\...\\AppData\\Local\\Dictum\\models\\ggml-medium.bin",
   "language": "auto",
-  "hotkey": {
-    "ctrl": false,
-    "alt": false,
-    "shift": false,
-    "key": "F9"
-  },
+  "hotkey": { "ctrl": false, "alt": false, "shift": false, "key": "F9" },
   "auto_enter": false,
   "french_typography": true,
   "auto_capitalize": true,
   "max_record_secs": 30,
+  "min_record_ms": 300,
+  "max_history": 10,
+  "beep_enabled": true,
+  "silence_threshold": 0.005,
+  "pause_media": false,
   "microphone": null,
   "substitutions": [
     { "from": "euh", "to": "" },
-    { "from": "virgule", "to": "," }
+    { "from": "virgule", "to": "," },
+    { "from": "point", "to": ".", "case_insensitive": true }
   ]
 }
 ```
 
-Touches supportées : `F1`...`F12`, `Space`, `Tab`
+| Champ | Défaut | Description |
+|-------|--------|-------------|
+| `language` | `"auto"` | Code ISO langue ou `"auto"` |
+| `key` | `"F9"` | F1..F12, Space, Insert, Home, End... |
+| `max_record_secs` | `30` | Durée max enregistrement |
+| `min_record_ms` | `300` | Durée min (anti-déclenchement accidentel) |
+| `max_history` | `10` | Nombre d'entrées historique (1..100) |
+| `silence_threshold` | `0.005` | RMS en-dessous = silence ignoré |
+| `beep_enabled` | `true` | Beep début/fin enregistrement |
+| `pause_media` | `false` | Pause Spotify/VLC pendant dictée |
+| `case_insensitive` | `false` | Substitution insensible à la casse |
 
 ## Modèles disponibles
 
