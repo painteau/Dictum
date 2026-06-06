@@ -20,15 +20,24 @@ pub fn inject_text(text: &str, config: &Config) {
     let settings = Settings::default();
     match Enigo::new(&settings) {
         Ok(mut enigo) => {
-            if let Err(e) = enigo.text(&text) {
-                log::error!("Failed to inject text: {e}");
-                return;
+            // Injecter ligne par ligne pour gérer les \n (Whisper peut retourner plusieurs segments)
+            let lines: Vec<&str> = text.split('\n').collect();
+            for (i, line) in lines.iter().enumerate() {
+                if !line.is_empty() {
+                    if let Err(e) = enigo.text(line) {
+                        log::error!("Injection échouée : {e}");
+                        return;
+                    }
+                }
+                if i < lines.len() - 1 {
+                    let _ = enigo.key(Key::Return, Direction::Click);
+                }
             }
             if config.auto_enter {
                 let _ = enigo.key(Key::Return, Direction::Click);
             }
         }
-        Err(e) => log::error!("Failed to create Enigo: {e}"),
+        Err(e) => log::error!("Enigo init échoué : {e}"),
     }
 }
 
