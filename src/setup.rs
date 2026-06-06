@@ -173,6 +173,7 @@ impl SetupWizard {
             max_record_secs: 30,
             beep_enabled: true,
             silence_threshold: 0.005,
+            pause_media: false,
         }
     }
 

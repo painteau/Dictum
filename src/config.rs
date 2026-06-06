@@ -46,6 +46,8 @@ pub struct Config {
     pub beep_enabled: bool,
     /// Seuil RMS en-dessous duquel l'audio est considéré comme silence (0.0–1.0)
     pub silence_threshold: f32,
+    /// Mettre en pause les médias (Spotify, VLC...) pendant l'enregistrement
+    pub pause_media: bool,
 }
 
 impl Default for Config {
@@ -62,6 +64,7 @@ impl Default for Config {
             max_record_secs: 30,
             beep_enabled: true,
             silence_threshold: 0.005,
+            pause_media: false,
         }
     }
 }

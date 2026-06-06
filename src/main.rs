@@ -14,6 +14,7 @@ mod downloader;
 mod history;
 mod hotkey;
 mod inject;
+mod media;
 mod setup;
 mod substitution;
 mod transcribe;
@@ -124,6 +125,7 @@ fn main() -> Result<()> {
                         }
                         let config = state.config.lock().unwrap().clone();
                         if config.beep_enabled { audio::beep(800, 80); }
+                        if config.pause_media { media::toggle_media(); }
                         match audio::RecordHandle::start(config.microphone.as_deref(), config.max_record_secs) {
                             Ok(handle) => {
                                 *state.is_recording.lock().unwrap() = true;
@@ -135,6 +137,8 @@ fn main() -> Result<()> {
                     }
                     AppEvent::RecordStop => {
                         *state.is_recording.lock().unwrap() = false;
+                        let cfg_snap = state.config.lock().unwrap().clone();
+                        if cfg_snap.pause_media { media::toggle_media(); }
                         if let Some(handle) = record_handle.take() {
                             let state = state.clone();
                             thread::spawn(move || {
