@@ -90,6 +90,7 @@ Cliquer **"Paramètres"** dans le menu tray pour l'ouvrir dans Notepad.
 | `prefix_space` | `false` | Ajouter un espace avant le texte (curseur en milieu de phrase) |
 | `pause_media` | `false` | Pause Spotify/VLC pendant l'enregistrement |
 | `whisper_threads` | `0` | Threads CPU pour whisper (0=auto, max recommandé: 8) |
+| `inject_delay_ms` | `80` | Délai avant injection texte en ms (augmenter si texte mal injecté) |
 
 ## Modèles disponibles
 
