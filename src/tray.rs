@@ -180,14 +180,17 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
         let recording = *state.is_recording.lock().unwrap();
         let transcribing = *state.is_transcribing.lock().unwrap();
         let count = *state.session_count.lock().unwrap();
+        let model_name = state.config.lock().unwrap().model_path
+            .file_stem().and_then(|n| n.to_str())
+            .unwrap_or("?").to_string();
         let tooltip = if recording {
             "Dictum — Enregistrement...".to_string()
         } else if transcribing {
             "Dictum — Transcription...".to_string()
         } else if count > 0 {
-            format!("Dictum — {} dictée{} cette session", count, if count > 1 { "s" } else { "" })
+            format!("Dictum [{}] — {} dictée{}", model_name, count, if count > 1 { "s" } else { "" })
         } else {
-            "Dictum — Dictée vocale".to_string()
+            format!("Dictum [{}] — Prêt", model_name)
         };
         let _ = _tray.set_tooltip(Some(&tooltip));
         let _ = _tray.set_icon(Some(make_icon(recording, transcribing)));
