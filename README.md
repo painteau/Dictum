@@ -91,6 +91,8 @@ Cliquer **"Paramètres"** dans le menu tray pour l'ouvrir dans Notepad.
 | `pause_media` | `false` | Pause Spotify/VLC pendant l'enregistrement |
 | `whisper_threads` | `0` | Threads CPU pour whisper (0=auto, max recommandé: 8) |
 | `inject_delay_ms` | `80` | Délai avant injection texte en ms (augmenter si texte mal injecté) |
+| `whisper_no_speech` | `false` | Ignorer segments sans parole (`--no-speech-thold 0.6`) |
+| `whisper_temperature` | `0.0` | Température whisper (0.0=déterministe, 0.2=légèrement créatif) |
 
 ## Modèles disponibles
 
