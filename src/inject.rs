@@ -61,14 +61,19 @@ fn capitalize_first(s: &str) -> String {
 }
 
 fn apply_french_typography(text: &str) -> String {
-    text
-        // Espaces insécables avant ponctuation double
+    // Points de suspension en premier (avant d'autres substitutions)
+    let text = text.replace("...", "\u{2026}");
+    // Apostrophe typographique
+    let text = text.replace("'", "\u{2019}");
+    // Espaces insécables avant ponctuation double (espace normale ET espace insécable déjà présente)
+    let text = text
         .replace(" ?", "\u{00A0}?")
         .replace(" !", "\u{00A0}!")
         .replace(" :", "\u{00A0}:")
-        .replace(" ;", "\u{00A0};")
-        // Apostrophe typographique ' → '
-        .replace("'", "\u{2019}")
-        // Points de suspension ... → …
-        .replace("...", "\u{2026}")
+        .replace(" ;", "\u{00A0};");
+    // Tiret d'unité (entre chiffres et unités)
+    let text = text
+        .replace("- ", "\u{2013} ")  // tiret demi-cadratin dans les incises
+        ;
+    text
 }
