@@ -43,24 +43,48 @@ pub fn fetch_manifest() -> Result<Manifest> {
 }
 
 /// Télécharge un modèle avec callback de progression (downloaded, total).
-/// Vérifie le SHA256 après téléchargement. Supprime le fichier si invalide.
+/// Supporte la reprise via HTTP Range si le fichier partiel existe.
+/// Vérifie le SHA256 après téléchargement complet.
 pub fn download_model<F>(entry: &ModelEntry, dest: &Path, mut on_progress: F) -> Result<()>
 where
     F: FnMut(u64, u64),
 {
-    let mut resp = reqwest::blocking::get(&entry.url)
+    std::fs::create_dir_all(dest.parent().unwrap())?;
+
+    // Reprise si fichier partiel existant
+    let existing_bytes = if dest.exists() {
+        std::fs::metadata(dest).map(|m| m.len()).unwrap_or(0)
+    } else {
+        0
+    };
+
+    let client = reqwest::blocking::Client::builder()
+        .timeout(std::time::Duration::from_secs(600))
+        .build()
+        .map_err(|e| anyhow!("Client HTTP : {e}"))?;
+
+    let mut request = client.get(&entry.url);
+    if existing_bytes > 0 {
+        log::info!("Reprise téléchargement depuis {} MB", existing_bytes / 1_048_576);
+        request = request.header("Range", format!("bytes={}-", existing_bytes));
+    }
+
+    let mut resp = request.send()
         .map_err(|e| anyhow!("Téléchargement échoué : {e}"))?;
 
-    if !resp.status().is_success() {
+    if !resp.status().is_success() && resp.status().as_u16() != 206 {
         return Err(anyhow!("Erreur HTTP {} lors du téléchargement", resp.status()));
     }
 
-    std::fs::create_dir_all(dest.parent().unwrap())?;
-    let mut file = std::fs::File::create(dest)
-        .map_err(|e| anyhow!("Impossible de créer le fichier : {e}"))?;
+    let mut file = std::fs::OpenOptions::new()
+        .create(true)
+        .append(existing_bytes > 0)
+        .write(true)
+        .open(dest)
+        .map_err(|e| anyhow!("Impossible d'ouvrir le fichier : {e}"))?;
 
     let mut hasher = Sha256::new();
-    let mut downloaded = 0u64;
+    let mut downloaded = existing_bytes;
     let total = entry.size_bytes;
     let mut buf = vec![0u8; 65_536];
 
