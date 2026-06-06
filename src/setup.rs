@@ -95,6 +95,11 @@ impl SetupWizard {
     }
 
     fn start_download(&mut self) {
+        if !downloader::has_internet() {
+            self.manifest_error = Some("Pas de connexion internet. Vérifier le réseau.".to_string());
+            return;
+        }
+
         let manifest = match &self.manifest {
             Some(m) => m.clone(),
             None => {
