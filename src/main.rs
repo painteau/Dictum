@@ -103,7 +103,7 @@ fn main() -> Result<()> {
                             continue;
                         }
                         let config = state.config.lock().unwrap().clone();
-                        match audio::RecordHandle::start(config.microphone.as_deref()) {
+                        match audio::RecordHandle::start(config.microphone.as_deref(), config.max_record_secs) {
                             Ok(handle) => {
                                 *state.is_recording.lock().unwrap() = true;
                                 record_handle = Some(handle);

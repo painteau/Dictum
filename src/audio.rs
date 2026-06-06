@@ -11,9 +11,26 @@ pub struct RecordHandle {
     samples_rx: Receiver<Vec<f32>>,
 }
 
+/// Beep court via Windows API (non bloquant, spawné dans un thread).
+pub fn beep(freq_hz: u32, duration_ms: u32) {
+    #[cfg(windows)]
+    std::thread::spawn(move || unsafe {
+        windows_beep(freq_hz, duration_ms);
+    });
+}
+
+#[cfg(windows)]
+unsafe fn windows_beep(freq: u32, dur: u32) {
+    #[link(name = "kernel32")]
+    extern "system" {
+        fn Beep(dwFreq: u32, dwDuration: u32) -> i32;
+    }
+    Beep(freq, dur);
+}
+
 impl RecordHandle {
     /// Start recording. The cpal stream lives in its own thread (Stream is !Send).
-    pub fn start(device_name: Option<&str>) -> Result<Self> {
+    pub fn start(device_name: Option<&str>, max_secs: u64) -> Result<Self> {
         let device_name = device_name.map(String::from);
         let (stop_tx, stop_rx) = bounded::<()>(1);
         let (samples_tx, samples_rx) = bounded::<Vec<f32>>(1);
@@ -68,9 +85,18 @@ impl RecordHandle {
 
             stream.play().expect("Failed to start audio stream");
 
-            // Block until stop signal
-            let _ = stop_rx.recv();
+            // Beep démarrage enregistrement (800 Hz, 80ms)
+            #[cfg(windows)]
+            unsafe { windows_beep(800, 80); }
+
+            // Block jusqu'au signal stop ou timeout max_record
+            let timeout = std::time::Duration::from_secs(max_secs);
+            let _ = stop_rx.recv_timeout(timeout);
             drop(stream);
+
+            // Beep fin enregistrement (600 Hz, 80ms)
+            #[cfg(windows)]
+            unsafe { windows_beep(600, 80); }
 
             let recorded = samples.lock().unwrap().clone();
             let _ = samples_tx.send(recorded);
