@@ -51,5 +51,5 @@ jobs:
         with:
           files: |
             target/release/dictum.exe
-            installer-out/Dictum-Setup-*.exe
+            installer-out/Dictum-Setup-*-x64.exe
           generate_release_notes: true
