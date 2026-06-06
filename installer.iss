@@ -30,14 +30,14 @@ Name: "french"; MessagesFile: "compiler:Languages\French.isl"
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
-Name: "startup"; Description: "Lancer Dictum au démarrage de Windows"; GroupDescription: "Options :"; Flags: checked
+Name: "startup"; Description: "Lancer Dictum au démarrage de Windows"; GroupDescription: "Options :"
 
 [Files]
 Source: "target\release\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
-Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
+Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "Lancer Dictum"; Flags: nowait postinstall skipifsilent
