@@ -2,10 +2,13 @@ use enigo::{Direction, Enigo, Key, Keyboard, Settings};
 use crate::config::Config;
 
 pub fn inject_text(text: &str, config: &Config) {
+    let text = text.trim().to_string();
+    if text.is_empty() { return; }
+
     let text = if config.auto_capitalize {
-        capitalize_first(text)
+        capitalize_first(&text)
     } else {
-        text.to_string()
+        text
     };
 
     let text = if config.french_typography {
