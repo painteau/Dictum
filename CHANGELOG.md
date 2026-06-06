@@ -1,5 +1,16 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.2.9 — Robustesse réseau
+
+### Ajouté
+- `downloader::has_internet()` — vérif connectivité HEAD sur le manifest (timeout 5s)
+- `setup.rs` : vérif internet avant téléchargement, message d'erreur explicite
+- `main.rs` : check update différé 10s après démarrage, ignoré si hors ligne
+- `config.rs` : `sanitize()` logge les corrections avec `log::warn!`
+- `tray.rs` : tooltip affiche modèle actif `[ggml-medium]`
+
+---
+
 ## 2026-06-07 — v0.2.8 — Zéro warning
 
 ### Corrigé
