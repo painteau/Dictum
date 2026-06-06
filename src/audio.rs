@@ -122,10 +122,22 @@ impl RecordHandle {
     }
 }
 
-/// List available input device names.
+/// Liste les microphones disponibles. Le défaut système est marqué avec *.
 pub fn list_devices() -> Vec<String> {
     let host = cpal::default_host();
+    let default_name = host.default_input_device()
+        .and_then(|d| d.name().ok())
+        .unwrap_or_default();
+
     host.input_devices()
-        .map(|devs| devs.filter_map(|d| d.name().ok()).collect())
+        .map(|devs| devs.filter_map(|d| {
+            d.name().ok().map(|name| {
+                if name == default_name {
+                    format!("{} (défaut)", name)
+                } else {
+                    name
+                }
+            })
+        }).collect())
         .unwrap_or_default()
 }
