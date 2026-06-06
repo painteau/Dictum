@@ -15,6 +15,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
     let item_history   = MenuItem::new("📋 Historique", true, None);
     let item_devices   = MenuItem::new("🎙  Microphones", true, None);
     let item_copy_last  = MenuItem::new("📋 Copier dernière dictée", true, None);
+    let item_reset_cfg  = MenuItem::new("🔧 Réinitialiser la config", true, None);
     let item_clear_hist = MenuItem::new("🗑  Effacer l'historique", true, None);
     let item_reload     = MenuItem::new("↺  Recharger la config", true, None);
     let item_open_log   = MenuItem::new("📄 Ouvrir le log", true, None);
@@ -30,6 +31,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
         &item_sep_up,
         &item_settings,
         &item_reload,
+        &item_reset_cfg,
         &PredefinedMenuItem::separator(),
         &item_history,
         &item_copy_last,
@@ -95,6 +97,14 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                         }
                     }
                     None => show_dialog("Dictum", "Aucune dictée à copier."),
+                }
+            } else if event.id == item_reset_cfg.id() {
+                let default_cfg = crate::config::Config::default();
+                if let Err(e) = default_cfg.save() {
+                    log::error!("Reset config échoué : {e}");
+                } else {
+                    *state.config.lock().unwrap() = default_cfg;
+                    show_dialog("Dictum", "Config réinitialisée aux valeurs par défaut.\nRedémarrer pour appliquer le hotkey.");
                 }
             } else if event.id == item_clear_hist.id() {
                 state.history.lock().unwrap().clear();

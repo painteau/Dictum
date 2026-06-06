@@ -16,8 +16,17 @@ fn key_from_str(s: &str) -> Key {
         "F10" => Key::F10,
         "F11" => Key::F11,
         "F12" => Key::F12,
-        "SPACE" => Key::Space,
-        "TAB"   => Key::Tab,
+        "SPACE"       => Key::Space,
+        "TAB"         => Key::Tab,
+        "INSERT"      => Key::Insert,
+        "HOME"        => Key::Home,
+        "END"         => Key::End,
+        "PAGEUP"      => Key::PageUp,
+        "PAGEDOWN"    => Key::PageDown,
+        "SCROLLLOCK"  => Key::ScrollLock,
+        "PAUSE"       => Key::Pause,
+        "CAPSLOCK"    => Key::CapsLock,
+        "BACKQUOTE" | "BACKTICK" => Key::BackQuote,
         _ => {
             log::warn!("Unknown hotkey '{}', defaulting to F9", s);
             Key::F9
