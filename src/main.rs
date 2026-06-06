@@ -368,7 +368,12 @@ fn main() -> Result<()> {
                                             &state.config.lock().unwrap().substitutions,
                                             &text,
                                         );
-                                        log::info!("Transcrit : {text}");
+                                        let preview = if text.len() > 100 {
+                                            format!("{}...", &text[..97])
+                                        } else {
+                                            text.clone()
+                                        };
+                                        log::info!("Transcrit ({} chars) : {}", text.len(), preview);
                                         *state.session_count.lock().unwrap() += 1;
                                         let max_h = config.max_history;
                                         state.history.lock().unwrap().push_with_limit(text.clone(), max_h);
