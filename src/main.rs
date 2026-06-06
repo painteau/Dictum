@@ -23,10 +23,16 @@ use config::Config;
 use history::History;
 use updater::UpdateInfo;
 
-/// Transcrit un fichier audio et écrit le résultat dans <fichier>.txt
+/// Transcrit un fichier audio et écrit le résultat dans <fichier>.txt (ou --output path)
 fn cli_transcribe(input: &std::path::Path, lang_override: Option<&str>) -> Result<()> {
     use crate::config::Config;
     use crate::transcribe;
+
+    let args: Vec<String> = std::env::args().collect();
+    let output_path = args.windows(2)
+        .find(|w| w[0] == "--output" || w[0] == "-o")
+        .map(|w| std::path::PathBuf::from(&w[1]))
+        .unwrap_or_else(|| input.with_extension("txt"));
 
     let mut config = Config::load()?;
     if let Some(lang) = lang_override {
@@ -36,10 +42,14 @@ fn cli_transcribe(input: &std::path::Path, lang_override: Option<&str>) -> Resul
     let samples = read_audio_file(input)?;
     let text = transcribe::transcribe(&samples, &config)?;
 
-    let output = input.with_extension("txt");
-    std::fs::write(&output, &text)?;
+    if text.is_empty() {
+        println!("[Silence détecté — aucun texte transcrit]");
+        return Ok(());
+    }
+
+    std::fs::write(&output_path, &text)?;
     println!("{}", text);
-    println!("\nSauvegardé : {}", output.display());
+    println!("\nSauvegardé : {}", output_path.display());
     Ok(())
 }
 
