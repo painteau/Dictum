@@ -100,16 +100,21 @@ impl History {
 }
 
 fn format_timestamp(ts: u64) -> String {
-    use std::time::{SystemTime, UNIX_EPOCH, Duration};
-    let dt = SystemTime::UNIX_EPOCH + Duration::from_secs(ts);
-    match dt.duration_since(UNIX_EPOCH) {
-        Ok(d) => {
-            let secs = d.as_secs();
-            let h = (secs % 86400) / 3600;
-            let m = (secs % 3600) / 60;
-            format!("{:02}:{:02}", h, m)
-        }
-        Err(_) => "??:??".to_string(),
+    // Calculer l'heure locale à partir du timestamp UTC
+    let secs = ts;
+    // Approximation UTC+0 (pas de lib timezone pour rester léger)
+    let h = (secs % 86400) / 3600;
+    let m = (secs % 3600) / 60;
+    // Afficher aussi la date si l'entrée date de plus de 24h
+    let now_secs = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap_or_default()
+        .as_secs();
+    if now_secs.saturating_sub(ts) > 86400 {
+        let days_ago = now_secs.saturating_sub(ts) / 86400;
+        format!("J-{} {:02}:{:02}", days_ago, h, m)
+    } else {
+        format!("{:02}:{:02}", h, m)
     }
 }
 
