@@ -1,5 +1,26 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.1.9 — Nuit de polish
+
+### Ajouté
+- `src/media.rs` — pause/reprise médias automatique via VK_MEDIA_PLAY_PAUSE (configurable `pause_media`)
+- `src/history.rs` — horodatage HH:MM sur chaque entrée de l'historique
+- `tray.rs` — menus : Effacer historique, Recharger config, Ouvrir log, À propos (version + modèle)
+- `config.rs` — nouveaux champs : `silence_threshold` (0.005), `beep_enabled`, `pause_media`
+- `transcribe.rs` — détection silence RMS configurable, log debug si silence ignoré
+- `audio.rs` — beep Windows (Beep API kernel32), timeout `max_record_secs` via `recv_timeout`
+- `build.rs` — génère icône `.ico` 32x32 programmatiquement, embed version info via `winresource`
+- Log fichier `dictum.log` dans `%LOCALAPPDATA%\Dictum\` via `flexi_logger`
+- `updater.rs` — auto-update silencieux : check GitHub releases, télécharge `Dictum-Setup.exe`, lance `/SILENT`
+
+### Corrigé
+- `setup.rs` — config sauvegardée sur disque avant fermeture du wizard
+- `setup.rs` — `needs_setup` vérifie maintenant `whisper-cli.exe` ET le modèle
+- `tray.rs` — icône tray change dynamiquement (bleu → rouge pendant enregistrement)
+- `Cargo.toml` — suppression `const_format` inutilisé, version alignée `0.1.6`
+
+---
+
 ## 2026-06-07 — v0.1.7 — Icône exe + polish
 
 ### Ajouté

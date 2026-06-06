@@ -36,10 +36,10 @@
 - [ ] Moteur Qwen3-ASR (4 GB, haute précision)
 - [ ] 5 hotkeys configurables avec actions distinctes
 - [ ] Mode sélection : sélectionne texte existant → traduit/reformule
-- [ ] Pause média automatique pendant enregistrement
+- [x] Pause média automatique pendant enregistrement (`pause_media` dans config)
 - [ ] Support CUDA (GPU NVIDIA) via feature flag
 - [x] Notification sonore debut/fin enregistrement (beep Windows, configurable via `beep_enabled`)
-- [ ] Détection silence automatique (stop sans relâcher la touche)
+- [x] Détection silence automatique — RMS configurable (`silence_threshold`)
 
 ## v3 — Idées futures
 

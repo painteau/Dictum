@@ -5,8 +5,6 @@ use std::thread;
 use anyhow::Result;
 use crossbeam_channel::bounded;
 
-#[allow(unused_imports)]
-use env_logger;
 
 mod audio;
 mod config;
