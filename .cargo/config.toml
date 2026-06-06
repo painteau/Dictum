@@ -1,0 +1,9 @@
+[build]
+# Activer les optimisations parallèles
+jobs = 4
+
+[profile.release]
+# Déjà configuré dans Cargo.toml
+
+[net]
+retry = 3
