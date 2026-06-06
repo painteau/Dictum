@@ -123,7 +123,10 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
             } else if event.id == item_export_hist.id() {
                 let export_path = crate::config::Config::history_export_path();
                 match state.history.lock().unwrap().export_to_file(&export_path) {
-                    Ok(_) => show_dialog("Dictum", &format!("Export sauvegardé :\n{}", export_path.display())),
+                    Ok(_) => {
+                        // Ouvrir le fichier automatiquement après export
+                        std::process::Command::new("notepad").arg(&export_path).spawn().ok();
+                    }
                     Err(e) => show_dialog("Dictum", &format!("Erreur export : {e}")),
                 }
             } else if event.id == item_clear_hist.id() {
