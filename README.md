@@ -102,19 +102,32 @@ Les modèles sont téléchargés automatiquement par le wizard depuis [HuggingFa
 Transcrire un fichier audio directement :
 
 ```powershell
-# Transcrire un fichier
+# Transcrire un fichier (WAV mono ou stéréo)
 dictum.exe enregistrement.wav
-dictum.exe reunion.wav --language fr
-dictum.exe reunion.wav --language fr --output resultat.txt
+dictum.exe reunion.wav -l fr
+dictum.exe reunion.wav -l fr -m ggml-large-v3.bin -o resultat.txt
+
+# Sortie stdout uniquement (pour scripts/pipe)
+dictum.exe reunion.wav -q --no-save | clip
 
 # Informations
 dictum.exe --list-devices     # Lister les microphones
-dictum.exe --list-languages   # Lister les langues supportées
+dictum.exe --list-languages   # Lister les 57 langues Whisper
 dictum.exe --version
 dictum.exe --help
 ```
 
-Le résultat est affiché dans le terminal et sauvegardé dans `enregistrement.txt` (ou `--output`).
+Options disponibles :
+
+| Flag | Alias | Description |
+|------|-------|-------------|
+| `--language` | `-l` | Code langue ISO (`fr`, `en`, `auto`...) |
+| `--model` | `-m` | Chemin vers un modèle `.bin` |
+| `--output` | `-o` | Fichier de sortie (défaut : `.txt` à côté du fichier) |
+| `--quiet` | `-q` | Stdout uniquement, sans métadonnées |
+| `--no-save` | | Ne pas créer de fichier `.txt` |
+
+Le résultat est sauvegardé dans `enregistrement.txt` sauf si `--no-save`.
 
 ## Prérequis système
 
