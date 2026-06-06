@@ -230,12 +230,15 @@ fn main() -> Result<()> {
                             return;
                         }
                         match transcribe::transcribe(&samples, &config) {
+                                    Ok(text) if text.is_empty() => {
+                                        log::debug!("Transcription vide (silence), rien injecté");
+                                    }
                                     Ok(text) => {
                                         let text = substitution::apply(
                                             &state.config.lock().unwrap().substitutions,
                                             &text,
                                         );
-                                        log::info!("Transcribed: {text}");
+                                        log::info!("Transcrit : {text}");
                                         state.history.lock().unwrap().push(text.clone());
                                         let _ = state.history.lock().unwrap().save();
                                         inject::inject_text(&text, &config);
