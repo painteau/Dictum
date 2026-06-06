@@ -92,12 +92,26 @@ impl Config {
         let path = config_path();
         if path.exists() {
             let content = std::fs::read_to_string(&path)?;
-            Ok(serde_json::from_str(&content).unwrap_or_default())
+            let mut config: Config = serde_json::from_str(&content).unwrap_or_default();
+            config.sanitize();
+            Ok(config)
         } else {
             let config = Config::default();
             config.save()?;
             Ok(config)
         }
+    }
+
+    /// Corrige silencieusement les valeurs invalides.
+    fn sanitize(&mut self) {
+        if self.max_record_secs == 0 { self.max_record_secs = 30; }
+        if self.min_record_ms > 5000 { self.min_record_ms = 5000; }
+        if self.max_history == 0 { self.max_history = 1; }
+        if self.max_history > 100 { self.max_history = 100; }
+        if self.silence_threshold < 0.0 { self.silence_threshold = 0.0; }
+        if self.silence_threshold > 1.0 { self.silence_threshold = 1.0; }
+        if self.hotkey.key.is_empty() { self.hotkey.key = "F9".to_string(); }
+        if self.language.is_empty() { self.language = "auto".to_string(); }
     }
 
     pub fn save(&self) -> Result<()> {
