@@ -71,9 +71,11 @@ fn apply_french_typography(text: &str) -> String {
         .replace(" !", "\u{00A0}!")
         .replace(" :", "\u{00A0}:")
         .replace(" ;", "\u{00A0};");
-    // Tiret d'unité (entre chiffres et unités)
-    let text = text
-        .replace("- ", "\u{2013} ")  // tiret demi-cadratin dans les incises
-        ;
+    // Tiret demi-cadratin dans les incises (en début de phrase uniquement)
+    let text = if text.starts_with("- ") {
+        format!("\u{2013} {}", &text[2..])
+    } else {
+        text
+    };
     text
 }
