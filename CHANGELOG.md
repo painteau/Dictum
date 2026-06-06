@@ -1,5 +1,22 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.2.0 — Milestone nuit
+
+### Ajouté
+- Mode CLI : `dictum.exe fichier.wav` → transcription + sauvegarde `.txt`
+- Menu tray : Copier dernière dictée dans le presse-papiers (arboard)
+- `src/media.rs` : toggle VK_MEDIA_PLAY_PAUSE, pause/reprise médias automatique
+- Horodatage HH:MM sur chaque entrée d'historique
+- Menu tray : Effacer historique, Recharger config, Ouvrir log, À propos (version + modèle)
+- `config.rs` : `beep_enabled`, `silence_threshold`, `pause_media`
+- Log fichier `%LOCALAPPDATA%\Dictum\dictum.log` via `flexi_logger`
+- Détection silence RMS avant transcription (évite appels Whisper inutiles)
+- `src/updater.rs` : auto-update silencieux au démarrage
+- `build.rs` : icône .ico générée, version info Windows embarquée
+- Icône tray dynamique (bleu/rouge selon état enregistrement)
+
+---
+
 ## 2026-06-07 — v0.1.9 — Nuit de polish
 
 ### Ajouté

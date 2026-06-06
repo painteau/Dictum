@@ -41,6 +41,19 @@
 - [x] Notification sonore debut/fin enregistrement (beep Windows, configurable via `beep_enabled`)
 - [x] Détection silence automatique — RMS configurable (`silence_threshold`)
 
+## v2 ajouté cette nuit
+
+- [x] Pause média automatique (`pause_media`)
+- [x] Beep configurable (`beep_enabled`)
+- [x] Détection silence RMS (`silence_threshold`)
+- [x] Log fichier `dictum.log` (flexi_logger)
+- [x] Horodatage historique HH:MM
+- [x] Menu tray : Copier clipboard, Effacer historique, Reload config, Ouvrir log, À propos
+- [x] Icône tray dynamique (rouge pendant enregistrement)
+- [x] Mode CLI : `dictum.exe fichier.wav` → transcription + .txt
+- [x] Auto-update silencieux (GitHub releases API)
+- [x] Icône .ico embarquée dans l'exe (build.rs)
+
 ## v3 — Idées futures
 
 - [ ] Mode live (transcription en temps réel, streaming)
