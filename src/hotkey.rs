@@ -36,6 +36,14 @@ fn key_from_str(s: &str) -> Key {
 
 /// Blocking — call in a dedicated thread.
 pub fn start(config: Config, tx: Sender<AppEvent>) {
+    let combo = format!(
+        "{}{}{}{}",
+        if config.hotkey.ctrl  { "Ctrl+" } else { "" },
+        if config.hotkey.alt   { "Alt+"  } else { "" },
+        if config.hotkey.shift { "Shift+"} else { "" },
+        config.hotkey.key
+    );
+    log::info!("Hotkey active : {} (maintenir pour dicter)", combo);
     let target = key_from_str(&config.hotkey.key);
     let need_ctrl  = config.hotkey.ctrl;
     let need_alt   = config.hotkey.alt;
