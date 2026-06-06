@@ -2,19 +2,28 @@
 
 ## v1 — En cours
 
-- [ ] Héberger `manifest.json` (Cloudflare R2 ou Workers KV) + mettre la vraie URL dans `downloader.rs`
-- [ ] Renseigner SHA256 des modèles dans le manifest
-- [ ] Compiler et tester (`cargo build --release`)
-- [ ] Tester wizard premier lancement (détection GPU, choix modèle, téléchargement)
-- [ ] Tester injection texte dans Notepad, VS Code, navigateur
-- [ ] Tester hotkey F9 hold-to-record
-- [ ] Vérifier typographie française (espaces insécables)
-- [ ] Tester substitutions automatiques
-- [ ] Vérifier historique 10 entrées
-- [ ] Icône tray : couleur rouge pendant enregistrement
-- [ ] Ajouter icône `.ico` embarquée dans l'exe (ressource Windows)
-- [ ] Démarrage automatique Windows (raccourci Startup)
+### Infra
+- [x] Manifest JSON hébergé sur `cdn.breizhzion.com/dictum/manifest.json`
+- [x] SHA256 des modèles dans le manifest
+- [x] `whisper-cli.exe` + DLLs hébergés sur le CDN
+- [x] Build release (`cargo build --release`) — 7.7 MB
+- [x] Repo GitHub public `painteau/Dictum`
+- [x] Release `v0.1.1` avec `dictum.exe`
+- [x] GitHub Actions CI/CD — release auto sur tag `v*`
+
+### À tester
+- [ ] Wizard premier lancement (détection GPU, choix modèle, téléchargement)
+- [ ] Injection texte dans Notepad, VS Code, navigateur
+- [ ] Hotkey F9 hold-to-record
+- [ ] Typographie française (espaces insécables)
+- [ ] Substitutions automatiques
+- [ ] Historique 10 entrées
+- [ ] Icône tray rouge pendant enregistrement
+
+### À finir
 - [ ] Sauvegarder config depuis le wizard avant fermeture fenêtre
+- [ ] Icône `.ico` embarquée dans l'exe (ressource Windows)
+- [ ] Démarrage automatique Windows (raccourci Startup)
 
 ## v2 — Roadmap
 

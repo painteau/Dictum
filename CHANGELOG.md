@@ -1,5 +1,21 @@
 # CHANGELOG — Dictum
 
+## 2026-06-06 — v0.1.2 — CI/CD + release GitHub
+
+### Ajouté
+- `.github/workflows/release.yml` — GitHub Actions : compile automatiquement sur tag `v*` et publie `dictum.exe` en asset de release
+- Première release publique `v0.1.1` sur `github.com/painteau/Dictum/releases`
+- `ARCHITECTURE.md` — doc complète threads, flux de données, CDN, décisions d'architecture
+
+### Workflow release
+```powershell
+git tag v0.x.x
+git push origin v0.x.x
+```
+GitHub compile sur `windows-latest`, build release Rust, crée la release avec `dictum.exe` automatiquement.
+
+---
+
 ## 2026-06-06 — v0.1.1 — Setup wizard + téléchargement modèles
 
 ### Ajouté
