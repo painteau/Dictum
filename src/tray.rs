@@ -121,7 +121,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                     show_dialog("Dictum", "Config réinitialisée aux valeurs par défaut.\nRedémarrer pour appliquer le hotkey.");
                 }
             } else if event.id == item_export_hist.id() {
-                let export_path = crate::config::Config::data_dir().join("historique_export.txt");
+                let export_path = crate::config::Config::history_export_path();
                 match state.history.lock().unwrap().export_to_file(&export_path) {
                     Ok(_) => show_dialog("Dictum", &format!("Export sauvegardé :\n{}", export_path.display())),
                     Err(e) => show_dialog("Dictum", &format!("Erreur export : {e}")),
@@ -139,7 +139,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                     Err(e) => log::error!("Erreur reload config : {e}"),
                 }
             } else if event.id == item_open_log.id() {
-                let log_path = crate::config::Config::data_dir().join("dictum.log");
+                let log_path = crate::config::Config::log_path();
                 if log_path.exists() {
                     std::process::Command::new("notepad").arg(&log_path).spawn().ok();
                 } else {

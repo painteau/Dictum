@@ -146,4 +146,12 @@ impl Config {
     pub fn data_dir() -> PathBuf {
         data_dir()
     }
+
+    pub fn log_path() -> PathBuf {
+        data_dir().join("dictum.log")
+    }
+
+    pub fn history_export_path() -> PathBuf {
+        data_dir().join("historique_export.txt")
+    }
 }
