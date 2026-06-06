@@ -39,6 +39,18 @@ fn cli_transcribe(input: &std::path::Path, lang_override: Option<&str>) -> Resul
         config.language = lang.to_string();
         log::info!("Langue forcée : {}", lang);
     }
+    // --model path/to/model.bin
+    if let Some(model) = args.windows(2)
+        .find(|w| w[0] == "--model" || w[0] == "-m")
+        .map(|w| std::path::PathBuf::from(&w[1]))
+    {
+        if model.exists() {
+            log::info!("Modèle forcé : {}", model.display());
+            config.model_path = model;
+        } else {
+            anyhow::bail!("Modèle introuvable : {}", model.display());
+        }
+    }
     let samples = read_audio_file(input)?;
     let text = transcribe::transcribe(&samples, &config)?;
 
