@@ -1,5 +1,9 @@
 # Dictum
 
+[![Release](https://img.shields.io/github/v/release/painteau/Dictum?style=flat-square)](https://github.com/painteau/Dictum/releases)
+[![CI](https://img.shields.io/github/actions/workflow/status/painteau/Dictum/release.yml?style=flat-square&label=build)](https://github.com/painteau/Dictum/actions)
+[![License](https://img.shields.io/github/license/painteau/Dictum?style=flat-square)](LICENSE)
+
 Dictée vocale Windows 100% locale, propulsée par Whisper AI. Zéro cloud, zéro abonnement.
 
 ## Installation
