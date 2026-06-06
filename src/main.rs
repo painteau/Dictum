@@ -135,9 +135,35 @@ fn main() -> Result<()> {
         Some("--help") | Some("-h") => {
             println!("Dictum v{} — Dictée vocale locale\n", env!("CARGO_PKG_VERSION"));
             println!("Usage:");
-            println!("  dictum.exe               Lancer en mode tray (normal)");
-            println!("  dictum.exe fichier.wav [--language fr]   Transcrire un fichier audio");
-            println!("  dictum.exe --version                     Afficher la version");
+            println!("  dictum.exe                           Mode tray (normal)");
+            println!("  dictum.exe fichier.wav [-l fr]       Transcrire un fichier");
+            println!("  dictum.exe --list-devices            Lister les microphones");
+            println!("  dictum.exe --list-languages          Lister les langues Whisper");
+            println!("  dictum.exe --version                 Version");
+            return Ok(());
+        }
+        Some("--list-devices") => {
+            let devices = audio::list_devices();
+            if devices.is_empty() {
+                println!("Aucun microphone détecté.");
+            } else {
+                println!("Microphones disponibles :");
+                for (i, d) in devices.iter().enumerate() {
+                    println!("  [{}] {}", i, d);
+                }
+            }
+            return Ok(());
+        }
+        Some("--list-languages") => {
+            println!("Langues Whisper supportées (codes ISO 639-1) :");
+            let langs = ["af","ar","hy","az","be","bs","bg","ca","zh","hr","cs","da","nl","en",
+                         "et","fi","fr","gl","de","el","he","hi","hu","is","id","it","ja","kn",
+                         "kk","ko","lv","lt","mk","ms","mr","mi","ne","no","fa","pl","pt","ro",
+                         "ru","sr","sk","sl","es","sw","sv","tl","ta","th","tr","uk","ur","vi","cy"];
+            for chunk in langs.chunks(8) {
+                println!("  {}", chunk.join("  "));
+            }
+            println!("\nDétection automatique : utiliser \"auto\"");
             return Ok(());
         }
         Some(path) => {
