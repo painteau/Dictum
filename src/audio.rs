@@ -43,10 +43,16 @@ impl RecordHandle {
                     .input_devices()?
                     .any(|d| d.name().unwrap_or_default() == *name);
                 if !found {
-                    return Err(anyhow!("Microphone '{}' not found", name));
+                    let available = host.input_devices()
+                        .map(|d| d.filter_map(|d| d.name().ok()).collect::<Vec<_>>().join(", "))
+                        .unwrap_or_default();
+                    return Err(anyhow!(
+                        "Microphone '{}' introuvable.\nDisponibles : {}",
+                        name, if available.is_empty() { "aucun".to_string() } else { available }
+                    ));
                 }
             } else if host.default_input_device().is_none() {
-                return Err(anyhow!("No default input device available"));
+                return Err(anyhow!("Aucun microphone détecté. Brancher un micro et réessayer."));
             }
         }
 
