@@ -108,7 +108,15 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
     let stdout = String::from_utf8_lossy(&output.stdout);
     let text = stdout
         .lines()
-        .filter(|l| !l.starts_with('[') && !l.is_empty())
+        // Filtre les tags Whisper : [BLANK_AUDIO], [Music], (Music), timestamps, etc.
+        .filter(|l| {
+            let t = l.trim();
+            !t.is_empty()
+                && !t.starts_with('[')
+                && !t.starts_with('(')
+                && !t.starts_with("-->")
+                && t != "BLANK_AUDIO"
+        })
         .collect::<Vec<_>>()
         .join(" ")
         .trim()
