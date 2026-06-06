@@ -26,7 +26,17 @@ fn write_wav(samples: &[f32], path: &std::path::Path) -> Result<()> {
     Ok(())
 }
 
+/// Calcule le RMS des samples. Si trop bas = silence, pas la peine de transcrire.
+fn rms(samples: &[f32]) -> f32 {
+    if samples.is_empty() { return 0.0; }
+    let sum: f32 = samples.iter().map(|s| s * s).sum();
+    (sum / samples.len() as f32).sqrt()
+}
+
 pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
+    if rms(samples) < 0.005 {
+        return Ok(String::new()); // silence — on n'envoie rien à Whisper
+    }
     let cli = whisper_cli_path();
     if !cli.exists() {
         return Err(anyhow!(

@@ -18,7 +18,7 @@
 - [ ] Typographie française (espaces insécables)
 - [ ] Substitutions automatiques
 - [ ] Historique 10 entrées
-- [ ] Icône tray rouge pendant enregistrement
+- [x] Icône tray rouge pendant enregistrement (dynamique via set_icon)
 
 ### À finir
 - [x] Sauvegarder config depuis le wizard avant fermeture fenêtre
@@ -38,7 +38,7 @@
 - [ ] Mode sélection : sélectionne texte existant → traduit/reformule
 - [ ] Pause média automatique pendant enregistrement
 - [ ] Support CUDA (GPU NVIDIA) via feature flag
-- [ ] Notification sonore debut/fin enregistrement
+- [x] Notification sonore debut/fin enregistrement (beep Windows, configurable via `beep_enabled`)
 - [ ] Détection silence automatique (stop sans relâcher la touche)
 
 ## v3 — Idées futures

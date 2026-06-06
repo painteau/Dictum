@@ -8,11 +8,15 @@ use crate::{AppEvent, AppState};
 
 pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
     let tray_menu = Menu::new();
-    let item_update    = MenuItem::new("🔄 Mise à jour disponible !", false, None); // caché au départ
+    let item_update    = MenuItem::new("🔄 Mise à jour disponible !", false, None);
     let item_sep_up    = PredefinedMenuItem::separator();
     let item_settings  = MenuItem::new("⚙  Paramètres", true, None);
     let item_history   = MenuItem::new("📋 Historique", true, None);
     let item_devices   = MenuItem::new("🎙  Microphones", true, None);
+    let item_about     = MenuItem::new(
+        format!("ℹ  Dictum v{}", env!("CARGO_PKG_VERSION")),
+        true, None
+    );
     let item_sep       = PredefinedMenuItem::separator();
     let item_quit      = MenuItem::new("✕  Quitter", true, None);
 
@@ -22,6 +26,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
         &item_settings,
         &item_history,
         &item_devices,
+        &item_about,
         &item_sep,
         &item_quit,
     ])?;
@@ -69,6 +74,15 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
             } else if event.id == item_history.id() {
                 let msg = state.history.lock().unwrap().as_display_string();
                 show_dialog("Dictum — Historique", &msg);
+            } else if event.id == item_about.id() {
+                let config = state.config.lock().unwrap();
+                let msg = format!(
+                    "Dictum v{}\n\ngithub.com/painteau/Dictum\n\nModèle : {}\nLangue : {}",
+                    env!("CARGO_PKG_VERSION"),
+                    config.model_path.display(),
+                    config.language
+                );
+                show_dialog("À propos de Dictum", &msg);
             } else if event.id == item_devices.id() {
                 let devices = crate::audio::list_devices();
                 let msg = if devices.is_empty() {

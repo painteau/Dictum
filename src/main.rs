@@ -5,6 +5,9 @@ use std::thread;
 use anyhow::Result;
 use crossbeam_channel::bounded;
 
+#[allow(unused_imports)]
+use env_logger;
+
 mod audio;
 mod config;
 mod downloader;
@@ -20,6 +23,25 @@ mod updater;
 use config::Config;
 use history::History;
 use updater::UpdateInfo;
+
+fn init_logger() {
+    let log_dir = Config::data_dir();
+    std::fs::create_dir_all(&log_dir).ok();
+
+    let file_spec = flexi_logger::FileSpec::default()
+        .directory(&log_dir)
+        .basename("dictum")
+        .suffix("log")
+        .suppress_timestamp();
+
+    flexi_logger::Logger::try_with_str("info")
+        .unwrap()
+        .log_to_file(file_spec)
+        .duplicate_to_stderr(flexi_logger::Duplicate::Warn)
+        .format(flexi_logger::opt_format)
+        .start()
+        .ok();
+}
 
 static UPDATE_AVAILABLE: std::sync::Mutex<Option<UpdateInfo>> = std::sync::Mutex::new(None);
 
@@ -54,10 +76,8 @@ impl AppState {
 }
 
 fn main() -> Result<()> {
-    if std::env::var("RUST_LOG").is_err() {
-        std::env::set_var("RUST_LOG", "info");
-    }
-    env_logger::init();
+    init_logger();
+    log::info!("Dictum v{} démarrage", env!("CARGO_PKG_VERSION"));
 
     // Premier lancement : wizard si aucun modèle présent
     {
