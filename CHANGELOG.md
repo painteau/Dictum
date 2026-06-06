@@ -1,5 +1,26 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.2.6 — CLI robuste
+
+### Ajouté
+- CLI `--config/-c` : fichier config personnalisé
+- CLI `--debug` : active les logs détaillés (debug level)
+- CLI `--no-save` : transcription sans créer de fichier `.txt`
+- `Config::load_from(path)` pour support config externe
+- `audio.rs` : log du device micro actif (niveau debug)
+- `tray.rs` : menu réorganisé avec séparateurs logiques
+- `history.rs` : texte tronqué à 120 chars dans le dialog
+- `transcribe.rs` : filtre numéros de séquence SRT dans output
+- `downloader.rs` : log progression tous les 10%
+- `config.rs` : `open_in_editor` respecte `EDITOR` env var
+
+### Corrigé
+- `init_logger` : fallback `env_logger` si `flexi_logger` échoue
+- `hotkey.rs` : message fallback liste les touches valides
+- `inject.rs` : trim whitespace, early return si vide
+
+---
+
 ## 2026-06-07 — v0.2.5 — Finitions matin
 
 ### Ajouté
