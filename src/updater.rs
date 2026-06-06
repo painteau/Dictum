@@ -104,7 +104,8 @@ pub fn apply_update(info: &UpdateInfo) -> Result<()> {
     let dest = std::env::temp_dir()
         .join(format!("Dictum-Setup-{}.exe", info.version));
 
-    log::info!("Téléchargement mise à jour v{} → {}", info.version, dest.display());
+    let size_mb = (info.installer_size as f64 / 1_048_576.0).ceil() as u64;
+    log::info!("Téléchargement mise à jour v{} ({} MB) → {}", info.version, size_mb, dest.display());
 
     let mut resp = reqwest::blocking::get(&info.installer_url)
         .map_err(|e| anyhow!("Téléchargement échoué : {e}"))?;
