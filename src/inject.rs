@@ -1,0 +1,49 @@
+use enigo::{Direction, Enigo, Key, Keyboard, Settings};
+use crate::config::Config;
+
+pub fn inject_text(text: &str, config: &Config) {
+    let text = if config.auto_capitalize {
+        capitalize_first(text)
+    } else {
+        text.to_string()
+    };
+
+    let text = if config.french_typography {
+        apply_french_typography(&text)
+    } else {
+        text
+    };
+
+    // Small delay so the key-release event from hotkey doesn't interfere
+    std::thread::sleep(std::time::Duration::from_millis(80));
+
+    let settings = Settings::default();
+    match Enigo::new(&settings) {
+        Ok(mut enigo) => {
+            if let Err(e) = enigo.text(&text) {
+                log::error!("Failed to inject text: {e}");
+                return;
+            }
+            if config.auto_enter {
+                let _ = enigo.key(Key::Return, Direction::Click);
+            }
+        }
+        Err(e) => log::error!("Failed to create Enigo: {e}"),
+    }
+}
+
+fn capitalize_first(s: &str) -> String {
+    let mut chars = s.chars();
+    match chars.next() {
+        None => String::new(),
+        Some(first) => first.to_uppercase().collect::<String>() + chars.as_str(),
+    }
+}
+
+fn apply_french_typography(text: &str) -> String {
+    // Non-breaking space (U+00A0) before double punctuation
+    text.replace(" ?", "\u{00A0}?")
+        .replace(" !", "\u{00A0}!")
+        .replace(" :", "\u{00A0}:")
+        .replace(" ;", "\u{00A0};")
+}

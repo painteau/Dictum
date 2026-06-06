@@ -1,0 +1,23 @@
+# Rust build
+/target/
+Cargo.lock
+
+# Modèles Whisper (trop lourds pour git — télécharger séparément)
+*.bin
+*.gguf
+*.ggml
+models/
+
+# Données utilisateur locales
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.suo
+*.user

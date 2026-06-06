@@ -1,0 +1,53 @@
+[package]
+name = "dictum"
+version = "0.1.0"
+edition = "2021"
+description = "Windows voice dictation powered by local Whisper AI"
+
+[[bin]]
+name = "dictum"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1"
+crossbeam-channel = "0.5"
+dirs = "5"
+env_logger = "0.11"
+log = "0.4"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Audio capture
+cpal = "0.15"
+
+# Global hotkeys
+rdev = "0.5"
+
+# Text injection at cursor
+enigo = "0.2"
+
+# System tray
+tray-icon = "0.14"
+
+# WAV écriture pour passer l'audio à whisper-cli
+hound = "3"
+
+# Setup wizard + progress UI
+eframe = "0.27"
+egui = "0.27"
+
+# HTTP downloads (manifest + models)
+reqwest = { version = "0.11", features = ["blocking", "json", "stream"] }
+
+# Checksum verification
+sha2 = "0.10"
+hex = "0.4"
+
+[target.'cfg(windows)'.dependencies]
+winapi = { version = "0.3", features = ["winuser", "shellapi"] }
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+strip = true

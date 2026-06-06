@@ -1,0 +1,69 @@
+use rdev::{listen, EventType, Key};
+use crossbeam_channel::Sender;
+use crate::{AppEvent, config::Config};
+
+fn key_from_str(s: &str) -> Key {
+    match s.to_uppercase().as_str() {
+        "F1"  => Key::F1,
+        "F2"  => Key::F2,
+        "F3"  => Key::F3,
+        "F4"  => Key::F4,
+        "F5"  => Key::F5,
+        "F6"  => Key::F6,
+        "F7"  => Key::F7,
+        "F8"  => Key::F8,
+        "F9"  => Key::F9,
+        "F10" => Key::F10,
+        "F11" => Key::F11,
+        "F12" => Key::F12,
+        "SPACE" => Key::Space,
+        "TAB"   => Key::Tab,
+        _ => {
+            log::warn!("Unknown hotkey '{}', defaulting to F9", s);
+            Key::F9
+        }
+    }
+}
+
+/// Blocking — call in a dedicated thread.
+pub fn start(config: Config, tx: Sender<AppEvent>) {
+    let target = key_from_str(&config.hotkey.key);
+    let need_ctrl  = config.hotkey.ctrl;
+    let need_alt   = config.hotkey.alt;
+    let need_shift = config.hotkey.shift;
+
+    let mut ctrl_down  = false;
+    let mut alt_down   = false;
+    let mut shift_down = false;
+    let mut active     = false;
+
+    if let Err(e) = listen(move |event| {
+        match event.event_type {
+            EventType::KeyPress(Key::ControlLeft) | EventType::KeyPress(Key::ControlRight) => ctrl_down = true,
+            EventType::KeyRelease(Key::ControlLeft) | EventType::KeyRelease(Key::ControlRight) => ctrl_down = false,
+            EventType::KeyPress(Key::Alt) | EventType::KeyPress(Key::AltGr) => alt_down = true,
+            EventType::KeyRelease(Key::Alt) | EventType::KeyRelease(Key::AltGr) => alt_down = false,
+            EventType::KeyPress(Key::ShiftLeft) | EventType::KeyPress(Key::ShiftRight) => shift_down = true,
+            EventType::KeyRelease(Key::ShiftLeft) | EventType::KeyRelease(Key::ShiftRight) => shift_down = false,
+
+            EventType::KeyPress(ref k) if *k == target => {
+                let mods_ok = (!need_ctrl || ctrl_down)
+                    && (!need_alt || alt_down)
+                    && (!need_shift || shift_down);
+                if mods_ok && !active {
+                    active = true;
+                    let _ = tx.send(AppEvent::RecordStart);
+                }
+            }
+            EventType::KeyRelease(ref k) if *k == target => {
+                if active {
+                    active = false;
+                    let _ = tx.send(AppEvent::RecordStop);
+                }
+            }
+            _ => {}
+        }
+    }) {
+        log::error!("Hotkey listener error: {e:?}");
+    }
+}
