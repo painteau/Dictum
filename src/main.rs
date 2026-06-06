@@ -168,6 +168,11 @@ impl AppState {
 }
 
 fn main() -> Result<()> {
+    // --debug active les logs détaillés avant l'init logger
+    let debug_mode = std::env::args().any(|a| a == "--debug");
+    if debug_mode {
+        std::env::set_var("RUST_LOG", "debug");
+    }
     init_logger();
     log::info!("Dictum v{} démarrage", env!("CARGO_PKG_VERSION"));
 
