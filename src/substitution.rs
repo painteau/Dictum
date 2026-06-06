@@ -1,9 +1,12 @@
 use crate::config::Substitution;
 
 pub fn apply(rules: &[Substitution], text: &str) -> String {
+    // Appliquer les règles longues en premier (évite les substitutions partielles)
+    let mut sorted_rules: Vec<&Substitution> = rules.iter().filter(|r| !r.from.is_empty()).collect();
+    sorted_rules.sort_by(|a, b| b.from.len().cmp(&a.from.len()));
+
     let mut result = text.to_string();
-    for rule in rules {
-        if rule.from.is_empty() { continue; }
+    for rule in &sorted_rules {
         let before = result.clone();
         if rule.case_insensitive {
             let lower = result.to_lowercase();
