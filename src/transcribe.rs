@@ -84,6 +84,8 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
         .arg("--model").arg(&config.model_path)
         .arg("--no-timestamps")
         .arg("--threads").arg(cpu_threads.to_string())
+        .arg("--best-of").arg("1")
+        .arg("--beam-size").arg("1")
         .arg("--file").arg(&wav_path);
 
     for arg in &lang_args {
