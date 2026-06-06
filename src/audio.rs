@@ -115,7 +115,10 @@ impl RecordHandle {
     /// Stop recording and return captured samples (16 kHz mono f32).
     pub fn stop(self) -> Vec<f32> {
         let _ = self.stop_tx.send(());
-        self.samples_rx.recv().unwrap_or_default()
+        let samples = self.samples_rx.recv().unwrap_or_default();
+        let duration_secs = samples.len() as f32 / 16000.0;
+        log::info!("Enregistrement arrêté : {:.1}s ({} samples)", duration_secs, samples.len());
+        samples
     }
 }
 
