@@ -1,5 +1,18 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.1.7 — Icône exe + polish
+
+### Ajouté
+- `build.rs` — génère un `.ico` 32x32 (cercle bleu acier) en mémoire au build, l'embed dans l'exe via `winresource` (version info + icône visible dans l'Explorateur Windows)
+- `[build-dependencies] winresource` dans `Cargo.toml`
+
+### Corrigé
+- `setup.rs` — le wizard sauvegarde maintenant la config sur disque avant de fermer (fix: config non persistée)
+- `Cargo.toml` — version alignée sur la release GitHub (`0.1.6`)
+- `README.md` — refonte complète : architecture subprocess whisper-cli, instructions install/build, roadmap
+
+---
+
 ## 2026-06-06 — v0.1.3 — Auto-update
 
 ### Ajouté

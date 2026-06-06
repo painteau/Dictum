@@ -1,6 +1,6 @@
 [package]
 name = "dictum"
-version = "0.1.0"
+version = "0.1.6"
 edition = "2021"
 description = "Windows voice dictation powered by local Whisper AI"
 
@@ -48,6 +48,9 @@ const_format = "0.2"
 
 [target.'cfg(windows)'.dependencies]
 winapi = { version = "0.3", features = ["winuser", "shellapi"] }
+
+[build-dependencies]
+winresource = "0.1"
 
 [profile.release]
 opt-level = 3

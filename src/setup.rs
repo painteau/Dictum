@@ -203,7 +203,11 @@ impl eframe::App for SetupWizard {
                 Step::Hotkey     => self.ui_hotkey(ui),
                 Step::Downloading => self.ui_downloading(ui),
                 Step::Done       => {
-                    self.config = Some(self.build_config());
+                    let cfg = self.build_config();
+                    if let Err(e) = cfg.save() {
+                        log::error!("Impossible de sauvegarder la config : {e}");
+                    }
+                    self.config = Some(cfg);
                     ctx.send_viewport_cmd(egui::ViewportCommand::Close);
                 }
             }

@@ -21,9 +21,9 @@
 - [ ] Icône tray rouge pendant enregistrement
 
 ### À finir
-- [ ] Sauvegarder config depuis le wizard avant fermeture fenêtre
-- [ ] Icône `.ico` embarquée dans l'exe (ressource Windows)
-- [ ] Démarrage automatique Windows (raccourci Startup)
+- [x] Sauvegarder config depuis le wizard avant fermeture fenêtre
+- [x] Icône `.ico` embarquée dans l'exe (générée par build.rs via winresource)
+- [x] Démarrage automatique Windows (via Registry dans installer.iss)
 
 ## v2 — Roadmap
 

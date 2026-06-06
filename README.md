@@ -1,76 +1,50 @@
 # Dictum
 
-Dictée vocale Windows propulsée par Whisper AI local. 100% hors ligne, zéro cloud.
+Dictée vocale Windows 100% locale, propulsée par Whisper AI. Zéro cloud, zéro abonnement.
+
+## Installation
+
+Télécharger **`Dictum-Setup-x.x.x-x64.exe`** depuis la page [Releases](https://github.com/painteau/Dictum/releases) et l'exécuter.
+
+L'installateur :
+- Copie `dictum.exe` dans `Program Files\Dictum`
+- Propose d'ajouter Dictum au démarrage Windows
+- Installe un désinstallateur propre
+
+Au premier lancement, un **wizard** guide la configuration : choix du modèle, langue, hotkey — puis télécharge automatiquement Whisper.
 
 ## Fonctionnement
 
-1. Maintenir la touche hotkey (défaut : **F9**)
+1. Maintenir **F9** (configurable)
 2. Parler
 3. Relâcher
 4. Le texte apparaît là où est le curseur
 
+Compatible avec n'importe quelle application : navigateur, éditeur de code, messagerie, terminal...
+
 ## Fonctionnalités
 
-- Hotkey global configurable (hold-to-record)
-- Transcription 100% locale via Whisper (99 langues)
+- Hotkey global configurable (hold-to-record), modificateurs Ctrl/Alt/Shift
+- Transcription 100% locale via [Whisper](https://github.com/ggerganov/whisper.cpp) (99 langues)
 - Détection automatique de langue
-- Injection directe dans n'importe quelle app
+- Injection directe dans n'importe quelle app Windows
 - Majuscule automatique en début de phrase
 - Typographie française (espaces insécables avant `? ! : ;`)
-- Substitutions automatiques (abréviations, corrections)
+- Substitutions automatiques (abréviations, corrections personnalisées)
 - Historique des 10 dernières transcriptions
-- Icône barre des tâches système
+- Icône barre des tâches système (bleue au repos, grise en transcription)
 - Auto-Enter optionnel
-- Liste des microphones disponibles
-
-## Prérequis
-
-### Pour compiler
-
-- [Rust](https://rustup.rs) stable (1.75+)
-- CMake 3.20+
-- Visual Studio Build Tools (MSVC, composant C++)
-
-```powershell
-winget install cmake
-winget install Microsoft.VisualStudio.2022.BuildTools
-```
-
-### Modèle Whisper
-
-Télécharger un modèle au format ggml depuis Hugging Face :
-
-| Modèle | Taille | Vitesse | Qualité |
-|--------|--------|---------|---------|
-| `ggml-medium.bin` | 1.5 GB | Rapide | Excellent |
-| `ggml-large-v3.bin` | 3 GB | Standard | Maximum |
-
-Lien : `https://huggingface.co/ggerganov/whisper.cpp/tree/main`
-
-Placer le fichier dans :
-```
-%LOCALAPPDATA%\Dictum\models\ggml-medium.bin
-```
-
-## Compilation
-
-```powershell
-cd D:\git\Dictum
-cargo build --release
-```
-
-Le binaire final : `target\release\dictum.exe`
-
-Aucune dépendance runtime (Whisper est compilé statiquement).
+- Mise à jour automatique (vérification silencieuse au démarrage)
 
 ## Configuration
 
-Config auto-générée au premier lancement :
+Le fichier de config est généré automatiquement au premier lancement :
 ```
 %LOCALAPPDATA%\Dictum\config.json
 ```
 
-Exemple :
+Cliquer **"Paramètres"** dans le menu tray pour l'ouvrir dans Notepad.
+
 ```json
 {
   "model_path": "C:\\Users\\...\\AppData\\Local\\Dictum\\models\\ggml-medium.bin",
@@ -88,53 +62,80 @@ Exemple :
   "microphone": null,
   "substitutions": [
     { "from": "euh", "to": "" },
-    { "from": "Thierry point", "to": "Thierry." }
+    { "from": "virgule", "to": "," }
   ]
 }
 ```
 
 Touches supportées : `F1`...`F12`, `Space`, `Tab`
 
-Cliquer **"Paramètres"** dans le menu tray pour ouvrir le fichier dans Notepad.
+## Modèles disponibles
 
-## Démarrage automatique
+| Modèle | Taille | Vitesse | Qualité |
+|--------|--------|---------|---------|
+| `medium` | 1.5 GB | Rapide | Excellent |
+| `large-v3` | 3 GB | Standard | Maximum |
 
-Ajouter un raccourci vers `dictum.exe` dans :
+Les modèles sont téléchargés automatiquement par le wizard depuis [HuggingFace](https://huggingface.co/ggerganov/whisper.cpp).
+
+## Prérequis système
+
+- Windows 10/11 x64
+- Connexion internet uniquement pour le téléchargement initial (~1.5 GB pour medium)
+- Microphone fonctionnel
+
+## Compilation depuis les sources
+
+```powershell
+# Prérequis
+winget install Rustup.Rustup
+winget install LLVM.LLVM
+winget install Kitware.CMake
+winget install Microsoft.VisualStudio.2022.BuildTools
+
+# Build
+cd D:\git\Dictum
+$env:LIBCLANG_PATH = "C:\Program Files\LLVM\bin"
+cargo build --release
+# Binaire : target\release\dictum.exe
 ```
-%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup
+
+## Créer une release
+
+```powershell
+git tag v0.x.x
+git push origin v0.x.x
+# GitHub Actions compile et publie Dictum-Setup-x.x.x-x64.exe automatiquement
 ```
-
-## GPU (optionnel)
-
-Pour activer CUDA dans `Cargo.toml` :
-```toml
-whisper-rs = { version = "0.13", features = ["cuda"] }
-```
-
-Requiert CUDA Toolkit 11.8+ et une carte NVIDIA.
-
-## Roadmap v2
-
-- [ ] Fenêtre paramètres graphique (egui)
-- [ ] Traduction automatique (parle FR, obtient EN)
-- [ ] Reformulation IA (oral → professionnel, concis, etc.)
-- [ ] Transcription fichiers audio/vidéo (drag & drop)
-- [ ] Identification de locuteurs
-- [ ] Moteur Parakeet en option (plus rapide, 600 MB)
-- [ ] 5 hotkeys configurables avec actions distinctes
-- [ ] Mode sélection (reformule le texte sélectionné)
 
 ## Architecture
 
 ```
 src/
   main.rs         orchestration, AppState, canaux inter-threads
-  config.rs       Config (serde_json vers %LOCALAPPDATA%\Dictum\)
+  config.rs       Config JSON (%LOCALAPPDATA%\Dictum\config.json)
   audio.rs        capture CPAL 16kHz mono f32 (thread dédié)
-  transcribe.rs   inférence Whisper via whisper-rs
-  inject.rs       injection texte via enigo + typographie
-  hotkey.rs       écoute globale rdev (thread dédié)
-  history.rs      10 dernières transcriptions (persistées)
+  transcribe.rs   écrit WAV temp, appelle whisper-cli.exe en subprocess
+  inject.rs       injection texte via enigo (SendInput Win32)
+  hotkey.rs       écoute globale rdev (thread dédié, bloquant)
+  history.rs      10 dernières transcriptions (persistées JSON)
   substitution.rs remplacement abréviations
-  tray.rs         icône système + message pump Windows
+  tray.rs         icône système + message pump Windows natif
+  setup.rs        wizard egui premier lancement
+  downloader.rs   manifest JSON CDN, téléchargement SHA256
+  updater.rs      check GitHub releases, auto-update silencieux
+build.rs          génère icône .ico + embed version info Windows
 ```
+
+**Voir [ARCHITECTURE.md](ARCHITECTURE.md) pour le détail complet.**
+
+## Roadmap v2
+
+- Fenêtre paramètres graphique (egui)
+- Traduction automatique locale (parle FR, obtient EN)
+- Reformulation IA 7 styles
+- Transcription fichiers audio/vidéo par drag & drop
+- Identification de locuteurs
+- Mode sélection (reformule le texte sélectionné)
+- Notification sonore début/fin enregistrement
+- Détection silence automatique
