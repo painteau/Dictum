@@ -102,13 +102,19 @@ Les modèles sont téléchargés automatiquement par le wizard depuis [HuggingFa
 Transcrire un fichier audio directement :
 
 ```powershell
+# Transcrire un fichier
 dictum.exe enregistrement.wav
 dictum.exe reunion.wav --language fr
+dictum.exe reunion.wav --language fr --output resultat.txt
+
+# Informations
+dictum.exe --list-devices     # Lister les microphones
+dictum.exe --list-languages   # Lister les langues supportées
 dictum.exe --version
 dictum.exe --help
 ```
 
-Le résultat est affiché dans le terminal et sauvegardé dans `enregistrement.txt`.
+Le résultat est affiché dans le terminal et sauvegardé dans `enregistrement.txt` (ou `--output`).
 
 ## Prérequis système
 
