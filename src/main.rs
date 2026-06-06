@@ -298,8 +298,15 @@ fn main() -> Result<()> {
     });
 
     let state = AppState::new()?;
-    log::info!("Historique : {} entrée(s) chargée(s)",
-        state.history.lock().unwrap().len());
+    {
+        let cfg = state.config.lock().unwrap();
+        let hist_len = state.history.lock().unwrap().len();
+        log::info!("Historique : {} entrée(s)", hist_len);
+        log::info!("Modèle : {} ({})",
+            cfg.model_path.file_name().and_then(|n| n.to_str()).unwrap_or("?"),
+            if cfg.model_path.exists() { "présent" } else { "MANQUANT" }
+        );
+    }
     let (event_tx, event_rx) = bounded::<AppEvent>(32);
 
     // rdev::listen blocks — must live in its own thread
