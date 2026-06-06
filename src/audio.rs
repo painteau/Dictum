@@ -97,7 +97,10 @@ impl RecordHandle {
 
             // Block jusqu'au signal stop ou timeout max_record
             let timeout = std::time::Duration::from_secs(max_secs);
-            let _ = stop_rx.recv_timeout(timeout);
+            let timed_out = stop_rx.recv_timeout(timeout).is_err();
+            if timed_out {
+                log::warn!("Enregistrement stoppé par timeout ({}s)", max_secs);
+            }
             drop(stream);
 
             let recorded = samples.lock().unwrap().clone();
@@ -105,7 +108,15 @@ impl RecordHandle {
             // Beep fin seulement si enregistrement assez long (> 0.3s = 4800 samples)
             if recorded.len() > 4800 {
                 #[cfg(windows)]
-                unsafe { windows_beep(600, 80); }
+                unsafe {
+                    if timed_out {
+                        // Beep double si timeout
+                        windows_beep(800, 60);
+                        windows_beep(600, 60);
+                    } else {
+                        windows_beep(600, 80);
+                    }
+                }
             }
             let _ = samples_tx.send(recorded);
         });
