@@ -191,6 +191,15 @@ fn main() -> Result<()> {
 
     // Mode CLI
     let args: Vec<String> = std::env::args().collect();
+
+    // --config path/to/config.json
+    let config_override = args.windows(2)
+        .find(|w| w[0] == "--config" || w[0] == "-c")
+        .map(|w| std::path::PathBuf::from(&w[1]));
+    if let Some(ref path) = config_override {
+        log::info!("Config personnalisée : {}", path.display());
+    }
+
     match args.get(1).map(String::as_str) {
         Some("--version") | Some("-v") => {
             println!("Dictum v{}", env!("CARGO_PKG_VERSION"));
