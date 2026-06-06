@@ -52,6 +52,7 @@ fn cli_transcribe(input: &std::path::Path, lang_override: Option<&str>) -> Resul
         }
     }
     let quiet = args.iter().any(|a| a == "--quiet" || a == "-q");
+    let no_save = args.iter().any(|a| a == "--no-save");
 
     let samples = read_audio_file(input)?;
     let text = transcribe::transcribe(&samples, &config)?;
@@ -61,12 +62,16 @@ fn cli_transcribe(input: &std::path::Path, lang_override: Option<&str>) -> Resul
         return Ok(());
     }
 
-    std::fs::write(&output_path, &text)?;
+    if !no_save {
+        std::fs::write(&output_path, &text)?;
+    }
     if quiet {
-        print!("{}", text); // stdout uniquement, pas de métadonnées
+        print!("{}", text);
     } else {
         println!("{}", text);
-        println!("\nSauvegardé : {}", output_path.display());
+        if !no_save {
+            println!("\nSauvegardé : {}", output_path.display());
+        }
     }
     Ok(())
 }
