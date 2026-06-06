@@ -1,5 +1,23 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.2.4 — CLI complet
+
+### Ajouté
+- CLI `--model/-m` : forcer un modèle Whisper pour la transcription fichier
+- CLI `--output/-o` : choisir le fichier de sortie (défaut : `.txt` à côté du fichier)
+- CLI `--list-devices` : liste les microphones disponibles
+- CLI `--list-languages` : liste les 57 langues Whisper supportées
+- Compteur de transcriptions de session dans le tooltip tray
+- `session_count` dans `AppState` (incrémenté à chaque transcription réussie)
+- `config.sanitize()` : valeurs invalides corrigées silencieusement au chargement
+- Log hotkey active au démarrage du listener
+- `audio.rs` : message d'erreur micro avec liste des appareils disponibles
+
+### Corrigé
+- Silence CLI : affiche `[Silence détecté]` au lieu de sauvegarder un fichier vide
+
+---
+
 ## 2026-06-07 — v0.2.3 — Robustesse
 
 ### Ajouté
