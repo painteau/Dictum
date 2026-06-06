@@ -125,6 +125,9 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
         .trim()
         .to_string();
 
+    // Nettoyer les espaces multiples générés par la jointure de segments
+    let text = text.split_whitespace().collect::<Vec<_>>().join(" ");
+
     let elapsed = start.elapsed();
     let duration_secs = samples.len() as f32 / 16000.0;
     log::info!("Transcription : {:.1}s audio en {:.1}s ({:.1}x temps réel)",
