@@ -1,5 +1,18 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.3.5 — Whisper avancé
+
+### Ajouté
+- `config.rs` : `whisper_temperature` (0.0=déterministe, défaut), `whisper_no_speech`
+- `transcribe.rs` : `--temperature`, `--no-speech-thold`, détection hallucination
+- `transcribe.rs` : `--best-of 1 --beam-size 1` pour réduire hallucinations
+- `audio.rs` : beep double si timeout enregistrement
+- `main.rs` : log config complète au démarrage (médias, beep, threads, délai)
+- `history.rs` : `last_text()` helper
+- `updater.rs` : log taille MB du setup
+
+---
+
 ## 2026-06-07 — v0.3.4 — Config avancée
 
 ### Ajouté
