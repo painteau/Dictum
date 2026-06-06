@@ -42,7 +42,22 @@ pub fn check_update() -> Option<UpdateInfo> {
         .build()
         .ok()?;
 
-    let release: GithubRelease = client.get(&url).send().ok()?.json().ok()?;
+    // Retry 3 fois avec délai exponentiel
+    let release: GithubRelease = {
+        let mut result = None;
+        for attempt in 0..3u32 {
+            match client.get(&url).send().and_then(|r| r.json::<GithubRelease>()) {
+                Ok(r) => { result = Some(r); break; }
+                Err(e) => {
+                    log::debug!("Tentative {}/3 check update échouée : {e}", attempt + 1);
+                    if attempt < 2 {
+                        std::thread::sleep(std::time::Duration::from_secs(2u64.pow(attempt)));
+                    }
+                }
+            }
+        }
+        result?
+    };
 
     // Ignorer les pre-releases et drafts
     if release.prerelease || release.draft {
