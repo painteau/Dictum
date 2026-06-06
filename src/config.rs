@@ -68,6 +68,9 @@ pub struct Config {
     /// Passer --no-speech-threshold à whisper pour ignorer segments sans parole
     #[serde(default)]
     pub whisper_no_speech: bool,
+    /// Température whisper (0.0=déterministe, 1.0=créatif) — défaut 0.0 pour dictée
+    #[serde(default = "default_whisper_temperature")]
+    pub whisper_temperature: f32,
 }
 
 impl Default for Config {
@@ -92,12 +95,14 @@ impl Default for Config {
             whisper_threads: 0,
             inject_delay_ms: 80,
             whisper_no_speech: false,
+            whisper_temperature: 0.0,
         }
     }
 }
 
 fn default_config_version() -> u32 { 1 }
 fn default_inject_delay() -> u64 { 80 }
+fn default_whisper_temperature() -> f32 { 0.0 }
 
 fn data_dir() -> PathBuf {
     dirs::data_local_dir()

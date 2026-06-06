@@ -91,6 +91,9 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
     if config.whisper_no_speech {
         cmd.arg("--no-speech-thold").arg("0.6");
     }
+    if config.whisper_temperature != 0.0 {
+        cmd.arg("--temperature").arg(format!("{:.2}", config.whisper_temperature));
+    }
 
     cmd.arg("--file").arg(&wav_path);
 

@@ -186,6 +186,7 @@ impl SetupWizard {
             whisper_threads: 0,
             inject_delay_ms: 80,
             whisper_no_speech: false,
+            whisper_temperature: 0.0,
         }
     }
 
