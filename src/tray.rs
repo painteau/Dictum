@@ -81,9 +81,16 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                 break;
             } else if event.id == item_update.id() {
                 if let Some(ref info) = update_info {
-                    if let Err(e) = crate::updater::apply_update(info) {
-                        log::error!("Mise à jour échouée : {e}");
-                        show_dialog("Dictum — Erreur", &format!("Mise à jour échouée :\n{e}"));
+                    let size_mb = (info.installer_size as f64 / 1_048_576.0).ceil() as u64;
+                    let confirmed = confirm_dialog(
+                        "Dictum — Mise à jour",
+                        &format!("Installer Dictum v{} ({} MB) ?\n\nDictum va se fermer et l'installateur va démarrer.", info.version, size_mb)
+                    );
+                    if confirmed {
+                        if let Err(e) = crate::updater::apply_update(info) {
+                            log::error!("Mise à jour échouée : {e}");
+                            show_dialog("Dictum — Erreur", &format!("Mise à jour échouée :\n{e}"));
+                        }
                     }
                 }
             } else if event.id == item_settings.id() {
@@ -202,6 +209,23 @@ fn pump_messages() {
             DispatchMessageW(&msg);
         }
     }
+}
+
+fn confirm_dialog(title: &str, message: &str) -> bool {
+    #[cfg(windows)]
+    unsafe {
+        use std::ffi::OsStr;
+        use std::os::windows::ffi::OsStrExt;
+        use winapi::um::winuser::{MessageBoxW, MB_ICONQUESTION, MB_YESNO, IDYES};
+
+        let wide_title: Vec<u16> = OsStr::new(title).encode_wide().chain(std::iter::once(0)).collect();
+        let wide_msg: Vec<u16> = OsStr::new(message).encode_wide().chain(std::iter::once(0)).collect();
+
+        MessageBoxW(std::ptr::null_mut(), wide_msg.as_ptr(), wide_title.as_ptr(), MB_YESNO | MB_ICONQUESTION) == IDYES
+    }
+
+    #[cfg(not(windows))]
+    { let _ = (title, message); true }
 }
 
 fn show_dialog(title: &str, message: &str) {
