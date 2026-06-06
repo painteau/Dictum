@@ -1,5 +1,21 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.2.3 — Robustesse
+
+### Ajouté
+- `transcribe.rs` : timeout 5 min subprocess whisper-cli, kill si dépassé
+- `updater.rs` : retry x3 avec backoff exponentiel (1s, 2s) si réseau indisponible
+- `updater.rs` : ignore pre-releases et drafts GitHub
+- `inject.rs` : injection multi-lignes (segments Whisper avec `\n`)
+- CLI : flag `--language fr` pour transcription fichier
+- `.github/SECURITY.md` : politique de sécurité
+- README : section Mode CLI complète
+
+### Corrigé
+- `inject.rs` : message d'erreur en français
+
+---
+
 ## 2026-06-07 — v0.2.2 — Finitions nuit
 
 ### Ajouté
