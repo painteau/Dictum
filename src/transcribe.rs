@@ -34,6 +34,7 @@ fn rms(samples: &[f32]) -> f32 {
 }
 
 pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
+    let start = std::time::Instant::now();
     if rms(samples) < config.silence_threshold {
         log::debug!("Silence détecté (RMS={:.4}), transcription ignorée", rms(samples));
         return Ok(String::new());
@@ -123,6 +124,13 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
         .join(" ")
         .trim()
         .to_string();
+
+    let elapsed = start.elapsed();
+    let duration_secs = samples.len() as f32 / 16000.0;
+    log::info!("Transcription : {:.1}s audio en {:.1}s ({:.1}x temps réel)",
+        duration_secs, elapsed.as_secs_f32(),
+        duration_secs / elapsed.as_secs_f32().max(0.001)
+    );
 
     Ok(text)
 }
