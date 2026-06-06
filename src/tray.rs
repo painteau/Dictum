@@ -8,6 +8,8 @@ use crate::{AppEvent, AppState};
 
 pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
     let tray_menu = Menu::new();
+    let item_update    = MenuItem::new("🔄 Mise à jour disponible !", false, None); // caché au départ
+    let item_sep_up    = PredefinedMenuItem::separator();
     let item_settings  = MenuItem::new("⚙  Paramètres", true, None);
     let item_history   = MenuItem::new("📋 Historique", true, None);
     let item_devices   = MenuItem::new("🎙  Microphones", true, None);
@@ -15,6 +17,8 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
     let item_quit      = MenuItem::new("✕  Quitter", true, None);
 
     tray_menu.append_items(&[
+        &item_update,
+        &item_sep_up,
         &item_settings,
         &item_history,
         &item_devices,
@@ -31,15 +35,33 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
         .build()?;
 
     let menu_rx = MenuEvent::receiver();
+    let item_update = MenuItem::new("🔄 Mise à jour disponible !", true, None);
+    let mut update_info: Option<crate::updater::UpdateInfo> = None;
 
     // Windows message pump — keeps the tray alive and processes events
     loop {
         pump_messages();
 
+        // Vérifier si une mise à jour a été détectée en arrière-plan
+        if update_info.is_none() {
+            if let Some(info) = crate::take_update() {
+                item_update.set_enabled(true);
+                item_update.set_text(format!("🔄 Mise à jour v{} disponible !", info.version));
+                update_info = Some(info);
+            }
+        }
+
         if let Ok(event) = menu_rx.try_recv() {
             if event.id == item_quit.id() {
                 let _ = event_tx.send(AppEvent::Quit);
                 break;
+            } else if event.id == item_update.id() {
+                if let Some(ref info) = update_info {
+                    if let Err(e) = crate::updater::apply_update(info) {
+                        log::error!("Mise à jour échouée : {e}");
+                        show_dialog("Dictum — Erreur", &format!("Mise à jour échouée :\n{e}"));
+                    }
+                }
             } else if event.id == item_settings.id() {
                 if let Err(e) = crate::config::Config::open_in_editor() {
                     log::error!("Failed to open settings: {e}");

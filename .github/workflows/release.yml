@@ -33,8 +33,20 @@ jobs:
           LIBCLANG_PATH: C:\Program Files\LLVM\bin
         run: cargo build --release
 
+      - name: Install Inno Setup
+        run: choco install innosetup -y
+
+      - name: Build installer
+        run: |
+          $version = "${{ github.ref_name }}".TrimStart('v')
+          (Get-Content installer.iss) -replace '#define MyAppVersion ".*"', "#define MyAppVersion `"$version`"" | Set-Content installer.iss
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer.iss
+        shell: pwsh
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: target/release/dictum.exe
+          files: |
+            target/release/dictum.exe
+            installer-out/Dictum-Setup-*.exe
           generate_release_notes: true

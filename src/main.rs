@@ -15,9 +15,17 @@ mod setup;
 mod substitution;
 mod transcribe;
 mod tray;
+mod updater;
 
 use config::Config;
 use history::History;
+use updater::UpdateInfo;
+
+static UPDATE_AVAILABLE: std::sync::Mutex<Option<UpdateInfo>> = std::sync::Mutex::new(None);
+
+pub fn take_update() -> Option<UpdateInfo> {
+    UPDATE_AVAILABLE.lock().unwrap().take()
+}
 
 #[derive(Debug, Clone)]
 pub enum AppEvent {
@@ -59,6 +67,15 @@ fn main() -> Result<()> {
             setup::run_wizard()?;
         }
     }
+
+    // Check silencieux mise à jour en arrière-plan
+    std::thread::spawn(|| {
+        if let Some(info) = updater::check_update() {
+            log::info!("Mise à jour disponible : v{}", info.version);
+            // Notifié via le tray — on stocke dans une variable statique
+            *UPDATE_AVAILABLE.lock().unwrap() = Some(info);
+        }
+    });
 
     let state = AppState::new()?;
     let (event_tx, event_rx) = bounded::<AppEvent>(32);

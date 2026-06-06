@@ -1,5 +1,21 @@
 # CHANGELOG — Dictum
 
+## 2026-06-06 — v0.1.3 — Auto-update
+
+### Ajouté
+- `src/updater.rs` — check silencieux au démarrage via GitHub API, comparaison semver, téléchargement `Dictum-Setup.exe` dans `%TEMP%`, lancement `/SILENT /CLOSEAPPLICATIONS`
+- `tray.rs` — item "Mise à jour disponible" apparaît dynamiquement dans le menu tray quand une nouvelle version est détectée
+- `main.rs` — thread arrière-plan check update au démarrage, stockage via `Mutex<Option<UpdateInfo>>`
+- `installer.iss` — script Inno Setup : installe dans `Program Files`, raccourci Startup coché par défaut, désinstallateur propre
+- `release.yml` — étape Inno Setup ajoutée, publie `Dictum-Setup-*.exe` en plus de `dictum.exe`
+
+### Comportement mise à jour
+1. Dictum démarre, thread background check GitHub releases API
+2. Si version plus récente : item tray s'active
+3. Clic → télécharge `Dictum-Setup-x.x.x.exe` → lance `/SILENT` → Dictum se ferme → installateur remplace l'exe → redémarre
+
+---
+
 ## 2026-06-06 — v0.1.2 — CI/CD + release GitHub
 
 ### Ajouté
