@@ -51,8 +51,9 @@ fn cli_transcribe(input: &std::path::Path, lang_override: Option<&str>) -> Resul
             anyhow::bail!("Modèle introuvable : {}", model.display());
         }
     }
-    let quiet = args.iter().any(|a| a == "--quiet" || a == "-q");
-    let no_save = args.iter().any(|a| a == "--no-save");
+    let stdout_only = args.iter().any(|a| a == "--stdout");
+    let quiet = stdout_only || args.iter().any(|a| a == "--quiet" || a == "-q");
+    let no_save = stdout_only || args.iter().any(|a| a == "--no-save");
 
     let samples = read_audio_file(input)?;
     let text = transcribe::transcribe(&samples, &config)?;
