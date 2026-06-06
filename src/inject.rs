@@ -41,9 +41,14 @@ fn capitalize_first(s: &str) -> String {
 }
 
 fn apply_french_typography(text: &str) -> String {
-    // Non-breaking space (U+00A0) before double punctuation
-    text.replace(" ?", "\u{00A0}?")
+    text
+        // Espaces insécables avant ponctuation double
+        .replace(" ?", "\u{00A0}?")
         .replace(" !", "\u{00A0}!")
         .replace(" :", "\u{00A0}:")
         .replace(" ;", "\u{00A0};")
+        // Apostrophe typographique ' → '
+        .replace("'", "\u{2019}")
+        // Points de suspension ... → …
+        .replace("...", "\u{2026}")
 }
