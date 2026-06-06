@@ -34,7 +34,7 @@ fn rms(samples: &[f32]) -> f32 {
 }
 
 pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
-    let start = std::time::Instant::now();
+    let _start = std::time::Instant::now();
     if rms(samples) < config.silence_threshold {
         log::debug!("Silence détecté (RMS={:.4}), transcription ignorée", rms(samples));
         return Ok(String::new());
