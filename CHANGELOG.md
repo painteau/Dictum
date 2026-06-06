@@ -1,5 +1,26 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.3.2 — Dernières finitions nuit
+
+### Ajouté
+- `tray.rs` : item "Ouvrir le dossier Dictum" dans l'explorateur
+- `tray.rs` : tooltip affiche la hotkey active et les instructions
+- `config.rs` : `open_data_dir()` ouvre le dossier dans l'explorateur
+- `config.rs` : `sanitize()` valide l'extension `.bin` du model_path
+- `history.rs` : affiche `J-N` pour les entrées de plus de 24h
+- `main.rs` : log état modèle (présent/MANQUANT) au démarrage
+- `downloader.rs` : log débit en MB/s tous les 10%
+- `hotkey.rs` : Backspace, Delete, Enter supportés comme hotkey
+- `substitution.rs` : règles triées par longueur (priorité aux longues)
+- `audio.rs` : `list_devices()` marque le micro défaut avec `(défaut)`
+- `transcribe.rs` : vérif taille WAV avant lancement whisper
+
+### Corrigé
+- `updater.rs` : nettoyage anciens Setup-*.exe dans TEMP
+- `transcribe.rs` : normalisation espaces multiples
+
+---
+
 ## 2026-06-07 — v0.3.1 — Polish final
 
 ### Ajouté
