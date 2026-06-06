@@ -162,8 +162,10 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                 let count = *state.session_count.lock().unwrap();
                 let log_path = crate::config::Config::data_dir().join("dictum.log");
                 let config_path = crate::config::Config::data_dir().join("config.json");
+                let cpu_threads = std::thread::available_parallelism()
+                    .map(|n| n.get().min(8)).unwrap_or(4);
                 let msg = format!(
-                    "Dictum v{}\ngithub.com/painteau/Dictum\n\nModèle  : {}\nLangue  : {}\nHotkey  : {}{}{}{}\n\nSession : {} transcription{}\nConfig  : {}\nLog     : {}",
+                    "Dictum v{}\ngithub.com/painteau/Dictum\n\nModèle  : {}\nLangue  : {}\nHotkey  : {}{}{}{}\nThreads : {}\n\nSession : {} transcription{}\nConfig  : {}\nLog     : {}",
                     env!("CARGO_PKG_VERSION"),
                     config.model_path.file_name().and_then(|n| n.to_str()).unwrap_or("?"),
                     config.language,
@@ -171,6 +173,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                     if config.hotkey.alt   { "Alt+"  } else { "" },
                     if config.hotkey.shift { "Shift+"} else { "" },
                     config.hotkey.key,
+                    cpu_threads,
                     count,
                     if count > 1 { "s" } else { "" },
                     config_path.display(),
