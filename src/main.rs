@@ -280,12 +280,16 @@ fn main() -> Result<()> {
         }
     }
 
-    // Check silencieux mise à jour en arrière-plan
+    // Check silencieux mise à jour — délai 10s pour laisser l'app démarrer
     std::thread::spawn(|| {
-        if let Some(info) = updater::check_update() {
-            log::info!("Mise à jour disponible : v{}", info.version);
-            // Notifié via le tray — on stocke dans une variable statique
-            *UPDATE_AVAILABLE.lock().unwrap() = Some(info);
+        std::thread::sleep(std::time::Duration::from_secs(10));
+        if downloader::has_internet() {
+            if let Some(info) = updater::check_update() {
+                log::info!("Mise à jour disponible : v{}", info.version);
+                *UPDATE_AVAILABLE.lock().unwrap() = Some(info);
+            }
+        } else {
+            log::debug!("Pas d'internet au démarrage, check update ignoré");
         }
     });
 
