@@ -180,6 +180,7 @@ fn main() -> Result<()> {
         let state = state.clone();
         thread::spawn(move || {
             let mut record_handle: Option<audio::RecordHandle> = None;
+            let mut record_start: Option<std::time::Instant> = None;
 
             for event in &event_rx {
                 match event {
@@ -195,6 +196,7 @@ fn main() -> Result<()> {
                             Ok(handle) => {
                                 *state.is_recording.lock().unwrap() = true;
                                 record_handle = Some(handle);
+                                record_start = Some(std::time::Instant::now());
                                 log::info!("Recording started");
                             }
                             Err(e) => log::error!("Failed to start recording: {e}"),
@@ -204,6 +206,14 @@ fn main() -> Result<()> {
                         *state.is_recording.lock().unwrap() = false;
                         let cfg_snap = state.config.lock().unwrap().clone();
                         if cfg_snap.pause_media { media::toggle_media(); }
+                        let elapsed_ms = record_start.take()
+                            .map(|t| t.elapsed().as_millis() as u64)
+                            .unwrap_or(0);
+                        if elapsed_ms < cfg_snap.min_record_ms {
+                            log::warn!("Enregistrement trop court ({}ms < {}ms), ignoré", elapsed_ms, cfg_snap.min_record_ms);
+                            record_handle.take();
+                            continue;
+                        }
                         if let Some(handle) = record_handle.take() {
                             let state = state.clone();
                             thread::spawn(move || {

@@ -171,6 +171,7 @@ impl SetupWizard {
             substitutions: vec![],
             microphone: None,
             max_record_secs: 30,
+            min_record_ms: 300,
             beep_enabled: true,
             silence_threshold: 0.005,
             pause_media: false,
