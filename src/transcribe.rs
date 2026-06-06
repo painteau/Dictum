@@ -146,6 +146,18 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
     // Nettoyer les espaces multiples générés par la jointure de segments
     let text = text.split_whitespace().collect::<Vec<_>>().join(" ");
 
+    // Détecter si Whisper a hallucination (texte répétitif)
+    if !text.is_empty() {
+        let words: Vec<&str> = text.split_whitespace().collect();
+        if words.len() >= 4 {
+            let first = words[0];
+            let repeated = words.iter().filter(|&&w| w == first).count();
+            if repeated > words.len() / 2 {
+                log::warn!("Possible hallucination Whisper détectée (mot '{}' répété {}/{})", first, repeated, words.len());
+            }
+        }
+    }
+
     let elapsed = start.elapsed();
     let duration_secs = samples.len() as f32 / 16000.0;
     log::info!("Transcription : {:.1}s audio en {:.1}s ({:.1}x temps réel)",
