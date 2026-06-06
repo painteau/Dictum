@@ -1,5 +1,22 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.3.1 — Polish final
+
+### Ajouté
+- `audio.rs` : `list_devices()` marque le micro défaut avec `(défaut)`
+- `substitution.rs` : règles triées par longueur décroissante (priorité aux règles longues)
+- `tray.rs` : menu Historique affiche le nombre d'entrées en temps réel
+- `inject.rs` : typographie FR étendue (ordre `...`→`…` d'abord, tiret demi-cadratin)
+- `config.rs` : champ `config_version` pour migrations futures
+- `main.rs` : check config_version, réinit si obsolète
+- `history.rs` : `len()` et `is_empty()` publics
+- `downloader.rs` : log nom fichier au début de chaque téléchargement
+
+### Corrigé
+- Log transcription avec preview 100 chars
+
+---
+
 ## 2026-06-07 — v0.3.0 — Stable
 
 ### Milestone
