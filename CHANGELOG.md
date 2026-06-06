@@ -1,5 +1,21 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.2.2 — Finitions nuit
+
+### Ajouté
+- `inject.rs` : apostrophe typographique `'` → `'` (U+2019), points de suspension `...` → `…` (U+2026)
+- `downloader.rs` : reprise téléchargement interrompu via HTTP Range, timeout 10min, client configuré
+- Template Pull Request GitHub
+- CI : cache LLVM entre les builds, timeout 30min, restore-keys Cargo
+- `max_history` configurable dans config.json (défaut 10)
+
+### Corrigé
+- `transcribe.rs` : suppression `--output-txt`, nettoyage fichiers `.txt` sidecar whisper-cli
+- `transcribe.rs` : `current_dir(data_dir)` pour que Windows trouve `ggml.dll` et DLLs
+- `history.rs` : `push_with_limit()` respecte `config.max_history`
+
+---
+
 ## 2026-06-07 — v0.2.1 — Polish nuit
 
 ### Ajouté
