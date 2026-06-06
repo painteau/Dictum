@@ -76,6 +76,7 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
             .map(|n| n.get().min(8))
             .unwrap_or(4)
     };
+    log::debug!("whisper-cli : {} threads", cpu_threads);
 
     let mut cmd = Command::new(&cli);
     // current_dir = data_dir so Windows finds ggml.dll etc. in the same folder
