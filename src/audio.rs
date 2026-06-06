@@ -99,11 +99,13 @@ impl RecordHandle {
             let _ = stop_rx.recv_timeout(timeout);
             drop(stream);
 
-            // Beep fin enregistrement (600 Hz, 80ms)
-            #[cfg(windows)]
-            unsafe { windows_beep(600, 80); }
-
             let recorded = samples.lock().unwrap().clone();
+
+            // Beep fin seulement si enregistrement assez long (> 0.3s = 4800 samples)
+            if recorded.len() > 4800 {
+                #[cfg(windows)]
+                unsafe { windows_beep(600, 80); }
+            }
             let _ = samples_tx.send(recorded);
         });
 
