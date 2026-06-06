@@ -1,5 +1,17 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.2.5 — Finitions matin
+
+### Ajouté
+- `config.rs` : `open_in_editor` respecte la var d'env `EDITOR`, fallback notepad
+- `downloader.rs` : log progression tous les 10% (MB / MB)
+- `hotkey.rs` : message fallback liste les touches valides
+- `inject.rs` : trim whitespace avant injection, early return si vide
+- `.cargo/config.toml` : retry réseau x3, jobs parallèles
+- `Cargo.toml` + `installer.iss` : version 0.2.4 alignée
+
+---
+
 ## 2026-06-07 — v0.2.4 — CLI complet
 
 ### Ajouté
