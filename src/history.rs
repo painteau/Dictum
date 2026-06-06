@@ -60,9 +60,26 @@ impl History {
         self.entries
             .iter()
             .enumerate()
-            .map(|(i, e)| format!("{}. {}", i + 1, e.text))
+            .map(|(i, e)| {
+                let time = format_timestamp(e.timestamp);
+                format!("{}. [{}]  {}", i + 1, time, e.text)
+            })
             .collect::<Vec<_>>()
             .join("\n")
+    }
+}
+
+fn format_timestamp(ts: u64) -> String {
+    use std::time::{SystemTime, UNIX_EPOCH, Duration};
+    let dt = SystemTime::UNIX_EPOCH + Duration::from_secs(ts);
+    match dt.duration_since(UNIX_EPOCH) {
+        Ok(d) => {
+            let secs = d.as_secs();
+            let h = (secs % 86400) / 3600;
+            let m = (secs % 3600) / 60;
+            format!("{:02}:{:02}", h, m)
+        }
+        Err(_) => "??:??".to_string(),
     }
 }
 
