@@ -167,6 +167,13 @@ impl Config {
         data_dir()
     }
 
+    pub fn open_data_dir() -> Result<()> {
+        std::process::Command::new("explorer")
+            .arg(data_dir())
+            .spawn()?;
+        Ok(())
+    }
+
     pub fn log_path() -> PathBuf {
         data_dir().join("dictum.log")
     }
