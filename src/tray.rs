@@ -2,6 +2,7 @@ use tray_icon::{
     menu::{Menu, MenuEvent, MenuItem, PredefinedMenuItem},
     Icon, TrayIconBuilder,
 };
+use arboard;
 use crossbeam_channel::Sender;
 use anyhow::Result;
 use crate::{AppEvent, AppState};
@@ -13,6 +14,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
     let item_settings  = MenuItem::new("⚙  Paramètres", true, None);
     let item_history   = MenuItem::new("📋 Historique", true, None);
     let item_devices   = MenuItem::new("🎙  Microphones", true, None);
+    let item_copy_last  = MenuItem::new("📋 Copier dernière dictée", true, None);
     let item_clear_hist = MenuItem::new("🗑  Effacer l'historique", true, None);
     let item_reload     = MenuItem::new("↺  Recharger la config", true, None);
     let item_open_log   = MenuItem::new("📄 Ouvrir le log", true, None);
@@ -30,6 +32,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
         &item_reload,
         &PredefinedMenuItem::separator(),
         &item_history,
+        &item_copy_last,
         &item_clear_hist,
         &item_devices,
         &item_open_log,
@@ -81,6 +84,18 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
             } else if event.id == item_history.id() {
                 let msg = state.history.lock().unwrap().as_display_string();
                 show_dialog("Dictum — Historique", &msg);
+            } else if event.id == item_copy_last.id() {
+                let last = state.history.lock().unwrap()
+                    .entries().front().map(|e| e.text.clone());
+                match last {
+                    Some(text) => {
+                        match arboard::Clipboard::new().and_then(|mut c| c.set_text(&text)) {
+                            Ok(_) => log::info!("Copié dans le presse-papiers"),
+                            Err(e) => show_dialog("Dictum", &format!("Erreur clipboard : {e}")),
+                        }
+                    }
+                    None => show_dialog("Dictum", "Aucune dictée à copier."),
+                }
             } else if event.id == item_clear_hist.id() {
                 state.history.lock().unwrap().clear();
                 let _ = state.history.lock().unwrap().save();
