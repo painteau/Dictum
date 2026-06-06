@@ -113,7 +113,14 @@ pub fn apply_update(info: &UpdateInfo) -> Result<()> {
         }
     }
 
-    log::info!("Lancement installateur silencieux");
+    // Vérifier taille du fichier téléchargé
+    let downloaded_size = std::fs::metadata(&dest).map(|m| m.len()).unwrap_or(0);
+    if info.installer_size > 0 && downloaded_size < info.installer_size / 2 {
+        std::fs::remove_file(&dest).ok();
+        return Err(anyhow!("Fichier téléchargé tronqué ({} / {} bytes)", downloaded_size, info.installer_size));
+    }
+
+    log::info!("Lancement installateur silencieux ({} MB)", downloaded_size / 1_048_576);
 
     std::process::Command::new(&dest)
         .args(["/SILENT", "/CLOSEAPPLICATIONS"])
