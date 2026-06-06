@@ -89,6 +89,7 @@ Cliquer **"Paramètres"** dans le menu tray pour l'ouvrir dans Notepad.
 | `case_insensitive` | `false` | Substitution insensible à la casse |
 | `prefix_space` | `false` | Ajouter un espace avant le texte (curseur en milieu de phrase) |
 | `pause_media` | `false` | Pause Spotify/VLC pendant l'enregistrement |
+| `whisper_threads` | `0` | Threads CPU pour whisper (0=auto, max recommandé: 8) |
 
 ## Modèles disponibles
 
