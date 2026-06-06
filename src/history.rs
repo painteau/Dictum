@@ -64,7 +64,12 @@ impl History {
             .enumerate()
             .map(|(i, e)| {
                 let time = format_timestamp(e.timestamp);
-                format!("{}. [{}]  {}", i + 1, time, e.text)
+                let text = if e.text.len() > 120 {
+                    format!("{}...", &e.text[..117])
+                } else {
+                    e.text.clone()
+                };
+                format!("{}. [{}]  {}", i + 1, time, text)
             })
             .collect::<Vec<_>>()
             .join("\n")
