@@ -24,11 +24,15 @@ use history::History;
 use updater::UpdateInfo;
 
 /// Transcrit un fichier audio et écrit le résultat dans <fichier>.txt
-fn cli_transcribe(input: &std::path::Path) -> Result<()> {
+fn cli_transcribe(input: &std::path::Path, lang_override: Option<&str>) -> Result<()> {
     use crate::config::Config;
     use crate::transcribe;
 
-    let config = Config::load()?;
+    let mut config = Config::load()?;
+    if let Some(lang) = lang_override {
+        config.language = lang.to_string();
+        log::info!("Langue forcée : {}", lang);
+    }
     let samples = read_audio_file(input)?;
     let text = transcribe::transcribe(&samples, &config)?;
 
@@ -132,14 +136,19 @@ fn main() -> Result<()> {
             println!("Dictum v{} — Dictée vocale locale\n", env!("CARGO_PKG_VERSION"));
             println!("Usage:");
             println!("  dictum.exe               Lancer en mode tray (normal)");
-            println!("  dictum.exe fichier.wav   Transcrire un fichier audio");
-            println!("  dictum.exe --version     Afficher la version");
+            println!("  dictum.exe fichier.wav [--language fr]   Transcrire un fichier audio");
+            println!("  dictum.exe --version                     Afficher la version");
             return Ok(());
         }
         Some(path) => {
             let input = std::path::PathBuf::from(path);
             if input.exists() {
-                return cli_transcribe(&input);
+                // Support: dictum.exe fichier.wav --language fr
+                let lang_override = args.get(2)
+                    .filter(|a| *a == "--language" || *a == "-l")
+                    .and_then(|_| args.get(3))
+                    .cloned();
+                return cli_transcribe(&input, lang_override.as_deref());
             }
         }
         None => {}
