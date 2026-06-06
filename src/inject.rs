@@ -23,8 +23,10 @@ pub fn inject_text(text: &str, config: &Config) {
         text
     };
 
-    // Small delay so the key-release event from hotkey doesn't interfere
-    std::thread::sleep(std::time::Duration::from_millis(80));
+    // Délai pour laisser le système traiter le key-release du hotkey
+    // Texte long → délai légèrement plus court (le système est prêt)
+    let delay_ms = if text.len() > 200 { 60 } else { 80 };
+    std::thread::sleep(std::time::Duration::from_millis(delay_ms));
 
     let settings = Settings::default();
     match Enigo::new(&settings) {
