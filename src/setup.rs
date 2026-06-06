@@ -171,6 +171,7 @@ impl SetupWizard {
             substitutions: vec![],
             microphone: None,
             max_record_secs: 30,
+            beep_enabled: true,
         }
     }
 
@@ -404,6 +405,7 @@ fn styled_button(text: &str) -> egui::Button<'_> {
 
 pub fn needs_setup(config: &Config) -> bool {
     !config.model_path.exists()
+        || !Config::data_dir().join("whisper-cli.exe").exists()
 }
 
 /// Lance le wizard et retourne la config finale. Bloque jusqu'à fermeture.

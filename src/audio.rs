@@ -85,9 +85,7 @@ impl RecordHandle {
 
             stream.play().expect("Failed to start audio stream");
 
-            // Beep démarrage enregistrement (800 Hz, 80ms)
-            #[cfg(windows)]
-            unsafe { windows_beep(800, 80); }
+            // Beep démarrage géré depuis main.rs (config.beep_enabled)
 
             // Block jusqu'au signal stop ou timeout max_record
             let timeout = std::time::Duration::from_secs(max_secs);

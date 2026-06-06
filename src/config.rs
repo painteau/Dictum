@@ -42,6 +42,8 @@ pub struct Config {
     pub microphone: Option<String>,
     /// Maximum recording duration in seconds
     pub max_record_secs: u64,
+    /// Beep sonore au début et à la fin de chaque enregistrement
+    pub beep_enabled: bool,
 }
 
 impl Default for Config {
@@ -56,6 +58,7 @@ impl Default for Config {
             substitutions: vec![],
             microphone: None,
             max_record_secs: 30,
+            beep_enabled: true,
         }
     }
 }
