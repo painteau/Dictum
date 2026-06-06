@@ -55,6 +55,21 @@ impl History {
         self.entries.clear();
     }
 
+    /// Exporte l'historique complet dans un fichier texte.
+    pub fn export_to_file(&self, path: &std::path::Path) -> anyhow::Result<()> {
+        let content = self.entries
+            .iter()
+            .enumerate()
+            .map(|(i, e)| {
+                let time = format_timestamp(e.timestamp);
+                format!("[{}] {}\n{}\n", time, i + 1, e.text)
+            })
+            .collect::<Vec<_>>()
+            .join("\n");
+        std::fs::write(path, content)?;
+        Ok(())
+    }
+
     pub fn as_display_string(&self) -> String {
         if self.entries.is_empty() {
             return "Aucun historique.".to_string();

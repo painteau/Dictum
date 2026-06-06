@@ -112,9 +112,12 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                     show_dialog("Dictum", "Config réinitialisée aux valeurs par défaut.\nRedémarrer pour appliquer le hotkey.");
                 }
             } else if event.id == item_clear_hist.id() {
+                // Propose export avant effacement
+                let export_path = crate::config::Config::data_dir().join("historique_export.txt");
+                let _ = state.history.lock().unwrap().export_to_file(&export_path);
                 state.history.lock().unwrap().clear();
                 let _ = state.history.lock().unwrap().save();
-                show_dialog("Dictum", "Historique effacé.");
+                show_dialog("Dictum", &format!("Historique effacé.\nExport sauvegardé : {}", export_path.display()));
             } else if event.id == item_reload.id() {
                 match crate::config::Config::load() {
                     Ok(new_cfg) => {
