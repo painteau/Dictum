@@ -11,6 +11,7 @@ permissions:
 jobs:
   build-and-release:
     runs-on: windows-latest
+    timeout-minutes: 30
 
     steps:
       - name: Checkout
@@ -19,7 +20,15 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
 
+      - name: Cache LLVM
+        id: cache-llvm
+        uses: actions/cache@v4
+        with:
+          path: C:\Program Files\LLVM
+          key: llvm-18-windows
+
       - name: Install LLVM
+        if: steps.cache-llvm.outputs.cache-hit != 'true'
         run: choco install llvm -y
 
       - name: Cache Cargo
@@ -30,6 +39,8 @@ jobs:
             ~/.cargo/git
             target
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
 
       - name: Build release
         env:
