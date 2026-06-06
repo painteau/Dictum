@@ -80,6 +80,9 @@ pub fn start(config: Config, tx: Sender<AppEvent>) {
                 let mods_ok = (!need_ctrl || ctrl_down)
                     && (!need_alt || alt_down)
                     && (!need_shift || shift_down);
+                if !mods_ok {
+                    log::debug!("Hotkey {} pressée sans les modificateurs requis", combo);
+                }
                 if mods_ok && !active {
                     active = true;
                     let _ = tx.send(AppEvent::RecordStart);
