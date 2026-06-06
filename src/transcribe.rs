@@ -62,7 +62,9 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
     };
 
     let mut cmd = Command::new(&cli);
-    cmd.arg("--model").arg(&config.model_path)
+    // current_dir = data_dir so Windows finds ggml.dll etc. in the same folder
+    cmd.current_dir(Config::data_dir())
+        .arg("--model").arg(&config.model_path)
         .arg("--output-txt")
         .arg("--no-timestamps")
         .arg("--file").arg(&wav_path);
