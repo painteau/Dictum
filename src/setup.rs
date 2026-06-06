@@ -176,6 +176,7 @@ impl SetupWizard {
             beep_enabled: true,
             silence_threshold: 0.005,
             pause_media: false,
+            prefix_space: false,
         }
     }
 

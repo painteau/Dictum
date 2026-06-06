@@ -54,6 +54,8 @@ pub struct Config {
     pub silence_threshold: f32,
     /// Mettre en pause les médias (Spotify, VLC...) pendant l'enregistrement
     pub pause_media: bool,
+    /// Ajouter un espace avant le texte injecté (utile si curseur milieu de phrase)
+    pub prefix_space: bool,
 }
 
 impl Default for Config {
@@ -73,6 +75,7 @@ impl Default for Config {
             beep_enabled: true,
             silence_threshold: 0.005,
             pause_media: false,
+            prefix_space: false,
         }
     }
 }

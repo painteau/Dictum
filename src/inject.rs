@@ -5,6 +5,12 @@ pub fn inject_text(text: &str, config: &Config) {
     let text = text.trim().to_string();
     if text.is_empty() { return; }
 
+    let text = if config.prefix_space {
+        format!(" {}", text)
+    } else {
+        text
+    };
+
     let text = if config.auto_capitalize {
         capitalize_first(&text)
     } else {
