@@ -239,7 +239,8 @@ fn main() -> Result<()> {
                                             &text,
                                         );
                                         log::info!("Transcrit : {text}");
-                                        state.history.lock().unwrap().push(text.clone());
+                                        let max_h = config.max_history;
+                                        state.history.lock().unwrap().push_with_limit(text.clone(), max_h);
                                         let _ = state.history.lock().unwrap().save();
                                         inject::inject_text(&text, &config);
                                     }

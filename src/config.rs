@@ -46,6 +46,8 @@ pub struct Config {
     pub max_record_secs: u64,
     /// Durée minimale d'enregistrement en millisecondes (évite déclenchements accidentels)
     pub min_record_ms: u64,
+    /// Nombre maximum d'entrées dans l'historique
+    pub max_history: usize,
     /// Beep sonore au début et à la fin de chaque enregistrement
     pub beep_enabled: bool,
     /// Seuil RMS en-dessous duquel l'audio est considéré comme silence (0.0–1.0)
@@ -67,6 +69,7 @@ impl Default for Config {
             microphone: None,
             max_record_secs: 30,
             min_record_ms: 300,
+            max_history: 10,
             beep_enabled: true,
             silence_threshold: 0.005,
             pause_media: false,

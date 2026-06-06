@@ -3,8 +3,6 @@ use std::collections::VecDeque;
 use std::path::PathBuf;
 use anyhow::Result;
 
-const MAX_ENTRIES: usize = 10;
-
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HistoryEntry {
     pub text: String,
@@ -34,15 +32,19 @@ impl History {
         Ok(())
     }
 
-    pub fn push(&mut self, text: String) {
+    pub fn push_with_limit(&mut self, text: String, max: usize) {
         let timestamp = std::time::SystemTime::now()
             .duration_since(std::time::UNIX_EPOCH)
             .unwrap_or_default()
             .as_secs();
         self.entries.push_front(HistoryEntry { text, timestamp });
-        while self.entries.len() > MAX_ENTRIES {
+        while self.entries.len() > max.max(1) {
             self.entries.pop_back();
         }
+    }
+
+    pub fn push(&mut self, text: String) {
+        self.push_with_limit(text, 10);
     }
 
     pub fn entries(&self) -> &VecDeque<HistoryEntry> {
