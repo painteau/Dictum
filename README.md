@@ -87,6 +87,8 @@ Cliquer **"Paramètres"** dans le menu tray pour l'ouvrir dans Notepad.
 | `beep_enabled` | `true` | Beep début/fin enregistrement |
 | `pause_media` | `false` | Pause Spotify/VLC pendant dictée |
 | `case_insensitive` | `false` | Substitution insensible à la casse |
+| `prefix_space` | `false` | Ajouter un espace avant le texte (curseur en milieu de phrase) |
+| `pause_media` | `false` | Pause Spotify/VLC pendant l'enregistrement |
 
 ## Modèles disponibles
 
