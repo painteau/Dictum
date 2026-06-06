@@ -125,11 +125,12 @@ impl Config {
     pub fn open_in_editor() -> Result<()> {
         let path = config_path();
         std::fs::create_dir_all(path.parent().unwrap())?;
-        // Ensure the file exists before opening
         if !path.exists() {
             Config::default().save()?;
         }
-        std::process::Command::new("notepad").arg(&path).spawn()?;
+        let editor = std::env::var("EDITOR").unwrap_or_else(|_| "notepad".to_string());
+        std::process::Command::new(&editor).arg(&path).spawn()
+            .or_else(|_| std::process::Command::new("notepad").arg(&path).spawn())?;
         Ok(())
     }
 
