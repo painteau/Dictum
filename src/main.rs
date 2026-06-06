@@ -71,31 +71,42 @@ fn cli_transcribe(input: &std::path::Path, lang_override: Option<&str>) -> Resul
     Ok(())
 }
 
-/// Lit un fichier audio (WAV 16kHz mono) en Vec<f32>.
-/// Pour les autres formats, whisper-cli les gère nativement — on lui passe le fichier directement.
+/// Lit un fichier WAV en Vec<f32> mono 16kHz.
+/// Supporte : mono/stéréo, int/float, tout sample rate (pas de resampling).
+/// Stéréo → moyenne des canaux. Resampling non supporté (suggère ffmpeg).
 fn read_audio_file(path: &std::path::Path) -> Result<Vec<f32>> {
-    let reader = hound::WavReader::open(path);
-    match reader {
-        Ok(mut r) => {
-            let spec = r.spec();
-            let samples: Vec<f32> = match spec.sample_format {
-                hound::SampleFormat::Float => {
-                    r.samples::<f32>().filter_map(|s| s.ok()).collect()
-                }
-                hound::SampleFormat::Int => {
-                    let max = (1i32 << (spec.bits_per_sample - 1)) as f32;
-                    r.samples::<i32>().filter_map(|s| s.ok()).map(|s| s as f32 / max).collect()
-                }
-            };
-            Ok(samples)
-        }
-        Err(_) => {
-            anyhow::bail!(
-                "Format non supporté en CLI. Convertir en WAV 16kHz mono d'abord.\nEx: ffmpeg -i {} -ar 16000 -ac 1 out.wav",
-                path.display()
-            )
-        }
+    let mut r = hound::WavReader::open(path)
+        .map_err(|e| anyhow::anyhow!(
+            "Impossible de lire {} : {e}\nConseil : convertir avec ffmpeg -i {} -ar 16000 -ac 1 out.wav",
+            path.display(), path.display()
+        ))?;
+
+    let spec = r.spec();
+    let channels = spec.channels as usize;
+
+    if spec.sample_rate != 16000 {
+        log::warn!("Sample rate {} Hz détecté (Whisper attend 16000 Hz) — qualité dégradée", spec.sample_rate);
     }
+
+    let interleaved: Vec<f32> = match spec.sample_format {
+        hound::SampleFormat::Float => r.samples::<f32>().filter_map(|s| s.ok()).collect(),
+        hound::SampleFormat::Int => {
+            let max = (1i32 << (spec.bits_per_sample.saturating_sub(1))) as f32;
+            r.samples::<i32>().filter_map(|s| s.ok()).map(|s| s as f32 / max).collect()
+        }
+    };
+
+    // Mix-down stéréo → mono (moyenne des canaux)
+    if channels <= 1 {
+        return Ok(interleaved);
+    }
+    let mono: Vec<f32> = interleaved
+        .chunks(channels)
+        .map(|ch| ch.iter().sum::<f32>() / channels as f32)
+        .collect();
+
+    log::info!("WAV {} canaux → mono ({} échantillons)", channels, mono.len());
+    Ok(mono)
 }
 
 fn init_logger() {
