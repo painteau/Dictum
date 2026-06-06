@@ -127,11 +127,20 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                 }
             } else if event.id == item_about.id() {
                 let config = state.config.lock().unwrap();
+                let count = *state.session_count.lock().unwrap();
+                let log_path = crate::config::Config::data_dir().join("dictum.log");
                 let msg = format!(
-                    "Dictum v{}\n\ngithub.com/painteau/Dictum\n\nModèle : {}\nLangue : {}",
+                    "Dictum v{}\ngithub.com/painteau/Dictum\n\nModèle : {}\nLangue  : {}\nHotkey  : {}{}{}{}\n\nSession : {} transcription{}\nLog     : {}",
                     env!("CARGO_PKG_VERSION"),
-                    config.model_path.display(),
-                    config.language
+                    config.model_path.file_name().and_then(|n| n.to_str()).unwrap_or("?"),
+                    config.language,
+                    if config.hotkey.ctrl  { "Ctrl+" } else { "" },
+                    if config.hotkey.alt   { "Alt+"  } else { "" },
+                    if config.hotkey.shift { "Shift+"} else { "" },
+                    config.hotkey.key,
+                    count,
+                    if count > 1 { "s" } else { "" },
+                    log_path.display()
                 );
                 show_dialog("À propos de Dictum", &msg);
             } else if event.id == item_devices.id() {
