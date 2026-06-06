@@ -185,6 +185,7 @@ impl SetupWizard {
             prefix_space: false,
             whisper_threads: 0,
             inject_delay_ms: 80,
+            whisper_no_speech: false,
         }
     }
 

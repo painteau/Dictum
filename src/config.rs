@@ -65,6 +65,9 @@ pub struct Config {
     /// Délai en ms avant injection texte (laisser le système traiter le key-release)
     #[serde(default = "default_inject_delay")]
     pub inject_delay_ms: u64,
+    /// Passer --no-speech-threshold à whisper pour ignorer segments sans parole
+    #[serde(default)]
+    pub whisper_no_speech: bool,
 }
 
 impl Default for Config {
@@ -88,6 +91,7 @@ impl Default for Config {
             prefix_space: false,
             whisper_threads: 0,
             inject_delay_ms: 80,
+            whisper_no_speech: false,
         }
     }
 }

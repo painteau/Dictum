@@ -86,8 +86,13 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
         .arg("--no-timestamps")
         .arg("--threads").arg(cpu_threads.to_string())
         .arg("--best-of").arg("1")
-        .arg("--beam-size").arg("1")
-        .arg("--file").arg(&wav_path);
+        .arg("--beam-size").arg("1");
+
+    if config.whisper_no_speech {
+        cmd.arg("--no-speech-thold").arg("0.6");
+    }
+
+    cmd.arg("--file").arg(&wav_path);
 
     for arg in &lang_args {
         cmd.arg(arg);
