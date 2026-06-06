@@ -1,61 +1,79 @@
 # TODO — Dictum
 
-## v1 — En cours
+## v0.3.0 — État actuel (stable)
 
 ### Infra
-- [x] Manifest JSON hébergé sur `cdn.breizhzion.com/dictum/manifest.json`
-- [x] SHA256 des modèles dans le manifest
-- [x] `whisper-cli.exe` + DLLs hébergés sur le CDN
-- [x] Build release (`cargo build --release`) — 7.7 MB
-- [x] Repo GitHub public `painteau/Dictum`
-- [x] Release `v0.1.1` avec `dictum.exe`
-- [x] GitHub Actions CI/CD — release auto sur tag `v*`
-
-### À tester
-- [ ] Wizard premier lancement (détection GPU, choix modèle, téléchargement)
-- [ ] Injection texte dans Notepad, VS Code, navigateur
-- [ ] Hotkey F9 hold-to-record
-- [ ] Typographie française (espaces insécables)
-- [ ] Substitutions automatiques
-- [ ] Historique 10 entrées
-- [x] Icône tray rouge pendant enregistrement (dynamique via set_icon)
-
-### À finir
-- [x] Sauvegarder config depuis le wizard avant fermeture fenêtre
-- [x] Icône `.ico` embarquée dans l'exe (générée par build.rs via winresource)
-- [x] Démarrage automatique Windows (via Registry dans installer.iss)
-
-## v2 — Roadmap
-
-- [ ] Fenêtre paramètres graphique (egui) — remplace l'ouverture Notepad
-- [ ] Traduction automatique locale (parle FR, obtient EN)
-- [ ] Reformulation IA 7 styles (oral, pro, casual, concis, simplifié, structuré, custom)
-- [ ] Transcription fichiers audio/vidéo par drag & drop
-- [ ] Identification de locuteurs (diarisation)
-- [ ] Moteur Parakeet (600 MB, ultra-rapide)
-- [ ] Moteur Qwen3-ASR (4 GB, haute précision)
-- [ ] 5 hotkeys configurables avec actions distinctes
-- [ ] Mode sélection : sélectionne texte existant → traduit/reformule
-- [x] Pause média automatique pendant enregistrement (`pause_media` dans config)
-- [ ] Support CUDA (GPU NVIDIA) via feature flag
-- [x] Notification sonore debut/fin enregistrement (beep Windows, configurable via `beep_enabled`)
-- [x] Détection silence automatique — RMS configurable (`silence_threshold`)
-
-## v2 ajouté cette nuit
-
-- [x] Pause média automatique (`pause_media`)
-- [x] Beep configurable (`beep_enabled`)
-- [x] Détection silence RMS (`silence_threshold`)
-- [x] Log fichier `dictum.log` (flexi_logger)
-- [x] Horodatage historique HH:MM
-- [x] Menu tray : Copier clipboard, Effacer historique, Reload config, Ouvrir log, À propos
-- [x] Icône tray dynamique (rouge pendant enregistrement)
-- [x] Mode CLI : `dictum.exe fichier.wav` → transcription + .txt
+- [x] Manifest JSON `cdn.breizhzion.com/dictum/manifest.json`
+- [x] SHA256 modèles + binaires
+- [x] `whisper-cli.exe` + DLLs sur CDN
+- [x] CI/CD GitHub Actions — release auto sur tag `v*`
+- [x] Inno Setup — `Dictum-Setup-x.x.x-x64.exe`
 - [x] Auto-update silencieux (GitHub releases API)
-- [x] Icône .ico embarquée dans l'exe (build.rs)
 
-## v3 — Idées futures
+### Core
+- [x] Hotkey global hold-to-record (F1-F12, NumPad, Insert, Home, End...)
+- [x] Enregistrement CPAL 16kHz mono f32
+- [x] Transcription whisper-cli subprocess (timeout 5min)
+- [x] Injection texte via enigo (SendInput Win32)
+- [x] Détection silence RMS configurable
+- [x] Durée minimale enregistrement configurable
+- [x] Beep audio configurable (beep Windows)
+- [x] Pause médias automatique (VK_MEDIA_PLAY_PAUSE)
 
-- [ ] Mode live (transcription en temps réel, streaming)
+### Qualité texte
+- [x] Majuscule auto première lettre
+- [x] Typographie française (espaces insécables, apostrophe U+2019, `…`)
+- [x] Substitutions case-insensitive
+- [x] Préfixe espace optionnel (`prefix_space`)
+- [x] Normalisation espaces multiples
+- [x] Filtre tags Whisper ([BLANK_AUDIO], (Music), timestamps SRT)
+
+### Tray
+- [x] Icône 3 états (bleu/orange/rouge)
+- [x] 14 items de menu
+- [x] Tooltip dynamique (modèle + compteur session)
+- [x] Confirmation OUI/NON avant mise à jour
+- [x] Export historique avec ouverture Notepad
+- [x] Reload config sans redémarrage
+- [x] Reset config aux valeurs par défaut
+
+### CLI
+- [x] `--version`, `--help`, `--debug`
+- [x] `fichier.wav` — transcription fichier
+- [x] `--language`, `--model`, `--output`
+- [x] `--quiet`, `--no-save`, `--stdout`
+- [x] `--config`, `--list-devices`, `--list-languages`
+- [x] Support WAV stéréo → mono mix-down
+- [x] Warning si sample rate non 16kHz
+
+### Robustesse
+- [x] Config sanitize() avec logs corrections
+- [x] Vérif connectivité internet avant download
+- [x] Reprise téléchargement interrompu (HTTP Range)
+- [x] Skip si fichier déjà complet
+- [x] Retry x3 check update (backoff exponentiel)
+- [x] Ignore pre-releases/drafts GitHub
+- [x] Vérif taille installateur avant lancement
+- [x] Timeout subprocess whisper-cli (5 min)
+- [x] Fallback env_logger si flexi_logger échoue
+
+## v0.4 — Roadmap
+
+- [ ] Fenêtre paramètres graphique (egui) — remplace Notepad
+- [ ] Traduction automatique locale
+- [ ] Reformulation IA 7 styles
+- [ ] Transcription drag & drop fichier audio/vidéo
+- [ ] Mode sélection (reformule texte sélectionné)
+- [ ] Moteur Parakeet (600 MB, plus rapide)
+- [ ] Support CUDA via feature flag
+- [ ] Rotation automatique fichier log
+- [ ] Notification Windows toast (au lieu de dialog bloquant)
+- [ ] Configuration hotkey live (sans redémarrage)
+
+## v1.0 — Idées futures
+
+- [ ] Mode live (streaming temps réel)
 - [ ] Plugin VS Code
-- [ ] Accès API locale (HTTP) pour intégrations tierces
+- [ ] API locale HTTP pour intégrations tierces
+- [ ] Identification locuteurs (diarisation)
+- [ ] Interface multi-langue
