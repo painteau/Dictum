@@ -1,5 +1,20 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.2.8 — Zéro warning
+
+### Corrigé
+- `transcribe.rs` : variable `start` préfixée via `cargo fix` — zéro warning `cargo build`
+- `config.rs` : double `}` parasite supprimé
+
+### Ajouté
+- `config.rs` : `log_path()`, `history_export_path()` helpers centralisés
+- `tray.rs` : À propos affiche chemin `config.json`
+- `tray.rs` : confirmation Oui/Non avant installation mise à jour
+- `tray.rs` : Exporter historique en item dédié (sans effacement)
+- `config.rs` : `Config::save_to(path)` pour export config custom
+
+---
+
 ## 2026-06-07 — v0.2.7 — Finitions finales
 
 ### Ajouté
