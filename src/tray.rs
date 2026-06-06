@@ -27,15 +27,19 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
     let item_quit       = MenuItem::new("✕  Quitter", true, None);
 
     tray_menu.append_items(&[
-        &item_update,
-        &item_sep_up,
+        &item_update,         // caché au départ, visible si update
+        &item_sep_up,         // séparateur update
+        // Config
         &item_settings,
         &item_reload,
         &item_reset_cfg,
         &PredefinedMenuItem::separator(),
+        // Historique
         &item_history,
         &item_copy_last,
         &item_clear_hist,
+        &PredefinedMenuItem::separator(),
+        // Système
         &item_devices,
         &item_open_log,
         &item_about,
