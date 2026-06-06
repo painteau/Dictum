@@ -149,7 +149,7 @@ Le manifest pointe vers HuggingFace pour les modèles (fichiers trop lourds pour
 ## Décisions d'architecture
 
 ### subprocess whisper-cli vs binding Rust
-`whisper-rs` (binding C++) ne compile pas sur Windows avec MSVC récent (bug struct size dans bindgen). On appelle `whisper-cli.exe` en subprocess : même performance, zéro dépendance native dans notre binaire.
+`whisper-rs` (binding C++) ne compile pas sur Windows avec MSVC récent (bug struct size dans bindgen). On appelle `whisper-cli.exe` en subprocess avec timeout 5min : même performance, zéro dépendance native dans notre binaire.
 
 ### Stream audio dans son propre thread
 `cpal::Stream` n'implémente pas `Send` sur Windows (WASAPI). Le stream vit dans le thread qui l'a créé, et on communique via channels crossbeam.
@@ -158,4 +158,16 @@ Le manifest pointe vers HuggingFace pour les modèles (fichiers trop lourds pour
 Le tray utilise une boucle `PeekMessage/DispatchMessage` Win32 native plutôt que winit, pour éviter une dépendance lourde sur la fenêtre principale (l'app n'a pas de fenêtre visible).
 
 ### Manifest JSON distant
-L'URL des modèles et binaires est centralisée dans un JSON hébergé. Permet de changer les URLs (migration CDN, nouvelle version whisper) sans recompiler ni redistribuer le logiciel.
+L'URL des modèles et binaires est centralisée dans un JSON hébergé sur `cdn.breizhzion.com`. Permet de changer les URLs sans recompiler ni redistribuer le logiciel.
+
+### has_internet() avant opérations réseau
+Toutes les opérations réseau (check update, téléchargement manifest) vérifient d'abord la connectivité via une requête HEAD timeout 5s. Évite les délais de timeout sur les machines hors ligne.
+
+### Config sanitize()
+Toutes les valeurs de config invalides sont corrigées silencieusement au chargement avec `sanitize()`. L'app ne plante jamais sur une config corrompue.
+
+### session_count dans AppState
+Compteur en mémoire uniquement (non persisté). Affiché dans le tooltip tray. Remis à 0 à chaque redémarrage.
+
+### CLI mode
+Si un argument de fichier est détecté au démarrage, l'app court-circuite le mode tray et transcrit le fichier puis quitte. Permet d'utiliser Dictum comme outil de transcription batch en ligne de commande.
