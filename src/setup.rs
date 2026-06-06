@@ -331,7 +331,8 @@ impl SetupWizard {
 
         ui.add_space(8.0);
 
-        let keys = ["F1","F2","F3","F4","F5","F6","F7","F8","F9","F10","F11","F12","Space"];
+        let keys = ["F1","F2","F3","F4","F5","F6","F7","F8","F9","F10","F11","F12",
+                    "Space","Insert","Home","End","PageUp","PageDown","ScrollLock","Pause"];
         ui.horizontal_wrapped(|ui| {
             for k in &keys {
                 let selected = self.hotkey_key == *k;
