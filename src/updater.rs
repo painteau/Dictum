@@ -9,6 +9,8 @@ struct GithubRelease {
     tag_name: String,
     html_url: String,
     assets: Vec<GithubAsset>,
+    prerelease: bool,
+    draft: bool,
 }
 
 #[derive(Debug, Deserialize)]
@@ -41,6 +43,12 @@ pub fn check_update() -> Option<UpdateInfo> {
         .ok()?;
 
     let release: GithubRelease = client.get(&url).send().ok()?.json().ok()?;
+
+    // Ignorer les pre-releases et drafts
+    if release.prerelease || release.draft {
+        log::debug!("Release {} ignorée (prerelease/draft)", release.tag_name);
+        return None;
+    }
 
     let latest = release.tag_name.trim_start_matches('v');
     let current = CURRENT_VERSION;
