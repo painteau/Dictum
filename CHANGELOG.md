@@ -1,5 +1,28 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.2.1 — Polish nuit
+
+### Ajouté
+- Touches hotkey supplémentaires : Insert, Home, End, PageUp, PageDown, ScrollLock, Pause, CapsLock, BackQuote
+- Wizard : affiche toutes les nouvelles touches
+- Tray : Réinitialiser config aux valeurs par défaut
+- Tray : icône **3 états** — bleu (repos), orange (transcription), rouge (enregistrement)
+- `CONTRIBUTING.md` — guide de contribution, structure projet, conventions
+- Templates GitHub Issues (bug report, feature request)
+- `LICENSE` MIT
+- Badges CI + release dans README
+- Mode CLI `--version`, `--help`
+- Mode CLI transcription fichier audio (`dictum.exe fichier.wav`)
+- Substitutions `case_insensitive` optionnel
+
+### Corrigé
+- Transcription vide (silence) ignorée : pas injectée, pas dans l'historique
+- Indentation pipeline transcription dans `main.rs`
+- Messages logs en français
+- Version `Cargo.toml` = `0.2.0` alignée sur les releases
+
+---
+
 ## 2026-06-07 — v0.2.0 — Milestone nuit
 
 ### Ajouté
