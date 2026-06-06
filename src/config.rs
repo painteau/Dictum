@@ -20,6 +20,8 @@ impl Default for HotkeyConfig {
 pub struct Substitution {
     pub from: String,
     pub to: String,
+    #[serde(default)]
+    pub case_insensitive: bool,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

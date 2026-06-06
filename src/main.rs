@@ -121,13 +121,28 @@ fn main() -> Result<()> {
     init_logger();
     log::info!("Dictum v{} démarrage", env!("CARGO_PKG_VERSION"));
 
-    // Mode CLI : dictum.exe mon_fichier.mp3
+    // Mode CLI
     let args: Vec<String> = std::env::args().collect();
-    if args.len() == 2 {
-        let input = std::path::PathBuf::from(&args[1]);
-        if input.exists() {
-            return cli_transcribe(&input);
+    match args.get(1).map(String::as_str) {
+        Some("--version") | Some("-v") => {
+            println!("Dictum v{}", env!("CARGO_PKG_VERSION"));
+            return Ok(());
         }
+        Some("--help") | Some("-h") => {
+            println!("Dictum v{} — Dictée vocale locale\n", env!("CARGO_PKG_VERSION"));
+            println!("Usage:");
+            println!("  dictum.exe               Lancer en mode tray (normal)");
+            println!("  dictum.exe fichier.wav   Transcrire un fichier audio");
+            println!("  dictum.exe --version     Afficher la version");
+            return Ok(());
+        }
+        Some(path) => {
+            let input = std::path::PathBuf::from(path);
+            if input.exists() {
+                return cli_transcribe(&input);
+            }
+        }
+        None => {}
     }
 
     // Premier lancement : wizard si aucun modèle présent
