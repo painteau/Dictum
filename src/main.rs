@@ -225,13 +225,13 @@ fn main() -> Result<()> {
                                 *state.is_transcribing.lock().unwrap() = true;
                                 let config = state.config.lock().unwrap().clone();
                                 if !transcribe::is_ready(&config) {
-                            log::warn!("whisper-cli ou modèle manquant — relancer le wizard");
-                            *state.is_transcribing.lock().unwrap() = false;
-                            return;
-                        }
-                        match transcribe::transcribe(&samples, &config) {
+                                    log::warn!("whisper-cli ou modèle manquant — relancer le wizard");
+                                    *state.is_transcribing.lock().unwrap() = false;
+                                    return;
+                                }
+                                match transcribe::transcribe(&samples, &config) {
                                     Ok(text) if text.is_empty() => {
-                                        log::debug!("Transcription vide (silence), rien injecté");
+                                        log::debug!("Silence détecté, rien injecté");
                                     }
                                     Ok(text) => {
                                         let text = substitution::apply(
@@ -243,7 +243,7 @@ fn main() -> Result<()> {
                                         let _ = state.history.lock().unwrap().save();
                                         inject::inject_text(&text, &config);
                                     }
-                                    Err(e) => log::error!("Transcription failed: {e}"),
+                                    Err(e) => log::error!("Transcription échouée : {e}"),
                                 }
                                 *state.is_transcribing.lock().unwrap() = false;
                             });
