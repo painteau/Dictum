@@ -365,7 +365,17 @@ impl SetupWizard {
             (p.percent(), p.mb_display(), p.finished, p.error.clone())
         };
 
-        ui.label(RichText::new("Téléchargement du modèle").size(22.0).color(Color32::WHITE).strong());
+        let title = {
+            let p = self.progress.lock().unwrap();
+            if p.current_file.contains("ggml") {
+                "Téléchargement du modèle Whisper"
+            } else if p.current_file.is_empty() {
+                "Préparation..."
+            } else {
+                "Téléchargement des outils"
+            }
+        };
+        ui.label(RichText::new(title).size(22.0).color(Color32::WHITE).strong());
         ui.add_space(24.0);
 
         let file = self.progress.lock().unwrap().current_file.clone();
