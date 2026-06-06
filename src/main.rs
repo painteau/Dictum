@@ -182,10 +182,19 @@ fn main() -> Result<()> {
             println!("Dictum v{} — Dictée vocale locale\n", env!("CARGO_PKG_VERSION"));
             println!("Usage:");
             println!("  dictum.exe                           Mode tray (normal)");
-            println!("  dictum.exe fichier.wav [-l fr]       Transcrire un fichier");
-            println!("  dictum.exe --list-devices            Lister les microphones");
-            println!("  dictum.exe --list-languages          Lister les langues Whisper");
-            println!("  dictum.exe --version                 Version");
+            println!("  dictum.exe fichier.wav [options]     Transcrire un fichier WAV");
+            println!();
+            println!("Options transcription :");
+            println!("  -l, --language CODE   Langue ISO (fr, en, auto...)");
+            println!("  -m, --model PATH      Chemin vers le modèle .bin");
+            println!("  -o, --output PATH     Fichier de sortie (défaut : fichier.txt)");
+            println!("  -q, --quiet           Stdout uniquement, sans métadonnées");
+            println!("      --no-save         Ne pas sauvegarder de fichier .txt");
+            println!();
+            println!("Informations :");
+            println!("  --list-devices        Lister les microphones disponibles");
+            println!("  --list-languages      Lister les langues Whisper (57)");
+            println!("  --version, -v         Afficher la version");
             return Ok(());
         }
         Some("--list-devices") => {
