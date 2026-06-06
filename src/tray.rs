@@ -43,7 +43,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
         &item_quit,
     ])?;
 
-    let icon = make_icon(false);
+    let icon = make_icon(false, false);
 
     let _tray = TrayIconBuilder::new()
         .with_menu(Box::new(tray_menu))
@@ -156,7 +156,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
             "Dictum — Dictée vocale"
         };
         let _ = _tray.set_tooltip(Some(tooltip));
-        let _ = _tray.set_icon(Some(make_icon(recording)));
+        let _ = _tray.set_icon(Some(make_icon(recording, transcribing)));
 
         std::thread::sleep(std::time::Duration::from_millis(50));
     }
@@ -207,8 +207,9 @@ fn show_dialog(title: &str, message: &str) {
     log::info!("[{}] {}", title, message);
 }
 
-/// Generate a simple colored circle icon (32x32 RGBA).
-fn make_icon(recording: bool) -> Icon {
+/// Génère une icône 32x32 :
+/// rouge = enregistrement, orange = transcription, bleu = repos
+fn make_icon(recording: bool, transcribing: bool) -> Icon {
     let size = 32u32;
     let mut rgba = vec![0u8; (size * size * 4) as usize];
 
@@ -220,15 +221,11 @@ fn make_icon(recording: bool) -> Icon {
             let idx = ((y * size + x) * 4) as usize;
             if dist < 13.0 {
                 if recording {
-                    // Red when recording
-                    rgba[idx]     = 220;
-                    rgba[idx + 1] = 50;
-                    rgba[idx + 2] = 50;
+                    rgba[idx] = 220; rgba[idx+1] = 50;  rgba[idx+2] = 50;  // rouge
+                } else if transcribing {
+                    rgba[idx] = 220; rgba[idx+1] = 140; rgba[idx+2] = 20;  // orange
                 } else {
-                    // Steel blue at rest
-                    rgba[idx]     = 70;
-                    rgba[idx + 1] = 130;
-                    rgba[idx + 2] = 180;
+                    rgba[idx] = 70;  rgba[idx+1] = 130; rgba[idx+2] = 180; // bleu
                 }
                 rgba[idx + 3] = 255;
             } else if dist < 15.0 {
