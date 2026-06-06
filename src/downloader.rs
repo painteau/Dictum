@@ -30,6 +30,15 @@ pub struct Manifest {
     pub binaries: HashMap<String, BinaryEntry>,
 }
 
+/// Vérifie rapidement la connectivité internet (HEAD sur le manifest).
+pub fn has_internet() -> bool {
+    reqwest::blocking::Client::builder()
+        .timeout(std::time::Duration::from_secs(5))
+        .build()
+        .map(|c| c.head(MANIFEST_URL).send().map(|r| r.status().is_success()).unwrap_or(false))
+        .unwrap_or(false)
+}
+
 pub fn fetch_manifest() -> Result<Manifest> {
     let resp = reqwest::blocking::get(MANIFEST_URL)
         .map_err(|e| anyhow!("Impossible de récupérer le manifest : {e}"))?;
