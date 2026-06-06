@@ -44,6 +44,8 @@ pub struct Config {
     pub max_record_secs: u64,
     /// Beep sonore au début et à la fin de chaque enregistrement
     pub beep_enabled: bool,
+    /// Seuil RMS en-dessous duquel l'audio est considéré comme silence (0.0–1.0)
+    pub silence_threshold: f32,
 }
 
 impl Default for Config {
@@ -59,6 +61,7 @@ impl Default for Config {
             microphone: None,
             max_record_secs: 30,
             beep_enabled: true,
+            silence_threshold: 0.005,
         }
     }
 }

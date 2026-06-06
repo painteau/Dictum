@@ -172,6 +172,7 @@ impl SetupWizard {
             microphone: None,
             max_record_secs: 30,
             beep_enabled: true,
+            silence_threshold: 0.005,
         }
     }
 

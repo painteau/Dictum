@@ -34,8 +34,9 @@ fn rms(samples: &[f32]) -> f32 {
 }
 
 pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
-    if rms(samples) < 0.005 {
-        return Ok(String::new()); // silence — on n'envoie rien à Whisper
+    if rms(samples) < config.silence_threshold {
+        log::debug!("Silence détecté (RMS={:.4}), transcription ignorée", rms(samples));
+        return Ok(String::new());
     }
     let cli = whisper_cli_path();
     if !cli.exists() {

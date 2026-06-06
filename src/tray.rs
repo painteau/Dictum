@@ -13,19 +13,26 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
     let item_settings  = MenuItem::new("⚙  Paramètres", true, None);
     let item_history   = MenuItem::new("📋 Historique", true, None);
     let item_devices   = MenuItem::new("🎙  Microphones", true, None);
-    let item_about     = MenuItem::new(
+    let item_clear_hist = MenuItem::new("🗑  Effacer l'historique", true, None);
+    let item_reload     = MenuItem::new("↺  Recharger la config", true, None);
+    let item_open_log   = MenuItem::new("📄 Ouvrir le log", true, None);
+    let item_about      = MenuItem::new(
         format!("ℹ  Dictum v{}", env!("CARGO_PKG_VERSION")),
         true, None
     );
-    let item_sep       = PredefinedMenuItem::separator();
-    let item_quit      = MenuItem::new("✕  Quitter", true, None);
+    let item_sep        = PredefinedMenuItem::separator();
+    let item_quit       = MenuItem::new("✕  Quitter", true, None);
 
     tray_menu.append_items(&[
         &item_update,
         &item_sep_up,
         &item_settings,
+        &item_reload,
+        &PredefinedMenuItem::separator(),
         &item_history,
+        &item_clear_hist,
         &item_devices,
+        &item_open_log,
         &item_about,
         &item_sep,
         &item_quit,
@@ -74,6 +81,25 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
             } else if event.id == item_history.id() {
                 let msg = state.history.lock().unwrap().as_display_string();
                 show_dialog("Dictum — Historique", &msg);
+            } else if event.id == item_clear_hist.id() {
+                state.history.lock().unwrap().clear();
+                let _ = state.history.lock().unwrap().save();
+                show_dialog("Dictum", "Historique effacé.");
+            } else if event.id == item_reload.id() {
+                match crate::config::Config::load() {
+                    Ok(new_cfg) => {
+                        *state.config.lock().unwrap() = new_cfg;
+                        log::info!("Config rechargée");
+                    }
+                    Err(e) => log::error!("Erreur reload config : {e}"),
+                }
+            } else if event.id == item_open_log.id() {
+                let log_path = crate::config::Config::data_dir().join("dictum.log");
+                if log_path.exists() {
+                    std::process::Command::new("notepad").arg(&log_path).spawn().ok();
+                } else {
+                    show_dialog("Dictum", "Aucun fichier de log trouvé.");
+                }
             } else if event.id == item_about.id() {
                 let config = state.config.lock().unwrap();
                 let msg = format!(
