@@ -72,8 +72,28 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
         cmd.arg(arg);
     }
 
-    let output = cmd.output()
+    let mut child = cmd.spawn()
         .map_err(|e| anyhow!("Impossible de lancer whisper-cli : {e}"))?;
+
+    // Timeout : 5 minutes max pour la transcription
+    let timeout = std::time::Duration::from_secs(300);
+    let start = std::time::Instant::now();
+    let output = loop {
+        match child.try_wait() {
+            Ok(Some(_)) => {
+                break child.wait_with_output()
+                    .map_err(|e| anyhow!("Erreur lecture output : {e}"))?;
+            }
+            Ok(None) => {
+                if start.elapsed() > timeout {
+                    let _ = child.kill();
+                    return Err(anyhow!("Timeout whisper-cli (5 min dépassées)"));
+                }
+                std::thread::sleep(std::time::Duration::from_millis(100));
+            }
+            Err(e) => return Err(anyhow!("Erreur attente subprocess : {e}")),
+        }
+    };
 
     // Nettoyage — whisper-cli génère parfois un .txt même sans --output-txt
     std::fs::remove_file(&wav_path).ok();
