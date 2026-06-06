@@ -1,5 +1,21 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.3.3 — Performances
+
+### Ajouté
+- `transcribe.rs` : `--threads` auto (nb cœurs CPU, max 8) — accélère whisper-cli
+- `setup.rs` : wizard affiche toutes les touches NumPad dans le sélecteur
+- `hotkey.rs` : NumLock, KpMinus, KpPlus, KpMultiply, KpDivide, KpReturn
+- `main.rs` : log arrêt propre avec bilan session
+- `main.rs` : log état modèle (présent/MANQUANT)
+- `audio.rs` : log max_secs au démarrage enregistrement
+- `downloader.rs` : log débit MB/s
+- `config.rs` : `open_data_dir()`, `Config::log_path()`, `Config::history_export_path()`
+- `tray.rs` : item "Ouvrir le dossier Dictum"
+- `history.rs` : affiche `J-N` pour entrées > 24h
+
+---
+
 ## 2026-06-07 — v0.3.2 — Dernières finitions nuit
 
 ### Ajouté
