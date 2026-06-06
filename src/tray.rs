@@ -20,6 +20,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
     let item_clear_hist = MenuItem::new("🗑  Effacer l'historique", true, None);
     let item_reload     = MenuItem::new("↺  Recharger la config", true, None);
     let item_open_log   = MenuItem::new("📄 Ouvrir le log", true, None);
+    let item_open_dir   = MenuItem::new("📁 Ouvrir le dossier Dictum", true, None);
     let item_about      = MenuItem::new(
         format!("ℹ  Dictum v{}", env!("CARGO_PKG_VERSION")),
         true, None
@@ -44,6 +45,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
         // Système
         &item_devices,
         &item_open_log,
+        &item_open_dir,
         &item_about,
         &item_sep,
         &item_quit,
@@ -143,6 +145,10 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                         log::info!("Config rechargée");
                     }
                     Err(e) => log::error!("Erreur reload config : {e}"),
+                }
+            } else if event.id == item_open_dir.id() {
+                if let Err(e) = crate::config::Config::open_data_dir() {
+                    log::error!("Impossible d'ouvrir le dossier : {e}");
                 }
             } else if event.id == item_open_log.id() {
                 let log_path = crate::config::Config::log_path();
