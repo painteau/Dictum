@@ -23,6 +23,49 @@ use config::Config;
 use history::History;
 use updater::UpdateInfo;
 
+/// Transcrit un fichier audio et écrit le résultat dans <fichier>.txt
+fn cli_transcribe(input: &std::path::Path) -> Result<()> {
+    use crate::config::Config;
+    use crate::transcribe;
+
+    let config = Config::load()?;
+    let samples = read_audio_file(input)?;
+    let text = transcribe::transcribe(&samples, &config)?;
+
+    let output = input.with_extension("txt");
+    std::fs::write(&output, &text)?;
+    println!("{}", text);
+    println!("\nSauvegardé : {}", output.display());
+    Ok(())
+}
+
+/// Lit un fichier audio (WAV 16kHz mono) en Vec<f32>.
+/// Pour les autres formats, whisper-cli les gère nativement — on lui passe le fichier directement.
+fn read_audio_file(path: &std::path::Path) -> Result<Vec<f32>> {
+    let reader = hound::WavReader::open(path);
+    match reader {
+        Ok(mut r) => {
+            let spec = r.spec();
+            let samples: Vec<f32> = match spec.sample_format {
+                hound::SampleFormat::Float => {
+                    r.samples::<f32>().filter_map(|s| s.ok()).collect()
+                }
+                hound::SampleFormat::Int => {
+                    let max = (1i32 << (spec.bits_per_sample - 1)) as f32;
+                    r.samples::<i32>().filter_map(|s| s.ok()).map(|s| s as f32 / max).collect()
+                }
+            };
+            Ok(samples)
+        }
+        Err(_) => {
+            anyhow::bail!(
+                "Format non supporté en CLI. Convertir en WAV 16kHz mono d'abord.\nEx: ffmpeg -i {} -ar 16000 -ac 1 out.wav",
+                path.display()
+            )
+        }
+    }
+}
+
 fn init_logger() {
     let log_dir = Config::data_dir();
     std::fs::create_dir_all(&log_dir).ok();
@@ -77,6 +120,15 @@ impl AppState {
 fn main() -> Result<()> {
     init_logger();
     log::info!("Dictum v{} démarrage", env!("CARGO_PKG_VERSION"));
+
+    // Mode CLI : dictum.exe mon_fichier.mp3
+    let args: Vec<String> = std::env::args().collect();
+    if args.len() == 2 {
+        let input = std::path::PathBuf::from(&args[1]);
+        if input.exists() {
+            return cli_transcribe(&input);
+        }
+    }
 
     // Premier lancement : wizard si aucun modèle présent
     {
