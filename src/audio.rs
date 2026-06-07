@@ -74,6 +74,7 @@ impl RecordHandle {
                 sample_rate: SampleRate(16000),
                 buffer_size: cpal::BufferSize::Default,
             };
+            log::debug!("Stream audio : 1 canal, 16000 Hz, buffer défaut");
 
             let samples: Arc<Mutex<Vec<f32>>> = Arc::new(Mutex::new(Vec::new()));
             let samples_write = samples.clone();
