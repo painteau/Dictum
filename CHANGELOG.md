@@ -1,5 +1,14 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.2.2 — 294 MÉTHODES API
+
+### Ajouté
+- Config 205 méthodes : `log_level_is_debug/info/warn`, `set_log_debug/info`
+- History 89 méthodes : `entries_without_char`, `average_word_length`, `has/count_duplicates`
+- **294 méthodes API** (205 Config + 89 History) | 557 commits
+
+---
+
 ## 2026-06-07 — v1.2.1 — SETTINGS 3 ONGLETS
 
 ### Ajouté
