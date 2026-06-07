@@ -75,7 +75,15 @@
 - [x] Tous les logs en français
 - [x] Code entièrement refactorisé avec helpers
 
-## v0.6 — Roadmap
+## v0.9 — Prochaines étapes
+
+- [ ] Tester l'application sur une machine fraîche (wizard + dictée)
+- [ ] Fenêtre paramètres graphique egui (remplace Notepad)
+- [ ] Traduction automatique locale
+- [ ] Reformulation IA 7 styles
+- [ ] Plugin VS Code
+
+## v0.6 — Roadmap (intégré dans v0.8)
 
 - [ ] Fenêtre paramètres graphique (egui) — remplace Notepad
 - [ ] Traduction automatique locale
