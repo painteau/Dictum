@@ -1,6 +1,18 @@
 use enigo::{Direction, Enigo, Key, Keyboard, Settings};
 use crate::config::Config;
 
+/// Inject texte brut sans aucun traitement typographique ni capitalisation.
+#[allow(dead_code)]
+pub fn inject_raw(text: &str, delay_ms: u64) {
+    if text.is_empty() { return; }
+    std::thread::sleep(std::time::Duration::from_millis(delay_ms));
+    let settings = enigo::Settings::default();
+    match enigo::Enigo::new(&settings) {
+        Ok(mut enigo) => { let _ = enigo.text(text); }
+        Err(e) => log::error!("inject_raw échoué : {e}"),
+    }
+}
+
 pub fn inject_text(text: &str, config: &Config) {
     let text = text.trim().to_string();
     if text.is_empty() { return; }
