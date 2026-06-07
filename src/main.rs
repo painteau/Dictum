@@ -453,6 +453,18 @@ fn main() -> Result<()> {
             }
             return Ok(());
         }
+        Some("--update-check") => {
+            println!("Vérification mise à jour Dictum v{}...", env!("CARGO_PKG_VERSION"));
+            match updater::check_update() {
+                Some(info) => {
+                    let size_mb = (info.installer_size as f64 / 1_048_576.0).ceil() as u64;
+                    println!("Mise à jour disponible : v{} ({} MB)", info.version, size_mb);
+                    println!("URL : {}", info.installer_url);
+                }
+                None => println!("Dictum est à jour (v{}).", env!("CARGO_PKG_VERSION")),
+            }
+            return Ok(());
+        }
         Some("--config-reset") => {
             match Config::reset_to_default() {
                 Ok(cfg) => {
