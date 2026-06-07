@@ -1115,4 +1115,33 @@ impl Config {
     pub fn whisper_cli_exists(&self) -> bool {
         Self::data_dir().join("whisper-cli.exe").exists()
     }
+
+    #[allow(dead_code)]
+    pub fn data_dir_size_mb(&self) -> f64 {
+        let dir = Self::data_dir();
+        let size: u64 = std::fs::read_dir(&dir)
+            .ok()
+            .map(|entries| entries.flatten()
+                .filter_map(|e| e.metadata().ok())
+                .map(|m| m.len())
+                .sum())
+            .unwrap_or(0);
+        size as f64 / 1_048_576.0
+    }
+
+    #[allow(dead_code)]
+    pub fn model_size_mb(&self) -> f64 {
+        std::fs::metadata(&self.model_path)
+            .map(|m| m.len() as f64 / 1_048_576.0)
+            .unwrap_or(0.0)
+    }
+
+    #[allow(dead_code)]
+    pub fn inject_mode_is_keyboard(&self) -> bool { true }
+
+    #[allow(dead_code)]
+    pub fn is_windows(&self) -> bool { cfg!(windows) }
+
+    #[allow(dead_code)]
+    pub fn app_name() -> &'static str { "Dictum" }
 }
