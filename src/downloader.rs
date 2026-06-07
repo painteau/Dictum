@@ -297,5 +297,17 @@ pub fn free_disk_space(path: &Path) -> Option<u64> {
     if ok != 0 { Some(free) } else { None }
 }
 
+/// Vérifie si whisper-cli.exe et les DLLs essentielles sont présents dans data_dir.
+pub fn binaries_ready(data_dir: &Path) -> bool {
+    let required = ["whisper-cli.exe", "ggml.dll", "whisper.dll"];
+    required.iter().all(|name| data_dir.join(name).exists())
+}
+
+/// Retourne la liste des binaires manquants dans data_dir.
+pub fn missing_binaries(data_dir: &Path) -> Vec<&'static str> {
+    let required = ["whisper-cli.exe", "ggml.dll", "whisper.dll", "ggml-base.dll", "ggml-cpu.dll"];
+    required.iter().copied().filter(|name| !data_dir.join(name).exists()).collect()
+}
+
 #[cfg(not(windows))]
 pub fn free_disk_space(_path: &Path) -> Option<u64> { None }
