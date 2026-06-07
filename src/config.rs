@@ -691,6 +691,11 @@ impl Config {
         format!("config v{} | app v{}", self.config_version, Self::app_version())
     }
 
+    pub fn is_using_cuda(&self) -> bool { false } // Placeholder — à implémenter quand CUDA supporté
+    pub fn is_using_default_microphone(&self) -> bool { self.microphone.is_none() }
+    pub fn has_custom_model_path(&self) -> bool {
+        self.model_path != Self::default().model_path
+    }
     pub fn is_french(&self) -> bool { self.language == "fr" }
     pub fn is_auto_detect(&self) -> bool { self.language == "auto" }
     pub fn is_beep_enabled(&self) -> bool { self.beep_enabled }
