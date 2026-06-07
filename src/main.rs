@@ -247,6 +247,7 @@ fn main() -> Result<()> {
             println!("  --stats               Statistiques historique de dictée");
             println!("  --config-check        Valider la configuration sans démarrer");
             println!("  --reset-history       Effacer l'historique de dictée");
+            println!("  --export [chemin]     Exporter l'historique en Markdown");
             println!("  --version, -v         Afficher la version");
             return Ok(());
         }
@@ -272,6 +273,31 @@ fn main() -> Result<()> {
                 println!("  {}", chunk.join("  "));
             }
             println!("\nDétection automatique : utiliser \"auto\"");
+            return Ok(());
+        }
+        Some("--export") => {
+            let out_path = args.get(2)
+                .map(std::path::PathBuf::from)
+                .unwrap_or_else(|| {
+                    let ts = std::time::SystemTime::now()
+                        .duration_since(std::time::UNIX_EPOCH)
+                        .unwrap_or_default()
+                        .as_secs();
+                    std::path::PathBuf::from(format!("dictum-history-{}.md", ts))
+                });
+            match History::load() {
+                Ok(h) => {
+                    if h.is_empty() {
+                        println!("Historique vide — rien à exporter.");
+                        return Ok(());
+                    }
+                    match h.export_to_file(&out_path) {
+                        Ok(_) => println!("Exporté : {} ({} entrées)", out_path.display(), h.len()),
+                        Err(e) => { println!("Erreur export : {e}"); std::process::exit(1); }
+                    }
+                }
+                Err(e) => { println!("Impossible de charger l'historique : {e}"); std::process::exit(1); }
+            }
             return Ok(());
         }
         Some("--reset-history") => {
