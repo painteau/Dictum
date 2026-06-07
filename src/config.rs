@@ -292,6 +292,14 @@ impl Config {
         self.substitutions.len()
     }
 
+    pub fn beep_description(&self) -> String {
+        if !self.beep_enabled {
+            "désactivé".to_string()
+        } else {
+            format!("{}Hz/{}Hz {}ms", self.beep_start_freq, self.beep_end_freq, self.beep_duration_ms)
+        }
+    }
+
     pub fn silence_level_label(&self) -> &'static str {
         match self.silence_threshold {
             t if t < 0.001 => "désactivé",
