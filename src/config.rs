@@ -470,6 +470,24 @@ impl Config {
     }
 
     #[allow(dead_code)]
+    pub fn set_prefix_space(&mut self, val: bool) -> &mut Self {
+        self.prefix_space = val;
+        self
+    }
+
+    #[allow(dead_code)]
+    pub fn set_whisper_temperature(&mut self, temp: f32) -> &mut Self {
+        self.whisper_temperature = temp.clamp(0.0, 1.0);
+        self
+    }
+
+    #[allow(dead_code)]
+    pub fn set_no_speech(&mut self, val: bool) -> &mut Self {
+        self.whisper_no_speech = val;
+        self
+    }
+
+    #[allow(dead_code)]
     pub fn set_log_level(&mut self, level: &str) -> &mut Self {
         if ["error","warn","info","debug","trace"].contains(&level) {
             self.log_level = level.to_string();
