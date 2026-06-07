@@ -1,5 +1,18 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.1.8 — CONFIG 200 MÉTHODES MILESTONE
+
+### Double milestone
+- Config : **200 méthodes** ✓
+- Total API : **282 méthodes** (200 Config + 82 History)
+
+### Ajouté
+- Config 200 méthodes : `is_minimal/maximal_config`, `compatible_with_french`, `thread_count_display`, `summary_for_about`, `is_same_language/hotkey`
+- Tray : export CSV historique (en plus du Markdown)
+- 546 commits
+
+---
+
 ## 2026-06-07 — v1.1.7 — CLI HISTORY + API 272
 
 ### Ajouté
