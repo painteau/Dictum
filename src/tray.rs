@@ -218,12 +218,13 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
             let cfg = state.config.lock().unwrap();
             (cfg.description(), cfg.hotkey_string())
         };
+        let words = state.history.lock().unwrap().words_count();
         let tooltip = if recording {
             format!("Enregistrement... relâcher {}", hotkey_str)
         } else if transcribing {
             "Transcription en cours...".to_string()
         } else if count > 0 {
-            format!("{} — {} dictée{}", desc, count, if count > 1 { "s" } else { "" })
+            format!("{} — {} dictée{} ({} mots)", desc, count, if count > 1 { "s" } else { "" }, words)
         } else {
             format!("{} — Maintenir {}", desc, hotkey_str)
         };
