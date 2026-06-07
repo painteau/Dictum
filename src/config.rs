@@ -694,6 +694,18 @@ impl Config {
     pub fn is_using_cuda(&self) -> bool { false }
     pub fn needs_wizard(&self) -> bool { !self.is_fully_ready() }
 
+    pub fn changes_from_default(&self) -> Vec<String> {
+        let default = Config::default();
+        let mut changes = Vec::new();
+        if self.language != default.language { changes.push(format!("langue: {} → {}", default.language, self.language)); }
+        if self.beep_enabled != default.beep_enabled { changes.push(format!("beep: {} → {}", default.beep_enabled, self.beep_enabled)); }
+        if self.pause_media != default.pause_media { changes.push(format!("pause_media: {} → {}", default.pause_media, self.pause_media)); }
+        if self.silence_threshold != default.silence_threshold { changes.push(format!("silence: {:.3} → {:.3}", default.silence_threshold, self.silence_threshold)); }
+        if self.max_record_secs != default.max_record_secs { changes.push(format!("max_rec: {}s → {}s", default.max_record_secs, self.max_record_secs)); }
+        if !self.substitutions.is_empty() { changes.push(format!("substitutions: {} règle(s)", self.substitutions.len())); }
+        changes
+    }
+
     #[allow(dead_code)]
     pub fn apply_profile_french_standard(&mut self) -> &mut Self {
         self.language = "fr".to_string();
