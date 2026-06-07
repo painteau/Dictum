@@ -470,6 +470,18 @@ impl Config {
     }
 
     #[allow(dead_code)]
+    pub fn set_model(&mut self, model_path: std::path::PathBuf) -> &mut Self {
+        self.model_path = model_path;
+        self
+    }
+
+    #[allow(dead_code)]
+    pub fn set_microphone(&mut self, mic: Option<String>) -> &mut Self {
+        self.microphone = mic;
+        self
+    }
+
+    #[allow(dead_code)]
     pub fn set_language(&mut self, lang: &str) -> &mut Self {
         self.language = lang.to_string();
         self.french_typography = lang == "fr";
