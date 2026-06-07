@@ -628,6 +628,39 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn longest_word_in(&self, idx: usize) -> Option<String> {
+        self.entries.get(idx)?
+            .text.split_whitespace()
+            .max_by_key(|w| w.len())
+            .map(String::from)
+    }
+
+    #[allow(dead_code)]
+    pub fn sentence_count_at(&self, idx: usize) -> usize {
+        self.entries.get(idx)
+            .map(|e| e.text.chars().filter(|&c| ".!?".contains(c)).count().max(1))
+            .unwrap_or(0)
+    }
+
+    #[allow(dead_code)]
+    pub fn avg_sentence_length_at(&self, idx: usize) -> f32 {
+        let entry = match self.entries.get(idx) { Some(e) => e, None => return 0.0 };
+        let words = entry.text.split_whitespace().count() as f32;
+        let sents = self.sentence_count_at(idx).max(1) as f32;
+        words / sents
+    }
+
+    #[allow(dead_code)]
+    pub fn has_question_at(&self, idx: usize) -> bool {
+        self.entries.get(idx).map(|e| e.text.contains('?')).unwrap_or(false)
+    }
+
+    #[allow(dead_code)]
+    pub fn texts_as_vec(&self) -> Vec<&str> {
+        self.entries.iter().map(|e| e.text.as_str()).collect()
+    }
+
+    #[allow(dead_code)]
     pub fn avg_words_per_entry(&self) -> usize {
         if self.is_empty() { return 0; }
         self.words_count() / self.len()
