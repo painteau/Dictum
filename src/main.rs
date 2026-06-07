@@ -505,6 +505,33 @@ fn main() -> Result<()> {
             }
             return Ok(());
         }
+        Some("--set-mic") => {
+            let name = args.get(2).map(String::as_str).unwrap_or("");
+            let mut cfg = Config::load().unwrap_or_default();
+            if name.is_empty() || name == "default" || name == "auto" {
+                cfg.microphone = None;
+                match cfg.save() {
+                    Ok(_) => println!("Microphone : défaut système"),
+                    Err(e) => { println!("Erreur : {e}"); std::process::exit(1); }
+                }
+            } else {
+                // Vérifier que le micro existe
+                let devices = audio::list_devices();
+                let found = devices.iter().any(|d| d.contains(name));
+                if !found {
+                    println!("Microphone non trouvé : {:?}", name);
+                    println!("Disponibles :");
+                    for d in &devices { println!("  - {}", d); }
+                    std::process::exit(1);
+                }
+                cfg.microphone = Some(name.to_string());
+                match cfg.save() {
+                    Ok(_) => println!("Microphone défini : {}", name),
+                    Err(e) => { println!("Erreur : {e}"); std::process::exit(1); }
+                }
+            }
+            return Ok(());
+        }
         Some("--set-lang") => {
             let lang = args.get(2).map(String::as_str).unwrap_or("");
             if lang.is_empty() {
