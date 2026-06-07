@@ -694,6 +694,15 @@ impl Config {
     pub fn is_using_cuda(&self) -> bool { false }
     pub fn needs_wizard(&self) -> bool { !self.is_fully_ready() }
 
+    pub fn changes_summary_display(&self) -> String {
+        let changes = self.changes_from_default();
+        if changes.is_empty() {
+            "configuration par défaut".to_string()
+        } else {
+            format!("{} modification(s) : {}", changes.len(), changes.join(", "))
+        }
+    }
+
     pub fn changes_from_default(&self) -> Vec<String> {
         let default = Config::default();
         let mut changes = Vec::new();
