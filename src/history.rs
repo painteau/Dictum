@@ -243,6 +243,33 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn total_sentences(&self) -> usize {
+        self.entries.iter().map(|e| {
+            e.text.chars().filter(|&c| ".!?".contains(c)).count().max(1)
+        }).sum()
+    }
+
+    #[allow(dead_code)]
+    pub fn export_csv(&self) -> String {
+        let mut out = String::from("timestamp,chars,words,text\n");
+        for e in &self.entries {
+            let words = e.text.split_whitespace().count();
+            let text_escaped = e.text.replace('"', "\"\"");
+            out.push_str(&format!("{},{},{},\"{}\"\n", e.timestamp, e.text.len(), words, text_escaped));
+        }
+        out
+    }
+
+    #[allow(dead_code)]
+    pub fn percentile_length(&self, pct: f32) -> usize {
+        if self.is_empty() { return 0; }
+        let mut lengths: Vec<usize> = self.entries.iter().map(|e| e.text.len()).collect();
+        lengths.sort();
+        let idx = ((pct / 100.0) * (lengths.len() - 1) as f32).round() as usize;
+        lengths[idx.min(lengths.len() - 1)]
+    }
+
+    #[allow(dead_code)]
     pub fn avg_words_per_entry(&self) -> usize {
         if self.is_empty() { return 0; }
         self.words_count() / self.len()
