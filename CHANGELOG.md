@@ -1,5 +1,15 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.6.1 — Config 48 méthodes + History avancée
+
+### Ajouté
+- `config.rs` : `export_to_file()`, `export_to_string()`, `defaults()`
+- `config.rs` : `from_json_string()`, `merge_substitutions_from()`
+- `history.rs` : `most_common_word()` — analyse fréquence mots
+- Config : **48 méthodes publiques** ✓
+
+---
+
 ## 2026-06-07 — v0.6.0 — Milestone Config 45 méthodes
 
 ### Milestone
