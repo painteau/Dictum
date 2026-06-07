@@ -191,7 +191,43 @@ impl AppState {
     }
 }
 
+/// Retourne true si c'est la première instance, false si déjà une instance active.
+#[cfg(windows)]
+fn ensure_single_instance() -> bool {
+    use std::ffi::OsStr;
+    use std::os::windows::ffi::OsStrExt;
+    let name: Vec<u16> = OsStr::new("Global\\DictumSingleInstance")
+        .encode_wide()
+        .chain(std::iter::once(0))
+        .collect();
+    unsafe {
+        let handle = winapi::um::synchapi::CreateMutexW(std::ptr::null_mut(), 1, name.as_ptr());
+        if handle.is_null() { return false; }
+        winapi::um::errhandlingapi::GetLastError() != winapi::shared::winerror::ERROR_ALREADY_EXISTS
+    }
+}
+
+#[cfg(not(windows))]
+fn ensure_single_instance() -> bool { true }
+
 fn main() -> Result<()> {
+    // Vérifier qu'aucune autre instance n'est en cours (mode tray seulement)
+    let is_cli = std::env::args().len() > 1;
+    if !is_cli && !ensure_single_instance() {
+        // Afficher un message et quitter
+        #[cfg(windows)]
+        unsafe {
+            use std::ffi::OsStr;
+            use std::os::windows::ffi::OsStrExt;
+            use winapi::um::winuser::{MessageBoxW, MB_ICONWARNING, MB_OK};
+            let title: Vec<u16> = OsStr::new("Dictum").encode_wide().chain(std::iter::once(0)).collect();
+            let msg: Vec<u16> = OsStr::new("Dictum est déjà en cours d'exécution.\nVérifier l'icône dans la barre des tâches.")
+                .encode_wide().chain(std::iter::once(0)).collect();
+            MessageBoxW(std::ptr::null_mut(), msg.as_ptr(), title.as_ptr(), MB_OK | MB_ICONWARNING);
+        }
+        return Ok(());
+    }
+
     // --debug active les logs détaillés avant l'init logger
     let debug_mode = std::env::args().any(|a| a == "--debug");
     if debug_mode {
