@@ -1,8 +1,13 @@
 use crate::config::Substitution;
 
+const MAX_RULES: usize = 100;
+
 pub fn apply(rules: &[Substitution], text: &str) -> String {
     // Appliquer les règles longues en premier (évite les substitutions partielles)
-    let mut sorted_rules: Vec<&Substitution> = rules.iter().filter(|r| !r.from.is_empty()).collect();
+    let mut sorted_rules: Vec<&Substitution> = rules.iter()
+        .filter(|r| !r.from.is_empty())
+        .take(MAX_RULES)
+        .collect();
     sorted_rules.sort_by(|a, b| b.from.len().cmp(&a.from.len()));
 
     let mut result = text.to_string();
