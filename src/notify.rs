@@ -33,3 +33,11 @@ pub fn notify_update(version: &str, size_mb: u64) {
         &format!("Version {} disponible ({} MB). Cliquer sur l'icône tray.", version, size_mb),
     );
 }
+
+pub fn notify_pause(paused: bool) {
+    if paused {
+        show_toast("Dictum — Pause", "Dictée suspendue. Cliquer tray pour reprendre.");
+    } else {
+        show_toast("Dictum — Reprise", "Dictée active.");
+    }
+}

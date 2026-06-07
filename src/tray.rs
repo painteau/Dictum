@@ -92,8 +92,11 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
             if event.id == item_pause.id() {
                 let mut p = state.is_paused.lock().unwrap();
                 *p = !*p;
-                let state_str = if *p { "en pause" } else { "active" };
+                let new_state = *p;
+                drop(p);
+                let state_str = if new_state { "en pause" } else { "active" };
                 log::info!("Dictée {} via menu tray", state_str);
+                crate::notify::notify_pause(new_state);
             } else if event.id == item_quit.id() {
                 let _ = event_tx.send(AppEvent::Quit);
                 break;
