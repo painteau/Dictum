@@ -9,6 +9,7 @@ use crossbeam_channel::bounded;
 mod audio;
 mod config;
 mod downloader;
+mod dropper;
 mod history;
 mod hotkey;
 mod inject;

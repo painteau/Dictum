@@ -23,6 +23,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
     let item_session_stats = MenuItem::new("📊 Statistiques session", true, None);
     let item_clear_hist = MenuItem::new("🗑  Effacer l'historique", true, None);
     let item_reload     = MenuItem::new("↺  Recharger la config", true, None);
+    let item_drop_file  = MenuItem::new("📂 Transcrire un fichier...", true, None);
     let item_open_log   = MenuItem::new("📄 Ouvrir le log", true, None);
     let item_open_dir   = MenuItem::new("📁 Ouvrir le dossier Dictum", true, None);
     let item_about      = MenuItem::new(
@@ -54,6 +55,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
         &PredefinedMenuItem::separator(),
         // Système
         &item_devices,
+        &item_drop_file,
         &item_open_log,
         &item_open_dir,
         &item_about,
@@ -270,6 +272,11 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                     log_path.display()
                 );
                 show_dialog("À propos de Dictum", &msg);
+            } else if event.id == item_drop_file.id() {
+                let cfg = state.config.lock().unwrap().clone();
+                std::thread::spawn(move || {
+                    crate::dropper::open(cfg);
+                });
             } else if event.id == item_devices.id() {
                 let devices = crate::audio::list_devices();
                 let msg = if devices.is_empty() {
