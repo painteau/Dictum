@@ -36,6 +36,7 @@ pub struct DownloadProgress {
     pub finished: bool,
     pub error: Option<String>,
     pub current_file: String,
+    pub start_time: Option<std::time::Instant>,
 }
 
 impl DownloadProgress {
@@ -44,11 +45,23 @@ impl DownloadProgress {
         (self.downloaded as f32 / self.total as f32).clamp(0.0, 1.0)
     }
     pub fn mb_display(&self) -> String {
+        let speed_str = self.speed_display();
         format!(
-            "{:.0} MB / {:.0} MB",
+            "{:.0} MB / {:.0} MB{}",
             self.downloaded as f32 / 1_048_576.0,
-            self.total as f32 / 1_048_576.0
+            self.total as f32 / 1_048_576.0,
+            speed_str
         )
+    }
+    pub fn speed_display(&self) -> String {
+        if let Some(start) = self.start_time {
+            let elapsed = start.elapsed().as_secs_f64();
+            if elapsed > 1.0 && self.downloaded > 0 {
+                let mb_per_sec = self.downloaded as f64 / 1_048_576.0 / elapsed;
+                return format!(" ({:.1} MB/s)", mb_per_sec);
+            }
+        }
+        String::new()
     }
 }
 
@@ -121,6 +134,9 @@ impl SetupWizard {
         let progress = self.progress.clone();
 
         let data_dir = Config::data_dir();
+        if let Ok(mut p) = self.progress.lock() {
+            p.start_time = Some(std::time::Instant::now());
+        }
         std::thread::spawn(move || {
             // 1. Télécharger binaires whisper-cli + DLLs
             let bin_result = downloader::download_all_binaries(&manifest, &data_dir, |name, dl, total| {
