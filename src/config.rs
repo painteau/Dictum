@@ -768,7 +768,15 @@ impl Config {
     }
 
     pub fn min_disk_space_mb(&self) -> u32 {
-        self.model_size_mb_estimate() + 100 // modèle + binaires
+        self.model_size_mb_estimate() + 100
+    }
+
+    pub fn config_age_display(&self) -> String {
+        format!("config_version={}", self.config_version)
+    }
+
+    pub fn is_compatible_with_version(&self, min_version: u32) -> bool {
+        self.config_version >= min_version
     }
 
     pub fn recommend_model(has_fast_cpu: bool, vram_mb: u32) -> &'static str {
