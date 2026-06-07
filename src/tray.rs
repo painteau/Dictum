@@ -179,10 +179,11 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                 let model_status = if config.is_model_ready() { "✓ présent" } else { "✗ MANQUANT" };
                 let cli_status = if crate::config::Config::is_whisper_cli_ready() { "✓ présent" } else { "✗ MANQUANT" };
                 let msg = format!(
-                    "Dictum v{}\ngithub.com/painteau/Dictum\n\nModèle  : {} ({})\nwhisper : {}\nLangue  : {}\nHotkey  : {}\nThreads : {}\n\nSession : {} transcription{}\nConfig  : {}\nLog     : {}",
+                    "Dictum v{}\ngithub.com/painteau/Dictum\n\nModèle  : {} ({}) [{}]\nwhisper : {}\nLangue  : {}\nHotkey  : {}\nThreads : {}\n\nSession : {} transcription{}\nConfig  : {}\nLog     : {}",
                     env!("CARGO_PKG_VERSION"),
                     config.model_name(),
                     model_status,
+                    config.whisper_speed_label(),
                     cli_status,
                     config.language_display(),
                     config.hotkey_string(),
