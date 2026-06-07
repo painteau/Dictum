@@ -693,6 +693,12 @@ impl Config {
 
     pub fn is_using_cuda(&self) -> bool { false }
     pub fn needs_wizard(&self) -> bool { !self.is_fully_ready() }
+    pub fn uses_large_model(&self) -> bool { self.model_name().contains("large") }
+    pub fn uses_medium_model(&self) -> bool { self.model_name().contains("medium") }
+    pub fn is_low_latency(&self) -> bool {
+        self.inject_delay_ms <= 60 && self.min_record_ms <= 200
+    }
+    pub fn is_verbose_mode(&self) -> bool { self.log_level == "debug" || self.log_level == "trace" }
     pub fn is_production_ready(&self) -> bool {
         self.is_fully_ready() && self.validate().is_empty()
     }
