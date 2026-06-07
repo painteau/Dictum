@@ -1,5 +1,14 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.6.2 — History stats complets
+
+### Ajouté
+- `history.rs` : `unique_words_count()`, `stats_summary()`
+- `tray.rs` : À propos utilise `stats_summary()` — simplifié
+- `main.rs` : log `stats_summary()` au démarrage
+
+---
+
 ## 2026-06-07 — v0.6.1 — Config 48 méthodes + History avancée
 
 ### Ajouté
