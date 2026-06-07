@@ -83,6 +83,15 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn search(&self, query: &str) -> Vec<&HistoryEntry> {
+        let query_lower = query.to_lowercase();
+        self.entries
+            .iter()
+            .filter(|e| e.text.to_lowercase().contains(&query_lower))
+            .collect()
+    }
+
+    #[allow(dead_code)]
     pub fn last_timestamp(&self) -> Option<u64> {
         self.entries.front().map(|e| e.timestamp)
     }
