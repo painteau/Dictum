@@ -100,6 +100,6 @@ pub fn start(config: Config, tx: Sender<AppEvent>) {
             _ => {}
         }
     }) {
-        log::error!("Hotkey listener error: {e:?}");
+        log::error!("Erreur listener hotkey : {e:?}");
     }
 }

@@ -87,7 +87,7 @@ impl RecordHandle {
                             buf.extend_from_slice(data);
                         }
                     },
-                    |err| log::error!("Audio stream error: {err}"),
+                    |err| log::error!("Erreur stream audio : {err}"),
                     None,
                 )
                 .expect("Failed to build input stream");
