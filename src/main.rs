@@ -308,8 +308,8 @@ fn main() -> Result<()> {
             cfg.model_path.file_name().and_then(|n| n.to_str()).unwrap_or("?"),
             if cfg.model_path.exists() { "présent" } else { "MANQUANT" }
         );
-        if !cfg.substitutions.is_empty() {
-            log::info!("Substitutions : {} règle(s)", cfg.substitutions.len());
+        if cfg.has_substitutions() {
+            log::info!("Substitutions : {} règle(s)", cfg.substitution_count());
         }
         if cfg.pause_media { log::info!("Pause médias : activée"); }
         if cfg.beep_enabled { log::info!("Beep : activé"); }
