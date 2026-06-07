@@ -661,6 +661,36 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn first_word(&self) -> Option<String> {
+        self.entries.front()?.text.split_whitespace().next().map(String::from)
+    }
+
+    #[allow(dead_code)]
+    pub fn last_word(&self) -> Option<String> {
+        self.entries.front()?.text.split_whitespace().last().map(String::from)
+    }
+
+    #[allow(dead_code)]
+    pub fn entry_starts_with_upper(&self, idx: usize) -> bool {
+        self.entries.get(idx)
+            .and_then(|e| e.text.chars().next())
+            .map(|c| c.is_uppercase())
+            .unwrap_or(false)
+    }
+
+    #[allow(dead_code)]
+    pub fn texts_longer_than_words(&self, min_words: usize) -> Vec<&HistoryEntry> {
+        self.entries.iter().filter(|e| e.text.split_whitespace().count() > min_words).collect()
+    }
+
+    #[allow(dead_code)]
+    pub fn ratio_short_entries(&self, max_chars: usize) -> f32 {
+        if self.is_empty() { return 0.0; }
+        let short = self.entries.iter().filter(|e| e.text.len() <= max_chars).count();
+        short as f32 / self.len() as f32
+    }
+
+    #[allow(dead_code)]
     pub fn avg_words_per_entry(&self) -> usize {
         if self.is_empty() { return 0; }
         self.words_count() / self.len()
