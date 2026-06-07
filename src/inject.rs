@@ -46,9 +46,20 @@ pub fn inject_text(text: &str, config: &Config) {
         Ok(mut enigo) => {
             // Injecter ligne par ligne pour gérer les \n (Whisper peut retourner plusieurs segments)
             let lines: Vec<&str> = text.split('\n').collect();
+            const CHUNK_SIZE: usize = 500;
             for (i, line) in lines.iter().enumerate() {
                 if !line.is_empty() {
-                    if let Err(e) = enigo.text(line) {
+                    // Injection par chunks si ligne > 500 chars (évite timeouts enigo)
+                    if line.len() > CHUNK_SIZE {
+                        for chunk in line.as_bytes().chunks(CHUNK_SIZE) {
+                            let s = String::from_utf8_lossy(chunk);
+                            if let Err(e) = enigo.text(&s) {
+                                log::error!("Injection chunk échouée : {e}");
+                                return;
+                            }
+                            std::thread::sleep(std::time::Duration::from_millis(10));
+                        }
+                    } else if let Err(e) = enigo.text(line) {
                         log::error!("Injection échouée : {e}");
                         return;
                     }
