@@ -310,7 +310,7 @@ fn main() -> Result<()> {
             log::info!("Substitutions : {} règle(s)", cfg.substitution_count());
         }
         if cfg.pause_media { log::info!("Pause médias : activée"); }
-        if cfg.beep_enabled { log::info!("Beep : activé"); }
+        log::info!("Beep : {}", cfg.beep_description());
         log::info!("Whisper : threads={} temp={:.1} no_speech={}",
             if cfg.whisper_threads == 0 { "auto".to_string() } else { cfg.whisper_threads.to_string() },
             cfg.whisper_temperature,
