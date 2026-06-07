@@ -1498,4 +1498,23 @@ impl Config {
     pub fn is_same_model(&self, other: &Config) -> bool {
         self.model_path == other.model_path
     }
+
+    #[allow(dead_code)]
+    pub fn display_name(&self) -> String {
+        format!("Dictum {} {}", Self::app_version(), self.language_emoji())
+    }
+
+    #[allow(dead_code)]
+    pub fn whisper_flags_count(&self) -> usize {
+        let mut n = 0usize;
+        if self.whisper_no_speech { n += 1; }
+        if self.whisper_temperature != 0.0 { n += 1; }
+        if self.whisper_threads > 0 { n += 1; }
+        n
+    }
+
+    #[allow(dead_code)]
+    pub fn is_default_inject_delay(&self) -> bool {
+        self.inject_delay_ms == 80
+    }
 }
