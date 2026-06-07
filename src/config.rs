@@ -1288,4 +1288,31 @@ impl Config {
         self.min_record_ms = ms;
         self
     }
+
+    #[allow(dead_code)]
+    pub fn has_long_record_limit(&self) -> bool {
+        self.max_record_secs > 60
+    }
+
+    #[allow(dead_code)]
+    pub fn has_short_record_limit(&self) -> bool {
+        self.max_record_secs <= 10
+    }
+
+    #[allow(dead_code)]
+    pub fn is_whisper_temperature_zero(&self) -> bool {
+        self.whisper_temperature == 0.0
+    }
+
+    #[allow(dead_code)]
+    pub fn inject_delay_is_fast(&self) -> bool {
+        self.inject_delay_ms <= 50
+    }
+
+    #[allow(dead_code)]
+    pub fn inject_delay_category(&self) -> &'static str {
+        if self.inject_delay_ms <= 50 { "rapide" }
+        else if self.inject_delay_ms <= 150 { "normal" }
+        else { "lent" }
+    }
 }
