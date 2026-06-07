@@ -250,7 +250,7 @@ impl Config {
             if self.auto_enter { Some("auto_enter") } else { None },
         ].iter().filter_map(|&o| o).collect();
         let flags_str = if flags.is_empty() { "aucun".to_string() } else { flags.join(",") };
-        log::info!("Config [{}] | {} | flags=[{}]", self.profile_name(), self.changes_summary_display(), flags_str);
+        log::info!("Config [{}|{}] | {} | flags=[{}]", self.profile_name(), self.performance_label(), self.changes_summary_display(), flags_str);
         log::info!("Détails : lang={} model=[{}|{}] hotkey={} threads={} rec=[{}] silence={} inject=[{}]",
             self.language_display(),
             self.model_name(),
