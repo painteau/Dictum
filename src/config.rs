@@ -292,6 +292,18 @@ impl Config {
         self.substitutions.len()
     }
 
+    pub fn threads_display(&self) -> String {
+        if self.whisper_threads == 0 {
+            format!("auto (max {})", std::thread::available_parallelism().map(|n| n.get().min(8)).unwrap_or(4))
+        } else {
+            self.whisper_threads.to_string()
+        }
+    }
+
+    pub fn record_duration_label(&self) -> String {
+        format!("{}ms–{}s", self.min_record_ms, self.max_record_secs)
+    }
+
     pub fn inject_mode_label(&self) -> String {
         let mut parts = Vec::new();
         if self.auto_capitalize { parts.push("majuscule"); }
