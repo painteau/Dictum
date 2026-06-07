@@ -71,6 +71,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
         if update_info.is_none() {
             if let Some(info) = crate::take_update() {
                 let size_mb = (info.installer_size as f64 / 1_048_576.0).ceil() as u64;
+                log::info!("Mise à jour v{} disponible ({} MB) — affiché dans le tray", info.version, size_mb);
                 item_update.set_enabled(true);
                 item_update.set_text(format!("🔄 v{} disponible ({} MB) — Cliquer pour installer", info.version, size_mb));
                 update_info = Some(info);
