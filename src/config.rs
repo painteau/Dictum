@@ -470,6 +470,17 @@ impl Config {
     }
 
     #[allow(dead_code)]
+    pub fn with_model_name(&mut self, name: &str) -> &mut Self {
+        let filename = if name.ends_with(".bin") {
+            name.to_string()
+        } else {
+            format!("ggml-{}.bin", name)
+        };
+        self.model_path = Self::models_dir().join(filename);
+        self
+    }
+
+    #[allow(dead_code)]
     pub fn set_beep_freqs(&mut self, start: u32, end: u32, duration_ms: u32) -> &mut Self {
         self.beep_start_freq = start.clamp(100, 20000);
         self.beep_end_freq = end.clamp(100, 20000);
