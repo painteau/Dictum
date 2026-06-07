@@ -60,7 +60,18 @@ impl DownloadProgress {
             let elapsed = start.elapsed().as_secs_f64();
             if elapsed > 1.0 && self.downloaded > 0 {
                 let mb_per_sec = self.downloaded as f64 / 1_048_576.0 / elapsed;
-                return format!(" ({:.1} MB/s)", mb_per_sec);
+                let eta = if self.total > self.downloaded && mb_per_sec > 0.0 {
+                    let remaining_mb = (self.total - self.downloaded) as f64 / 1_048_576.0;
+                    let secs = (remaining_mb / mb_per_sec).round() as u64;
+                    if secs >= 60 {
+                        format!(" — ~{}min{}s", secs / 60, secs % 60)
+                    } else {
+                        format!(" — ~{}s", secs)
+                    }
+                } else {
+                    String::new()
+                };
+                return format!(" ({:.1} MB/s{})", mb_per_sec, eta);
             }
         }
         String::new()
