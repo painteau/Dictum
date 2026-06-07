@@ -248,6 +248,16 @@ impl Config {
         );
     }
 
+    /// Vérifie si le modèle Whisper est téléchargé.
+    pub fn is_model_ready(&self) -> bool {
+        self.model_path.exists()
+    }
+
+    /// Vérifie si whisper-cli.exe est disponible.
+    pub fn is_whisper_cli_ready() -> bool {
+        data_dir().join("whisper-cli.exe").exists()
+    }
+
     pub fn log_path() -> PathBuf {
         data_dir().join("dictum.log")
     }
