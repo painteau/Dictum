@@ -1197,4 +1197,35 @@ impl Config {
     pub fn log_path_display(&self) -> String {
         Self::log_path().display().to_string()
     }
+
+    #[allow(dead_code)]
+    pub fn with_language(mut self, lang: &str) -> Self {
+        self.language = lang.to_string();
+        self.french_typography = lang == "fr";
+        self
+    }
+
+    #[allow(dead_code)]
+    pub fn with_beep(mut self, enabled: bool) -> Self {
+        self.beep_enabled = enabled;
+        self
+    }
+
+    #[allow(dead_code)]
+    pub fn with_capitalize(mut self, enabled: bool) -> Self {
+        self.auto_capitalize = enabled;
+        self
+    }
+
+    #[allow(dead_code)]
+    pub fn with_prefix_space(mut self, enabled: bool) -> Self {
+        self.prefix_space = enabled;
+        self
+    }
+
+    #[allow(dead_code)]
+    pub fn with_auto_enter(mut self, enabled: bool) -> Self {
+        self.auto_enter = enabled;
+        self
+    }
 }
