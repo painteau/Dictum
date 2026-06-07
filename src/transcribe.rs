@@ -117,6 +117,11 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
 
     cmd.arg("--file").arg(&wav_path);
 
+    log::info!("whisper-cli : threads={} temp={:.1} lang={}",
+        cpu_threads,
+        config.whisper_temperature,
+        if config.language == "auto" { "auto" } else { &config.language }
+    );
     log::debug!("whisper-cli args: {:?}", cmd);
 
     for arg in &lang_args {
