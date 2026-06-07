@@ -162,7 +162,10 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
             } else if event.id == item_open_log.id() {
                 let log_path = crate::config::Config::log_path();
                 if log_path.exists() {
-                    std::process::Command::new("notepad").arg(&log_path).spawn().ok();
+                    let editor = std::env::var("EDITOR").unwrap_or_else(|_| "notepad".to_string());
+                    std::process::Command::new(&editor).arg(&log_path).spawn()
+                        .or_else(|_| std::process::Command::new("notepad").arg(&log_path).spawn())
+                        .ok();
                 } else {
                     show_dialog("Dictum", "Aucun fichier de log trouvé.");
                 }
