@@ -328,9 +328,10 @@ impl Config {
     pub fn is_ready_message(&self) -> String {
         let issues = self.validate();
         if issues.is_empty() {
-            format!("Dictum {} prêt — {}", Self::app_version(), self.model_name())
+            format!("Dictum {} prêt [score:{}/100 — {}] — {}",
+                Self::app_version(), self.score(), self.score_label(), self.model_name())
         } else {
-            format!("{} problème(s) : {}", issues.len(), issues.join(", "))
+            format!("score:{}/100 — {} problème(s) : {}", self.score(), issues.len(), issues.join(", "))
         }
     }
 
