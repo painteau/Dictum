@@ -1,5 +1,18 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.4.8 — API finale
+
+### Ajouté
+- `config.rs` : `language_display()` — nom lisible de la langue (fr→Français, auto→Auto-détection...)
+- `config.rs` : `is_fully_ready()` — vérifie modèle + whisper-cli
+- `config.rs` : `sanitize()` logge si silence_threshold hors limites
+- `tray.rs` : À propos affiche `language_display()` au lieu du code ISO
+- `config.rs` : `log_summary()` utilise `language_display()`
+- `main.rs` : utilise `is_fully_ready()` au lieu de `transcribe::is_ready()`
+- `transcribe.rs` : log nom du modèle par transcription
+
+---
+
 ## 2026-06-07 — v0.4.7 — Code propre
 
 ### Ajouté
