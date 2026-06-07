@@ -83,6 +83,18 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn unique_words_count(&self) -> usize {
+        let mut words = std::collections::HashSet::new();
+        for e in &self.entries {
+            for word in e.text.split_whitespace() {
+                let w = word.to_lowercase().trim_matches(|c: char| !c.is_alphabetic()).to_string();
+                if w.len() >= 3 { words.insert(w); }
+            }
+        }
+        words.len()
+    }
+
+    #[allow(dead_code)]
     pub fn most_common_word(&self) -> Option<String> {
         let mut freq: std::collections::HashMap<String, usize> = std::collections::HashMap::new();
         for e in &self.entries {
