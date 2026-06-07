@@ -694,6 +694,34 @@ impl Config {
     pub fn is_using_cuda(&self) -> bool { false }
     pub fn needs_wizard(&self) -> bool { !self.is_fully_ready() }
 
+    #[allow(dead_code)]
+    pub fn apply_profile_french_standard(&mut self) -> &mut Self {
+        self.language = "fr".to_string();
+        self.french_typography = true;
+        self.auto_capitalize = true;
+        self.beep_enabled = true;
+        self.silence_threshold = 0.005;
+        self
+    }
+
+    #[allow(dead_code)]
+    pub fn apply_profile_minimal(&mut self) -> &mut Self {
+        self.french_typography = false;
+        self.auto_capitalize = false;
+        self.beep_enabled = false;
+        self.pause_media = false;
+        self
+    }
+
+    #[allow(dead_code)]
+    pub fn apply_profile_performance(&mut self) -> &mut Self {
+        self.whisper_threads = 0; // auto
+        self.whisper_temperature = 0.0;
+        self.silence_threshold = 0.003;
+        self.min_record_ms = 200;
+        self
+    }
+
     pub fn diagnose(&self) -> String {
         let issues = self.validate();
         let ok = "✓".to_string();
