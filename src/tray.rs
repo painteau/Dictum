@@ -176,21 +176,12 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                     let h = state.history.lock().unwrap();
                     (h.len(), h.total_chars())
                 };
-                let log_path = crate::config::Config::data_dir().join("dictum.log");
+                let log_path = crate::config::Config::log_path();
                 let config_path = crate::config::Config::data_dir().join("config.json");
-                let cpu_threads = config.threads_display();
-                let model_status = if config.is_model_ready() { "✓ présent" } else { "✗ MANQUANT" };
-                let cli_status = if crate::config::Config::is_whisper_cli_ready() { "✓ présent" } else { "✗ MANQUANT" };
                 let msg = format!(
-                    "Dictum v{}\ngithub.com/painteau/Dictum\n\nModèle  : {} ({}) [{}]\nwhisper : {}\nLangue  : {}\nHotkey  : {}\nThreads : {}\n\nSession : {} transcription{}\nHistorique : {} entrée{} ({} chars)\nConfig  : {}\nLog     : {}",
-                    env!("CARGO_PKG_VERSION"),
-                    config.model_name(),
-                    model_status,
-                    config.whisper_speed_label(),
-                    cli_status,
-                    config.language_display(),
-                    config.hotkey_string(),
-                    cpu_threads,
+                    "github.com/painteau/Dictum\n\n{}\nwhisper : {}\n\nSession : {} transcription{}\nHistorique : {} entrée{} ({} chars)\nConfig  : {}\nLog     : {}",
+                    config.full_status(),
+                    if crate::config::Config::is_whisper_cli_ready() { "✓ présent" } else { "✗ MANQUANT" },
                     count,
                     if count > 1 { "s" } else { "" },
                     hist_count,
