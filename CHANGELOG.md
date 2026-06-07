@@ -1,5 +1,14 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.2.7 — 320 MÉTHODES API
+
+### Ajouté
+- Config 215 méthodes : `max_record_minutes`, `whisper_temperature_display`, hotkey modifier predicates
+- History 105 méthodes : `words/chars_today`, `most_recent_n_words`, `random_entry_index`, `json_string`
+- **320 méthodes API** (215 Config + 105 History) | 569 commits
+
+---
+
 ## 2026-06-07 — v1.2.6 — SETTINGS 4 ONGLETS COMPLETS
 
 ### Ajouté
