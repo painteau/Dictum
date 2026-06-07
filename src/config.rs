@@ -276,4 +276,8 @@ impl Config {
     pub fn history_export_path() -> PathBuf {
         data_dir().join("historique_export.txt")
     }
+
+    pub fn models_dir() -> PathBuf {
+        data_dir().join("models")
+    }
 }
