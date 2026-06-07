@@ -97,6 +97,8 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
 
     cmd.arg("--file").arg(&wav_path);
 
+    log::debug!("whisper-cli args: {:?}", cmd);
+
     for arg in &lang_args {
         cmd.arg(arg);
     }
