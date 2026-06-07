@@ -250,7 +250,8 @@ impl Config {
             if self.auto_enter { Some("auto_enter") } else { None },
         ].iter().filter_map(|&o| o).collect();
         let flags_str = if flags.is_empty() { "aucun".to_string() } else { flags.join(",") };
-        log::info!("Config résumé : lang={} model=[{}|{}] hotkey={} threads={} rec=[{}] silence={} inject=[{}]",
+        log::info!("Config résumé [{}] : lang={} model=[{}|{}] hotkey={} threads={} rec=[{}] silence={} inject=[{}]",
+            self.profile_name(),
             self.language_display(),
             self.model_name(),
             self.whisper_speed_label(),
