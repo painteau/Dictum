@@ -1,0 +1,35 @@
+/// Notification ballon Windows via Shell_NotifyIconW.
+/// Utilisé pour signaler une mise à jour disponible sans dialog bloquant.
+
+/// Affiche une notification toast non bloquante via PowerShell.
+/// Fallback léger sans dépendance WinRT supplémentaire.
+pub fn show_toast(title: &str, message: &str) {
+    let title = title.replace('"', "'");
+    let message = message.replace('"', "'");
+
+    let script = format!(
+        r#"Add-Type -AssemblyName System.Windows.Forms; \
+$n = New-Object System.Windows.Forms.NotifyIcon; \
+$n.Icon = [System.Drawing.Icon]::ExtractAssociatedIcon((Get-Process -Id $PID).Path); \
+$n.Visible = $true; \
+$n.ShowBalloonTip(4000, "{}", "{}", [System.Windows.Forms.ToolTipIcon]::Info); \
+Start-Sleep -Milliseconds 4500; \
+$n.Dispose()"#,
+        title, message
+    );
+
+    std::thread::spawn(move || {
+        let _ = std::process::Command::new("powershell")
+            .args(["-WindowStyle", "Hidden", "-NonInteractive", "-Command", &script])
+            .spawn();
+    });
+}
+
+/// Version silencieuse : log seulement si PowerShell indisponible.
+pub fn notify_update(version: &str, size_mb: u64) {
+    log::info!("Notification mise à jour v{} ({} MB)", version, size_mb);
+    show_toast(
+        "Dictum — Mise à jour disponible",
+        &format!("Version {} disponible ({} MB). Cliquer sur l'icône tray.", version, size_mb),
+    );
+}

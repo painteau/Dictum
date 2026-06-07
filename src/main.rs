@@ -13,6 +13,7 @@ mod history;
 mod hotkey;
 mod inject;
 mod media;
+mod notify;
 mod setup;
 mod substitution;
 mod transcribe;

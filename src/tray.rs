@@ -74,6 +74,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                 log::info!("Mise à jour v{} disponible ({} MB) — affiché dans le tray", info.version, size_mb);
                 item_update.set_enabled(true);
                 item_update.set_text(format!("🔄 v{} disponible ({} MB) — Cliquer pour installer", info.version, size_mb));
+                crate::notify::notify_update(&info.version, size_mb);
                 update_info = Some(info);
             }
         }
