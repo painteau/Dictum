@@ -16,6 +16,7 @@ pub fn inject_raw(text: &str, delay_ms: u64) {
 pub fn inject_text(text: &str, config: &Config) {
     let text = text.trim().to_string();
     if text.is_empty() { return; }
+    log::debug!("Injection : {} chars, typo_fr={} capitalize={}", text.len(), config.french_typography, config.auto_capitalize);
 
     let text = if config.prefix_space {
         format!(" {}", text)
