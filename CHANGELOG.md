@@ -1,5 +1,14 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.1.2 — BUILDERS FLUIDES + WIZARD POLISH
+
+### Ajouté
+- Config 175 méthodes : builders fluides `with_language/beep/capitalize/prefix_space/auto_enter`
+- Wizard welcome : version affichée, lien GitHub cliquable, "4 étapes" indiqué
+- **247 méthodes API** (175 Config + 72 History)
+
+---
+
 ## 2026-06-07 — v1.1.1 — API 242 MÉTHODES
 
 ### Ajouté
