@@ -218,23 +218,18 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
         let recording = *state.is_recording.lock().unwrap();
         let transcribing = *state.is_transcribing.lock().unwrap();
         let count = *state.session_count.lock().unwrap();
-        let (model_name, hotkey_str) = {
+        let (desc, hotkey_str) = {
             let cfg = state.config.lock().unwrap();
-            let m = cfg.model_path.file_stem()
-                .and_then(|n| n.to_str())
-                .unwrap_or(cfg.model_name())
-                .to_string();
-            let h = cfg.hotkey_string();
-            (m, h)
+            (cfg.description(), cfg.hotkey_string())
         };
         let tooltip = if recording {
-            format!("Dictum — Enregistrement... (relâcher {})", hotkey_str)
+            format!("Enregistrement... relâcher {}", hotkey_str)
         } else if transcribing {
-            "Dictum — Transcription en cours...".to_string()
+            "Transcription en cours...".to_string()
         } else if count > 0 {
-            format!("Dictum [{}] — {} dictée{} | {}", model_name, count, if count > 1 { "s" } else { "" }, hotkey_str)
+            format!("{} — {} dictée{}", desc, count, if count > 1 { "s" } else { "" })
         } else {
-            format!("Dictum [{}] — Maintenir {} pour dicter", model_name, hotkey_str)
+            format!("{} — Maintenir {}", desc, hotkey_str)
         };
         let _ = _tray.set_tooltip(Some(&tooltip));
         let _ = _tray.set_icon(Some(make_icon(recording, transcribing)));
