@@ -490,6 +490,39 @@ fn main() -> Result<()> {
             }
             return Ok(());
         }
+        Some("--add-sub") => {
+            // dictum --add-sub "from" "to" [--case-sensitive]
+            let from = args.get(2).map(String::as_str).unwrap_or("");
+            let to = args.get(3).map(String::as_str).unwrap_or("");
+            if from.is_empty() || to.is_empty() {
+                println!("Usage : dictum --add-sub \"depuis\" \"vers\"");
+                std::process::exit(1);
+            }
+            let case_insensitive = !args.iter().any(|a| a == "--case-sensitive");
+            let mut cfg = Config::load().unwrap_or_default();
+            cfg.add_substitution(from, to, case_insensitive);
+            match cfg.save() {
+                Ok(_) => println!("Substitution ajoutée : {:?} → {:?} (insensible casse: {})", from, to, case_insensitive),
+                Err(e) => { println!("Erreur : {e}"); std::process::exit(1); }
+            }
+            return Ok(());
+        }
+        Some("--list-subs") => {
+            match Config::load() {
+                Ok(cfg) => {
+                    if cfg.substitutions.is_empty() {
+                        println!("Aucune substitution configurée.");
+                    } else {
+                        println!("{} substitution(s) :", cfg.substitutions.len());
+                        for s in &cfg.substitutions {
+                            println!("  {:?} → {:?} (insensible: {})", s.from, s.to, s.case_insensitive);
+                        }
+                    }
+                }
+                Err(e) => { println!("Erreur : {e}"); std::process::exit(1); }
+            }
+            return Ok(());
+        }
         Some("--set-beep") => {
             let val = args.get(2).map(String::as_str).unwrap_or("on");
             let enabled = matches!(val, "on" | "true" | "1" | "yes");
