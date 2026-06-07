@@ -366,6 +366,21 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn count_longer_than(&self, chars: usize) -> usize {
+        self.entries.iter().filter(|e| e.text.len() > chars).count()
+    }
+
+    #[allow(dead_code)]
+    pub fn count_shorter_than(&self, chars: usize) -> usize {
+        self.entries.iter().filter(|e| e.text.len() < chars).count()
+    }
+
+    #[allow(dead_code)]
+    pub fn latest_timestamp(&self) -> Option<u64> {
+        self.entries.iter().map(|e| e.timestamp).max()
+    }
+
+    #[allow(dead_code)]
     pub fn avg_words_per_entry(&self) -> usize {
         if self.is_empty() { return 0; }
         self.words_count() / self.len()
