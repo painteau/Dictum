@@ -171,6 +171,15 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn is_growing(&self) -> bool { self.len() > 0 }
+
+    #[allow(dead_code)]
+    pub fn percentage_full(&self, max: usize) -> f32 {
+        if max == 0 { return 100.0; }
+        (self.len() as f32 / max as f32 * 100.0).min(100.0)
+    }
+
+    #[allow(dead_code)]
     pub fn avg_words_per_entry(&self) -> usize {
         if self.is_empty() { return 0; }
         self.words_count() / self.len()
