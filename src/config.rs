@@ -470,6 +470,24 @@ impl Config {
     }
 
     #[allow(dead_code)]
+    pub fn set_auto_capitalize(&mut self, val: bool) -> &mut Self {
+        self.auto_capitalize = val;
+        self
+    }
+
+    #[allow(dead_code)]
+    pub fn set_auto_enter(&mut self, val: bool) -> &mut Self {
+        self.auto_enter = val;
+        self
+    }
+
+    #[allow(dead_code)]
+    pub fn set_french_typography(&mut self, val: bool) -> &mut Self {
+        self.french_typography = val;
+        self
+    }
+
+    #[allow(dead_code)]
     pub fn toggle_beep(&mut self) -> &mut Self {
         self.beep_enabled = !self.beep_enabled;
         log::debug!("Beep : {}", if self.beep_enabled { "activé" } else { "désactivé" });
