@@ -146,8 +146,14 @@ impl SetupWizard {
 
             if let Ok(mut p) = progress.lock() {
                 match result {
-                    Ok(_)  => p.finished = true,
-                    Err(e) => p.error = Some(e.to_string()),
+                    Ok(_) => {
+                        log::info!("Wizard : téléchargement modèle terminé");
+                        p.finished = true;
+                    }
+                    Err(e) => {
+                        log::error!("Wizard : erreur téléchargement — {e}");
+                        p.error = Some(e.to_string());
+                    }
                 }
             }
         });
