@@ -294,6 +294,15 @@ impl Config {
     }
 
     /// Retourne la liste des problèmes de configuration (vide si tout est OK).
+    pub fn is_ready_message(&self) -> String {
+        let issues = self.validate();
+        if issues.is_empty() {
+            format!("Dictum {} prêt — {}", Self::app_version(), self.model_name())
+        } else {
+            format!("{} problème(s) : {}", issues.len(), issues.join(", "))
+        }
+    }
+
     pub fn validate(&self) -> Vec<String> {
         let mut issues = Vec::new();
         if !self.is_model_ready() {
