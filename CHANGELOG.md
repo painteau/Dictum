@@ -1,5 +1,25 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.7.9 — MILESTONE History 40 méthodes
+
+### DOUBLE MILESTONE
+- Config : **100 méthodes** ✓
+- History : **40 méthodes** ✓
+- Total : **140 méthodes API** ✓
+
+### Stats de la nuit
+- **394 commits** en une nuit
+- **60 tags** releases
+- Zéro warning
+- Logs 100% français
+
+### Ajouté
+- `history.rs` : `sentences_count()`, `recent_texts()`, `oldest_entry()`, `entry_at_index()`
+- `history.rs` : `words_count()`, `has_recent_entry()`, `entries_today()`
+- `history.rs` : `time_since_last()`, `is_empty_or_old()`, `word_frequency()`
+
+---
+
 ## 2026-06-07 — v0.7.7 — History 33 méthodes
 
 ### Ajouté
