@@ -200,6 +200,49 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn longest_word(&self) -> Option<String> {
+        let mut best = String::new();
+        for e in &self.entries {
+            for w in e.text.split_whitespace() {
+                if w.len() > best.len() { best = w.to_string(); }
+            }
+        }
+        if best.is_empty() { None } else { Some(best) }
+    }
+
+    #[allow(dead_code)]
+    pub fn char_frequency(&self) -> std::collections::HashMap<char, usize> {
+        let mut freq = std::collections::HashMap::new();
+        for e in &self.entries {
+            for c in e.text.chars().filter(|c| c.is_alphabetic()) {
+                let lc = c.to_lowercase().next().unwrap_or(c);
+                *freq.entry(lc).or_insert(0) += 1;
+            }
+        }
+        freq
+    }
+
+    #[allow(dead_code)]
+    pub fn average_words_per_char(&self) -> f32 {
+        let chars = self.total_chars();
+        let words = self.words_count();
+        if words == 0 || chars == 0 { return 0.0; }
+        words as f32 / chars as f32
+    }
+
+    #[allow(dead_code)]
+    pub fn entries_in_range(&self, from: u64, to: u64) -> Vec<&HistoryEntry> {
+        self.entries.iter().filter(|e| e.timestamp >= from && e.timestamp <= to).collect()
+    }
+
+    #[allow(dead_code)]
+    pub fn push_unique(&mut self, text: String, max: usize) -> bool {
+        if self.contains(&text) { return false; }
+        self.push_with_limit(text, max);
+        true
+    }
+
+    #[allow(dead_code)]
     pub fn avg_words_per_entry(&self) -> usize {
         if self.is_empty() { return 0; }
         self.words_count() / self.len()
