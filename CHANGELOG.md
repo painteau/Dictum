@@ -1,5 +1,13 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.7.7 — History 33 méthodes
+
+### Ajouté
+- `history.rs` : `words_count()`, `has_recent_entry()`, `entries_today()`
+- History : **33 méthodes** | Config : **100 méthodes** | Total : **133** ✓
+
+---
+
 ## 2026-06-07 — v0.7.6 — MILESTONE Config 100 méthodes
 
 ### MILESTONE HISTORIQUE
