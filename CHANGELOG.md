@@ -1,5 +1,23 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.4.2 — Diagnostics complets
+
+### Ajouté
+- `transcribe.rs` : log RMS calculé et seuil silence
+- `transcribe.rs` : log debug stderr whisper-cli si non vide
+- `transcribe.rs` : warn si transcription vide après filtrage
+- `updater.rs` : log progression Setup tous les 25%
+- `downloader.rs` : log fin téléchargement avec débit moyen
+- `main.rs` : log nb samples avant transcription
+- `main.rs` : log info si résultat vide
+- `audio.rs` : log debug config stream audio
+- `tray.rs` : log réinitialisation config
+- `history.rs` : log debug ajout entrée historique
+- `config.rs` : `log_summary()` utilisé au démarrage et reload
+- `substitution.rs` : early return si pas de règles
+
+---
+
 ## 2026-06-07 — v0.4.1 — Logs exhaustifs
 
 ### Ajouté
