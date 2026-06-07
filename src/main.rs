@@ -317,11 +317,7 @@ fn main() -> Result<()> {
     let state = AppState::new()?;
     {
         let cfg = state.config.lock().unwrap();
-        let (hist_len, hist_chars, hist_avg) = {
-            let h = state.history.lock().unwrap();
-            (h.len(), h.total_chars(), h.average_length())
-        };
-        log::info!("Historique : {} entrée(s), {} chars total, moy. {} chars", hist_len, hist_chars, hist_avg);
+        log::info!("Historique : {}", state.history.lock().unwrap().stats_summary());
         log::info!("Modèle : {} ({})", cfg.model_name(),
             if cfg.is_model_ready() { "présent" } else { "MANQUANT" });
         if cfg.has_substitutions() {
