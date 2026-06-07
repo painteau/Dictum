@@ -1423,4 +1423,29 @@ impl Config {
         std::fs::write(path, json)?;
         Ok(())
     }
+
+    #[allow(dead_code)]
+    pub fn max_record_minutes(&self) -> f32 {
+        self.max_record_secs as f32 / 60.0
+    }
+
+    #[allow(dead_code)]
+    pub fn whisper_temperature_display(&self) -> String {
+        format!("{:.2}", self.whisper_temperature)
+    }
+
+    #[allow(dead_code)]
+    pub fn is_hotkey_ctrl_only(&self) -> bool {
+        self.hotkey.ctrl && !self.hotkey.alt && !self.hotkey.shift
+    }
+
+    #[allow(dead_code)]
+    pub fn is_hotkey_alt_only(&self) -> bool {
+        !self.hotkey.ctrl && self.hotkey.alt && !self.hotkey.shift
+    }
+
+    #[allow(dead_code)]
+    pub fn is_hotkey_no_modifier(&self) -> bool {
+        !self.hotkey.ctrl && !self.hotkey.alt && !self.hotkey.shift
+    }
 }
