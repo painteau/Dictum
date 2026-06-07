@@ -470,6 +470,20 @@ impl Config {
     }
 
     #[allow(dead_code)]
+    pub fn toggle_beep(&mut self) -> &mut Self {
+        self.beep_enabled = !self.beep_enabled;
+        log::debug!("Beep : {}", if self.beep_enabled { "activé" } else { "désactivé" });
+        self
+    }
+
+    #[allow(dead_code)]
+    pub fn toggle_pause_media(&mut self) -> &mut Self {
+        self.pause_media = !self.pause_media;
+        log::debug!("Pause médias : {}", if self.pause_media { "activée" } else { "désactivée" });
+        self
+    }
+
+    #[allow(dead_code)]
     pub fn set_max_history(&mut self, max: usize) -> &mut Self {
         self.max_history = max.clamp(1, 100);
         self
