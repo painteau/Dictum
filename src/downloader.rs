@@ -77,6 +77,23 @@ where
     let filename = dest.file_name().and_then(|n| n.to_str()).unwrap_or("?");
     log::info!("Téléchargement : {}", filename);
 
+    // Vérifier l'espace disque disponible avant de commencer
+    if entry.size_bytes > 0 {
+        let dir = dest.parent().unwrap_or(dest);
+        if let Some(free) = free_disk_space(dir) {
+            let needed = entry.size_bytes;
+            if free < needed {
+                anyhow::bail!(
+                    "Espace disque insuffisant : {:.0} MB disponibles, {:.0} MB requis pour {}",
+                    free as f64 / 1_048_576.0,
+                    needed as f64 / 1_048_576.0,
+                    filename
+                );
+            }
+            log::debug!("Espace disque : {:.0} MB libres, {:.0} MB requis", free as f64 / 1_048_576.0, needed as f64 / 1_048_576.0);
+        }
+    }
+
     let existing_bytes = if dest.exists() {
         let size = std::fs::metadata(dest).map(|m| m.len()).unwrap_or(0);
         // Si le fichier est déjà complet, skip direct
@@ -260,3 +277,25 @@ pub fn detect_nvidia() -> Option<NvidiaInfo> {
 
     Some(NvidiaInfo { name, vram_mb, capable })
 }
+
+/// Retourne l'espace disque libre en octets pour le chemin donné.
+#[cfg(windows)]
+pub fn free_disk_space(path: &Path) -> Option<u64> {
+    use std::os::windows::ffi::OsStrExt;
+    let wide: Vec<u16> = path.as_os_str().encode_wide().chain(std::iter::once(0)).collect();
+    let mut free: u64 = 0;
+    let mut total: u64 = 0;
+    let mut total_free: u64 = 0;
+    let ok = unsafe {
+        winapi::um::fileapi::GetDiskFreeSpaceExW(
+            wide.as_ptr(),
+            &mut free as *mut u64 as *mut _,
+            &mut total as *mut u64 as *mut _,
+            &mut total_free as *mut u64 as *mut _,
+        )
+    };
+    if ok != 0 { Some(free) } else { None }
+}
+
+#[cfg(not(windows))]
+pub fn free_disk_space(_path: &Path) -> Option<u64> { None }
