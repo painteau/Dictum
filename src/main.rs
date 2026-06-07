@@ -506,6 +506,16 @@ fn main() -> Result<()> {
             }
             return Ok(());
         }
+        Some("--last") => {
+            match History::load() {
+                Ok(h) => match h.last_text() {
+                    Some(text) => println!("{}", text),
+                    None => println!("Historique vide."),
+                },
+                Err(e) => { println!("Erreur : {e}"); std::process::exit(1); }
+            }
+            return Ok(());
+        }
         Some("--copy-last") => {
             match History::load() {
                 Ok(h) => match h.last_text() {
