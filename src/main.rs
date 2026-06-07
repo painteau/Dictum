@@ -321,8 +321,8 @@ fn main() -> Result<()> {
             cfg.whisper_speed_label()
         );
         log::info!("Injection : mode=[{}] délai={}ms", cfg.inject_mode_label(), cfg.inject_delay_ms);
-        log::info!("Enregistrement : max={}s min={}ms silence=[{}]",
-            cfg.max_record_secs, cfg.min_record_ms, cfg.silence_level_label());
+        log::info!("Enregistrement : durée=[{}] silence=[{}]",
+            cfg.record_duration_label(), cfg.silence_level_label());
     }
     let (event_tx, event_rx) = bounded::<AppEvent>(32);
 
