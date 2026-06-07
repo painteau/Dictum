@@ -180,6 +180,26 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn first_entry(&self) -> Option<&HistoryEntry> {
+        self.entries.back()
+    }
+
+    #[allow(dead_code)]
+    pub fn text_at(&self, idx: usize) -> Option<String> {
+        self.entries.get(idx).map(|e| e.text.clone())
+    }
+
+    #[allow(dead_code)]
+    pub fn timestamp_at(&self, idx: usize) -> Option<u64> {
+        self.entries.get(idx).map(|e| e.timestamp)
+    }
+
+    #[allow(dead_code)]
+    pub fn count_words_in(&self, idx: usize) -> usize {
+        self.entries.get(idx).map(|e| e.text.split_whitespace().count()).unwrap_or(0)
+    }
+
+    #[allow(dead_code)]
     pub fn avg_words_per_entry(&self) -> usize {
         if self.is_empty() { return 0; }
         self.words_count() / self.len()
