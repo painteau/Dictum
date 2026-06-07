@@ -523,6 +523,22 @@ fn main() -> Result<()> {
             }
             return Ok(());
         }
+        Some("--history") => {
+            let n = args.get(2).and_then(|s| s.parse::<usize>().ok()).unwrap_or(10);
+            match History::load() {
+                Ok(h) => {
+                    if h.is_empty() {
+                        println!("Historique vide.");
+                        return Ok(());
+                    }
+                    println!("{}", h.as_display_string());
+                    println!("\n{}", h.stats_summary());
+                    let _ = n; // n disponible si on veut limiter
+                }
+                Err(e) => { println!("Erreur : {e}"); std::process::exit(1); }
+            }
+            return Ok(());
+        }
         Some("--last") => {
             match History::load() {
                 Ok(h) => match h.last_text() {
