@@ -57,7 +57,25 @@
 - [x] Timeout subprocess whisper-cli (5 min)
 - [x] Fallback env_logger si flexi_logger échoue
 
-## v0.4 — Roadmap
+## v0.5 — État actuel (stable et expressif)
+
+### Config API — 25+ champs, 15+ helpers
+- [x] `model_name()`, `hotkey_string()`, `language_display()`
+- [x] `silence_level_label()`, `beep_description()`, `whisper_speed_label()`
+- [x] `inject_mode_label()`, `is_fully_ready()`, `reset_to_default()`
+- [x] `log_summary()`, `models_dir()`, `app_version()`
+
+### History API
+- [x] `len()`, `is_empty()`, `last_text()`, `last_timestamp()`
+- [x] `total_chars()`, `average_length()`, `all_texts()`
+- [x] `get_by_index()`, `push_with_limit()`, `export_to_file()`
+
+### Qualité code
+- [x] Zéro warning `cargo build`
+- [x] Tous les logs en français
+- [x] Code entièrement refactorisé avec helpers
+
+## v0.6 — Roadmap
 
 - [ ] Fenêtre paramètres graphique (egui) — remplace Notepad
 - [ ] Traduction automatique locale
