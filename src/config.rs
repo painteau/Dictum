@@ -691,7 +691,14 @@ impl Config {
         format!("config v{} | app v{}", self.config_version, Self::app_version())
     }
 
-    pub fn is_using_cuda(&self) -> bool { false } // Placeholder — à implémenter quand CUDA supporté
+    pub fn is_using_cuda(&self) -> bool { false }
+    pub fn needs_wizard(&self) -> bool { !self.is_fully_ready() }
+    pub fn is_production_ready(&self) -> bool {
+        self.is_fully_ready() && self.validate().is_empty()
+    }
+    pub fn has_whisper_optimizations(&self) -> bool {
+        self.whisper_threads > 0 || self.whisper_temperature < 0.1
+    }
     pub fn is_using_default_microphone(&self) -> bool { self.microphone.is_none() }
     pub fn has_custom_model_path(&self) -> bool {
         self.model_path != Self::default().model_path
