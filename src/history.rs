@@ -381,6 +381,36 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn earliest_timestamp(&self) -> Option<u64> {
+        self.entries.iter().map(|e| e.timestamp).min()
+    }
+
+    #[allow(dead_code)]
+    pub fn age_secs(&self) -> Option<u64> {
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap_or_default().as_secs();
+        self.earliest_timestamp().map(|t| now.saturating_sub(t))
+    }
+
+    #[allow(dead_code)]
+    pub fn words_in_last_n(&self, n: usize) -> usize {
+        self.entries.iter().take(n)
+            .map(|e| e.text.split_whitespace().count())
+            .sum()
+    }
+
+    #[allow(dead_code)]
+    pub fn summary_line(&self) -> String {
+        if self.is_empty() {
+            "Aucune dictée".to_string()
+        } else {
+            format!("{} dictée(s) | {} mots | {} chars",
+                self.len(), self.words_count(), self.total_chars())
+        }
+    }
+
+    #[allow(dead_code)]
     pub fn avg_words_per_entry(&self) -> usize {
         if self.is_empty() { return 0; }
         self.words_count() / self.len()
