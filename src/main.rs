@@ -344,7 +344,7 @@ fn main() -> Result<()> {
                 match event {
                     AppEvent::RecordStart => {
                         if *state.is_transcribing.lock().unwrap() {
-                            log::warn!("Busy transcribing, ignoring record request");
+                            log::warn!("Transcription en cours — hotkey ignorée");
                             continue;
                         }
                         let config = state.config.lock().unwrap().clone();
