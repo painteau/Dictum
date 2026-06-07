@@ -178,10 +178,17 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                 };
                 let log_path = crate::config::Config::log_path();
                 let config_path = crate::config::Config::data_dir().join("config.json");
+                let issues = config.validate();
+                let issues_str = if issues.is_empty() {
+                    "✓ Configuration valide".to_string()
+                } else {
+                    format!("⚠ {} problème(s) :\n{}", issues.len(), issues.iter().map(|i| format!("  • {}", i)).collect::<Vec<_>>().join("\n"))
+                };
                 let msg = format!(
-                    "github.com/painteau/Dictum\n\n{}\nwhisper : {}\n\nSession : {} transcription{}\nHistorique : {} entrée{} ({} chars)\nConfig  : {}\nLog     : {}",
+                    "github.com/painteau/Dictum\n\n{}\nwhisper : {}\n\n{}\n\nSession : {} transcription{}\nHistorique : {} entrée{} ({} chars)\nConfig  : {}\nLog     : {}",
                     config.full_status(),
                     if crate::config::Config::is_whisper_cli_ready() { "✓ présent" } else { "✗ MANQUANT" },
+                    issues_str,
                     count,
                     if count > 1 { "s" } else { "" },
                     hist_count,
