@@ -1,5 +1,27 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.5.0 — Config API complète
+
+### Milestone
+API Config atteint maturité. 25+ champs, 15+ helpers.
+
+### Helpers Config disponibles
+- `model_name()` — nom court du modèle
+- `hotkey_string()` — combo "Ctrl+F9"
+- `language_display()` — "Français", "Auto-détection"
+- `silence_level_label()` — "normal", "élevé"
+- `beep_description()` — "800Hz/600Hz 80ms"
+- `whisper_speed_label()` — "normal", "lent"
+- `inject_mode_label()` — "majuscule+typo_fr"
+- `is_model_ready()`, `is_whisper_cli_ready()`, `is_fully_ready()`
+- `has_substitutions()`, `substitution_count()`
+- `models_dir()`, `data_dir()`, `log_path()`, `history_export_path()`
+- `log_summary()` — résumé compact tout-en-un
+- `reset_to_default()` — réinit avec log
+- `app_version()` — version statique
+
+---
+
 ## 2026-06-07 — v0.4.9 — Helpers expressifs
 
 ### Ajouté
