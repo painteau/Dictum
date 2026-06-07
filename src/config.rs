@@ -1563,4 +1563,18 @@ impl Config {
     pub fn config_age_label(&self) -> &'static str {
         "config active"
     }
+
+    #[allow(dead_code)]
+    pub fn score_percentage(&self) -> f32 { self.score() as f32 / 100.0 }
+
+    #[allow(dead_code)]
+    pub fn is_score_perfect(&self) -> bool { self.score() == 100 }
+
+    #[allow(dead_code)]
+    pub fn is_score_poor(&self) -> bool { self.score() < 40 }
+
+    #[allow(dead_code)]
+    pub fn hotkey_summary(&self) -> String {
+        format!("{} ({})", self.hotkey_string(), if self.is_hotkey_with_modifier() { "avec modificateur" } else { "sans modificateur" })
+    }
 }
