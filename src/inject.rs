@@ -59,6 +59,7 @@ pub fn inject_text(text: &str, config: &Config) {
             if config.auto_enter {
                 let _ = enigo.key(Key::Return, Direction::Click);
             }
+            log::info!("Texte injecté ({} chars)", text.len());
         }
         Err(e) => log::error!("Enigo init échoué : {e}"),
     }
