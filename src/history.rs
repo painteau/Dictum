@@ -146,6 +146,33 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn recent_texts(&self, n: usize) -> Vec<String> {
+        self.entries.iter().take(n).map(|e| e.text.clone()).collect()
+    }
+
+    #[allow(dead_code)]
+    pub fn oldest_entry(&self) -> Option<&HistoryEntry> {
+        self.entries.back()
+    }
+
+    #[allow(dead_code)]
+    pub fn entry_at_index(&self, idx: usize) -> Option<&HistoryEntry> {
+        self.entries.get(idx)
+    }
+
+    #[allow(dead_code)]
+    pub fn word_frequency(&self) -> std::collections::HashMap<String, usize> {
+        let mut freq = std::collections::HashMap::new();
+        for e in &self.entries {
+            for word in e.text.split_whitespace() {
+                let w = word.to_lowercase().trim_matches(|c: char| !c.is_alphabetic()).to_string();
+                if w.len() >= 3 { *freq.entry(w).or_insert(0) += 1; }
+            }
+        }
+        freq
+    }
+
+    #[allow(dead_code)]
     pub fn words_count(&self) -> usize {
         self.entries.iter().map(|e| e.text.split_whitespace().count()).sum()
     }
