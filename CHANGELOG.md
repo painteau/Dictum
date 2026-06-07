@@ -1,5 +1,14 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.3.1 — 340 MÉTHODES API
+
+### Ajouté
+- Config 225 méthodes : `display_name`, `whisper_flags_count`, `is_default_inject_delay`
+- History 115 méthodes : `text_length_at`, `replace_at`, `is_entry_long`, `count_entries_in_last_hour`, `iter_texts`
+- **340 méthodes API** (225 Config + 115 History)
+
+---
+
 ## 2026-06-07 — v1.3.0 — RELEASE STABLE v1.3
 
 ### Features v1.3
