@@ -781,6 +781,25 @@ impl Config {
 
     pub fn total_config_fields() -> usize { 23 }
 
+    #[allow(dead_code)]
+    pub fn copy_with_model(&self, model_name: &str) -> Self {
+        let mut c = self.clone();
+        c.with_model_name(model_name);
+        c
+    }
+
+    #[allow(dead_code)]
+    pub fn diff_fields(&self, other: &Config) -> usize {
+        let mut diffs = 0;
+        if self.language != other.language { diffs += 1; }
+        if self.model_path != other.model_path { diffs += 1; }
+        if self.hotkey.key != other.hotkey.key { diffs += 1; }
+        if self.silence_threshold != other.silence_threshold { diffs += 1; }
+        if self.whisper_threads != other.whisper_threads { diffs += 1; }
+        if self.max_record_secs != other.max_record_secs { diffs += 1; }
+        diffs
+    }
+
     pub fn required_fields_present(&self) -> bool {
         !self.hotkey.key.is_empty() && !self.language.is_empty()
     }
