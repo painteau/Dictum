@@ -236,7 +236,16 @@ impl Config {
 
     /// Affiche un résumé compact de la config dans les logs.
     pub fn log_summary(&self) {
-        log::info!("Config résumé : lang={} model={} hotkey={}{}{}{} threads={} temp={:.1}",
+        let flags: Vec<&str> = [
+            if self.french_typography { Some("typo_fr") } else { None },
+            if self.auto_capitalize { Some("capitalize") } else { None },
+            if self.beep_enabled { Some("beep") } else { None },
+            if self.pause_media { Some("pause_media") } else { None },
+            if self.prefix_space { Some("prefix_space") } else { None },
+            if self.auto_enter { Some("auto_enter") } else { None },
+        ].iter().filter_map(|&o| o).collect();
+        let flags_str = if flags.is_empty() { "aucun".to_string() } else { flags.join(",") };
+        log::info!("Config résumé : lang={} model={} hotkey={}{}{}{} threads={} temp={:.1} flags=[{}]",
             self.language,
             self.model_path.file_name().and_then(|n| n.to_str()).unwrap_or("?"),
             if self.hotkey.ctrl  { "Ctrl+" } else { "" },
@@ -244,7 +253,8 @@ impl Config {
             if self.hotkey.shift { "Shift+"} else { "" },
             self.hotkey.key,
             if self.whisper_threads == 0 { "auto".to_string() } else { self.whisper_threads.to_string() },
-            self.whisper_temperature
+            self.whisper_temperature,
+            flags_str
         );
     }
 
