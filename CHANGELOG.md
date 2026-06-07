@@ -1,5 +1,18 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.0.5 — NOTIFICATIONS + TRAY AMÉLIORÉ
+
+### Ajouté
+- Notification toast après transcription longue (>50 mots)
+- Tray : "Copier tout l'historique" dans le presse-papiers
+- CLI `--add-sub "from" "to"` : ajouter substitution
+- CLI `--list-subs` : lister les substitutions
+- Config 155 méthodes : `data_dir_size_mb`, `model_size_mb`, `app_name`, `is_windows`
+- History 61 méthodes : `median_length`, `texts_starting_with`, `remove_at`
+- **216 méthodes API** (155 Config + 61 History) | 498 commits
+
+---
+
 ## 2026-06-07 — v1.0.4 — CLI CONFIG COMPLET
 
 ### Ajouté
