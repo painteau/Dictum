@@ -126,7 +126,8 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
 
     cmd.arg("--file").arg(&wav_path);
 
-    log::info!("whisper-cli : threads={} temp={:.1} lang={}",
+    log::info!("whisper-cli : modèle={} threads={} temp={:.1} lang={}",
+        config.model_name(),
         cpu_threads,
         config.whisper_temperature,
         if config.language == "auto" { "auto" } else { &config.language }
