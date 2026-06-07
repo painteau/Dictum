@@ -1,5 +1,18 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.2.3 — 300 MÉTHODES API MILESTONE
+
+### Triple milestone
+- **300 méthodes API** total (205 Config + 95 History)
+- Config : **205 méthodes**
+- History : **95 méthodes**
+
+### Ajouté
+- History : `texts_matching`, `word_count_histogram`, `timestamps`, `at_timestamp`, `merge`, `chars_per_word_ratio`
+- 559 commits
+
+---
+
 ## 2026-06-07 — v1.2.2 — 294 MÉTHODES API
 
 ### Ajouté

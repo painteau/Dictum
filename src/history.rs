@@ -492,6 +492,13 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn chars_per_word_ratio(&self) -> f32 {
+        let words = self.words_count();
+        if words == 0 { return 0.0; }
+        self.total_chars() as f32 / words as f32
+    }
+
+    #[allow(dead_code)]
     pub fn avg_words_per_entry(&self) -> usize {
         if self.is_empty() { return 0; }
         self.words_count() / self.len()
