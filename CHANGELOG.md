@@ -1,5 +1,25 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.0.2 — 200 MÉTHODES API MILESTONE
+
+### Chiffres
+| Métrique | Valeur |
+|----------|--------|
+| Config méthodes | **142** |
+| History méthodes | **58** |
+| Total API | **200 méthodes** |
+| Commits | **481** |
+
+### Ajouté
+- **200 méthodes API** atteint (142 Config + 58 History)
+- History : `total_sentences`, `export_csv`, `percentile_length`
+- Config : `silence_threshold_display`, `is_low/high_silence_threshold`, `config_summary_oneliner`
+- Injection par chunks 500 chars (longs textes)
+- Filtre tags Whisper français (Musique, Silence, Rires, Applaudissements)
+- Mono-instance WinAPI, audio fallback 16kHz
+
+---
+
 ## 2026-06-07 — v1.0.1 — POST-RELEASE FIXES + FEATURES
 
 ### Ajouté
