@@ -470,6 +470,18 @@ impl Config {
     }
 
     #[allow(dead_code)]
+    pub fn set_max_history(&mut self, max: usize) -> &mut Self {
+        self.max_history = max.clamp(1, 100);
+        self
+    }
+
+    #[allow(dead_code)]
+    pub fn set_max_record_secs(&mut self, secs: u64) -> &mut Self {
+        self.max_record_secs = secs.max(5).min(300);
+        self
+    }
+
+    #[allow(dead_code)]
     pub fn set_silence_threshold(&mut self, threshold: f32) -> &mut Self {
         self.silence_threshold = threshold.clamp(0.0, 1.0);
         self
