@@ -1,5 +1,17 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.9.5 — CLI ENRICHI + ROBUSTESSE INJECTION
+
+### Ajouté
+- CLI `--stats` : statistiques historique (mots, entrées, fréquences)
+- CLI `--config-check` : valide la config, exit 1 si problème
+- CLI `--reset-history` : efface l'historique sans lancer l'appli
+- Injection texte : fallback clipboard (Ctrl+V) si enigo init échoue
+- Tray About : score config + breakdown détaillé dans la popup
+- 446 commits total
+
+---
+
 ## 2026-06-07 — v0.9.4 — QUALITÉ + ROBUSTESSE
 
 ### Ajouté
