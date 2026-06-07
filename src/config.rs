@@ -89,6 +89,18 @@ pub struct Config {
     /// Activer l'accélération GPU CUDA si disponible
     #[serde(default)]
     pub use_cuda: bool,
+    /// URL du serveur Ollama local (défaut : http://localhost:11434)
+    #[serde(default = "default_ollama_url")]
+    pub ollama_url: String,
+    /// Modèle Ollama pour la reformulation (ex: llama3, mistral, phi3)
+    #[serde(default = "default_ollama_model")]
+    pub ollama_model: String,
+    /// Style de reformulation par défaut
+    #[serde(default = "default_reformulation_style")]
+    pub reformulation_style: String,
+    /// Activer le mode sélection (Ctrl+texte sélectionné → reformulation)
+    #[serde(default)]
+    pub selection_mode: bool,
 }
 
 impl Default for Config {
@@ -120,6 +132,10 @@ impl Default for Config {
             log_level: "info".to_string(),
             translate_to: String::new(),
             use_cuda: false,
+            ollama_url: default_ollama_url(),
+            ollama_model: default_ollama_model(),
+            reformulation_style: default_reformulation_style(),
+            selection_mode: false,
         }
     }
 }
@@ -131,6 +147,9 @@ fn default_beep_start_freq() -> u32 { 800 }
 fn default_beep_end_freq() -> u32 { 600 }
 fn default_beep_duration() -> u32 { 80 }
 fn default_log_level() -> String { "info".to_string() }
+fn default_ollama_url() -> String { "http://localhost:11434".to_string() }
+fn default_ollama_model() -> String { "llama3".to_string() }
+fn default_reformulation_style() -> String { "formel".to_string() }
 
 fn data_dir() -> PathBuf {
     dirs::data_local_dir()

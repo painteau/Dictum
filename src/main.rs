@@ -11,6 +11,7 @@ mod config;
 mod downloader;
 mod dropper;
 mod history;
+mod reformulate;
 mod hotkey;
 mod inject;
 mod media;

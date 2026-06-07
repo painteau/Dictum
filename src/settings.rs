@@ -3,7 +3,7 @@ use eframe::egui::{self, Color32, RichText, Vec2};
 use crate::config::Config;
 
 #[derive(PartialEq, Clone)]
-enum Tab { General, Microphone, Substitutions, Advanced }
+enum Tab { General, Microphone, Substitutions, Advanced, Reformulation }
 
 struct SettingsWindow {
     cfg: Config,
@@ -12,6 +12,8 @@ struct SettingsWindow {
     dirty: bool,
     tab: Tab,
     available_mics: Vec<String>,
+    ollama_status: Option<String>,
+    ollama_models: Vec<String>,
     new_sub_from: String,
     new_sub_to: String,
     new_sub_case: bool,
@@ -23,6 +25,8 @@ impl SettingsWindow {
             cfg, saved: false, save_error: None, dirty: false,
             tab: Tab::General,
             available_mics: crate::audio::list_devices(),
+            ollama_status: None,
+            ollama_models: Vec::new(),
             new_sub_from: String::new(), new_sub_to: String::new(), new_sub_case: true,
         }
     }
@@ -53,6 +57,9 @@ impl eframe::App for SettingsWindow {
                 }
                 if ui.selectable_label(tab == Tab::Advanced, "🔬 Avancé").clicked() {
                     self.tab = Tab::Advanced;
+                }
+                if ui.selectable_label(tab == Tab::Reformulation, "🤖 Reformulation").clicked() {
+                    self.tab = Tab::Reformulation;
                 }
             });
             ui.separator();
@@ -255,6 +262,79 @@ impl eframe::App for SettingsWindow {
                     ui.add_space(8.0);
                     ui.label(RichText::new(format!("Score config : {}/100", self.cfg.score())).color(Color32::GRAY).small());
                     ui.label(RichText::new(self.cfg.score_breakdown_display()).color(Color32::GRAY).small());
+                }
+                Tab::Reformulation => {
+                    ui.label(RichText::new("Reformulation via Ollama local").color(Color32::GRAY));
+                    ui.add_space(4.0);
+                    ui.label(RichText::new("Ollama doit être installé sur ce PC (ollama.ai).").color(Color32::GRAY).small());
+                    ui.add_space(8.0);
+
+                    // URL Ollama
+                    ui.horizontal(|ui| {
+                        ui.label(RichText::new("URL Ollama :").color(Color32::GRAY));
+                        if ui.text_edit_singleline(&mut self.cfg.ollama_url).changed() { self.dirty = true; }
+                    });
+
+                    // Test connexion
+                    ui.horizontal(|ui| {
+                        if ui.button("🔌 Tester").clicked() {
+                            let url = self.cfg.ollama_url.clone();
+                            if crate::reformulate::is_available(&url) {
+                                let models = crate::reformulate::list_models(&url);
+                                self.ollama_status = Some(format!("✓ Connecté — {} modèle(s)", models.len()));
+                                self.ollama_models = models;
+                            } else {
+                                self.ollama_status = Some("✗ Inaccessible — Ollama lancé ?".to_string());
+                                self.ollama_models.clear();
+                            }
+                        }
+                        if let Some(ref status) = self.ollama_status {
+                            let color = if status.starts_with('✓') { Color32::from_rgb(80,200,120) } else { Color32::from_rgb(220,80,80) };
+                            ui.label(RichText::new(status).color(color).small());
+                        }
+                    });
+
+                    ui.add_space(8.0);
+
+                    // Modèle
+                    ui.horizontal(|ui| {
+                        ui.label(RichText::new("Modèle :").color(Color32::GRAY));
+                        if self.ollama_models.is_empty() {
+                            if ui.text_edit_singleline(&mut self.cfg.ollama_model).changed() { self.dirty = true; }
+                        } else {
+                            let cur = self.cfg.ollama_model.clone();
+                            egui::ComboBox::from_id_source("ollama_model")
+                                .selected_text(&cur)
+                                .show_ui(ui, |ui| {
+                                    for m in &self.ollama_models.clone() {
+                                        if ui.selectable_label(cur == *m, m).clicked() {
+                                            self.cfg.ollama_model = m.clone();
+                                            self.dirty = true;
+                                        }
+                                    }
+                                });
+                        }
+                    });
+
+                    ui.add_space(8.0);
+
+                    // Style par défaut
+                    ui.label(RichText::new("Style par défaut :").color(Color32::GRAY));
+                    ui.add_space(4.0);
+                    for (key, label, desc) in crate::reformulate::STYLES {
+                        let sel = self.cfg.reformulation_style == *key;
+                        ui.horizontal(|ui| {
+                            if ui.selectable_label(sel, RichText::new(*label).monospace()).clicked() {
+                                self.cfg.reformulation_style = key.to_string();
+                                self.dirty = true;
+                            }
+                            ui.label(RichText::new(*desc).color(Color32::GRAY).small());
+                        });
+                    }
+
+                    ui.add_space(8.0);
+                    if ui.checkbox(&mut self.cfg.selection_mode, "Activer mode sélection").changed() { self.dirty = true; }
+                    ui.label(RichText::new("Sélectionner du texte + hotkey → reformulation automatique").color(Color32::GRAY).small());
                 }
             }
 

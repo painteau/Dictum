@@ -233,6 +233,10 @@ impl SetupWizard {
             log_level: "info".to_string(),
             translate_to: String::new(),
             use_cuda: self.nvidia.as_ref().map(|g| g.capable).unwrap_or(false),
+            ollama_url: "http://localhost:11434".to_string(),
+            ollama_model: "llama3".to_string(),
+            reformulation_style: "formel".to_string(),
+            selection_mode: false,
         }
     }
 
