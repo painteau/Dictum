@@ -26,6 +26,23 @@ fn write_wav(samples: &[f32], path: &std::path::Path) -> Result<()> {
     Ok(())
 }
 
+/// Supprime les codes d'échappement ANSI d'une chaîne.
+fn strip_ansi(s: &str) -> String {
+    let mut out = String::with_capacity(s.len());
+    let mut chars = s.chars();
+    while let Some(c) = chars.next() {
+        if c == '\x1b' {
+            // Consommer jusqu'à la lettre finale de la séquence
+            for ch in chars.by_ref() {
+                if ch.is_ascii_alphabetic() { break; }
+            }
+        } else {
+            out.push(c);
+        }
+    }
+    out
+}
+
 /// Calcule le RMS des samples. Si trop bas = silence, pas la peine de transcrire.
 fn rms(samples: &[f32]) -> f32 {
     if samples.is_empty() { return 0.0; }
@@ -152,6 +169,8 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
         // Filtre les numéros de séquence SRT (lignes purement numériques)
         .filter(|l| !l.trim().chars().all(|c| c.is_ascii_digit()))
         .map(|l| l.trim())
+        .map(strip_ansi)
+        .filter(|l| !l.is_empty())
         .collect::<Vec<_>>()
         .join(" ")
         .trim()
