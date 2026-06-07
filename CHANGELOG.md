@@ -1,5 +1,17 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.4.7 — Code propre
+
+### Ajouté
+- `config.rs` : `model_name()` helper pour nom court du modèle
+- `transcribe.rs` : log modèle actif dans chaque transcription
+- `tray.rs` : À propos utilise `model_name()`
+- `main.rs` : utilise `model_name()` et `is_model_ready()`
+
+### Zéro warning `cargo build`
+
+---
+
 ## 2026-06-07 — v0.4.6 — Refactoring API
 
 ### Ajouté
