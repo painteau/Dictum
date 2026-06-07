@@ -75,7 +75,18 @@
 - [x] Tous les logs en français
 - [x] Code entièrement refactorisé avec helpers
 
-## v0.9 — Prochaines étapes
+## v1.0 — RELEASE STABLE (atteint 2026-06-07)
+
+- [x] CLI complet (13 commandes)
+- [x] Tray 4 états icône + mode pause
+- [x] 188 méthodes API (Config 138 + History 50)
+- [x] Rotation log automatique
+- [x] Filtre hallucinations bigrammes
+- [x] Notification toast mise à jour
+- [x] Fallback clipboard injection
+- [x] Typographie française chevrons
+
+## v1.1 — Prochaines étapes
 
 - [ ] Tester l'application sur une machine fraîche (wizard + dictée)
 - [ ] Fenêtre paramètres graphique egui (remplace Notepad)

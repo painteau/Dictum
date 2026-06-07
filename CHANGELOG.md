@@ -1,5 +1,22 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.0.0 — RELEASE STABLE
+
+### Milestone
+- Version 1.0 officielle
+- CLI complet : `--stats`, `--search`, `--export`, `--diagnose`, `--config-check`, `--config-reset`, `--reset-history`, `--list-models`, `--list-devices`, `--list-languages`, `--open-config`, `--open-dir`, `--version-full`
+- Tray : 4 états icône (bleu/rouge/orange/gris), mode pause, score config, mots historique
+- Wizard : espace disque, vitesse download, avertissement hotkey
+- Injection : fallback clipboard, typographie française complète (chevrons)
+- Transcription : filtre hallucinations bigrammes, timeout adaptatif
+- Config : **138 méthodes** (127 → 138), 6 profiles
+- History : **50 méthodes**
+- Total API : **188 méthodes**
+- Commits : **471+**
+- Zéro warning `cargo build`
+
+---
+
 ## 2026-06-07 — v0.9.9 — CLI EXHAUSTIF + CONFIG 138 MÉTHODES
 
 ### Ajouté
