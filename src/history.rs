@@ -499,6 +499,40 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn contains_all(&self, queries: &[&str]) -> Vec<&HistoryEntry> {
+        self.entries.iter().filter(|e| {
+            let t = e.text.to_lowercase();
+            queries.iter().all(|q| t.contains(&q.to_lowercase()))
+        }).collect()
+    }
+
+    #[allow(dead_code)]
+    pub fn contains_any(&self, queries: &[&str]) -> Vec<&HistoryEntry> {
+        self.entries.iter().filter(|e| {
+            let t = e.text.to_lowercase();
+            queries.iter().any(|q| t.contains(&q.to_lowercase()))
+        }).collect()
+    }
+
+    #[allow(dead_code)]
+    pub fn entry_index(&self, text: &str) -> Option<usize> {
+        self.entries.iter().position(|e| e.text == text)
+    }
+
+    #[allow(dead_code)]
+    pub fn save_to(&self, path: &std::path::Path) -> anyhow::Result<()> {
+        std::fs::create_dir_all(path.parent().unwrap())?;
+        std::fs::write(path, serde_json::to_string_pretty(self)?)?;
+        Ok(())
+    }
+
+    #[allow(dead_code)]
+    pub fn load_from(path: &std::path::Path) -> anyhow::Result<Self> {
+        let content = std::fs::read_to_string(path)?;
+        Ok(serde_json::from_str(&content).unwrap_or_default())
+    }
+
+    #[allow(dead_code)]
     pub fn avg_words_per_entry(&self) -> usize {
         if self.is_empty() { return 0; }
         self.words_count() / self.len()
