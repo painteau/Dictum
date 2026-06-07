@@ -83,6 +83,20 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn most_common_word(&self) -> Option<String> {
+        let mut freq: std::collections::HashMap<String, usize> = std::collections::HashMap::new();
+        for e in &self.entries {
+            for word in e.text.split_whitespace() {
+                let w = word.to_lowercase().trim_matches(|c: char| !c.is_alphabetic()).to_string();
+                if w.len() >= 3 {
+                    *freq.entry(w).or_insert(0) += 1;
+                }
+            }
+        }
+        freq.into_iter().max_by_key(|(_, v)| *v).map(|(w, _)| w)
+    }
+
+    #[allow(dead_code)]
     pub fn filter_by_min_length(&self, min_chars: usize) -> Vec<&HistoryEntry> {
         self.entries.iter().filter(|e| e.text.len() >= min_chars).collect()
     }
