@@ -1,5 +1,16 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.5.4 — Profils et résumés
+
+### Ajouté
+- `config.rs` : `profile_name()` — "Français standard", "Minimal", "Personnalisé"
+- `config.rs` : `whisper_config_display()` — résumé config whisper complet
+- `config.rs` : `log_summary()` affiche le profil
+- `tray.rs` : À propos affiche le profil
+- `main.rs` : utilise `whisper_config_display()`
+
+---
+
 ## 2026-06-07 — v0.5.3 — History API avancée
 
 ### Ajouté
