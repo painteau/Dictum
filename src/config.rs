@@ -484,6 +484,17 @@ impl Config {
         }
     }
 
+    pub fn log_level_display(&self) -> &str {
+        match self.log_level.as_str() {
+            "error" => "🔴 error",
+            "warn"  => "🟡 warn",
+            "info"  => "🟢 info",
+            "debug" => "🔵 debug",
+            "trace" => "⚪ trace",
+            other   => other,
+        }
+    }
+
     pub fn config_version_display(&self) -> String {
         format!("config v{} | app v{}", self.config_version, Self::app_version())
     }
