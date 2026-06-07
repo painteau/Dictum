@@ -1,5 +1,14 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.7.2 — Config 66 méthodes
+
+### Ajouté
+- `config.rs` : `set_log_level()` avec validation
+- `config.rs` : `set_inject_delay()`
+- Config : **66 méthodes** | History : **30 méthodes** | Total : **96 méthodes** ✓
+
+---
+
 ## 2026-06-07 — v0.7.1 — Config 64 méthodes (API complète)
 
 ### Ajouté
