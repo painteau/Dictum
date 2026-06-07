@@ -1228,4 +1228,34 @@ impl Config {
         self.auto_enter = enabled;
         self
     }
+
+    #[allow(dead_code)]
+    pub fn with_pause_media(mut self, enabled: bool) -> Self {
+        self.pause_media = enabled;
+        self
+    }
+
+    #[allow(dead_code)]
+    pub fn with_silence_threshold(mut self, v: f32) -> Self {
+        self.silence_threshold = v.clamp(0.0, 1.0);
+        self
+    }
+
+    #[allow(dead_code)]
+    pub fn with_max_history(mut self, n: usize) -> Self {
+        self.max_history = n.max(1).min(1000);
+        self
+    }
+
+    #[allow(dead_code)]
+    pub fn with_hotkey_key(mut self, key: &str) -> Self {
+        self.hotkey.key = key.to_string();
+        self
+    }
+
+    #[allow(dead_code)]
+    pub fn with_microphone(mut self, mic: Option<String>) -> Self {
+        self.microphone = mic;
+        self
+    }
 }
