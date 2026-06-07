@@ -1,5 +1,14 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.2.1 — SETTINGS 3 ONGLETS
+
+### Ajouté
+- Settings : onglet Substitutions (ajouter/supprimer en GUI)
+- Settings : onglet Avancé (inject_delay, record_secs, min_ms, threads, no-speech)
+- Fenêtre paramètres complète avec 3 onglets (Général / Substitutions / Avancé)
+
+---
+
 ## 2026-06-07 — v1.2.0 — FENÊTRE PARAMÈTRES GRAPHIQUE
 
 ### Feature majeure
