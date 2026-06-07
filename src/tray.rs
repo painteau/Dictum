@@ -77,7 +77,8 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
             }
         }
 
-        if let Ok(event) = menu_rx.try_recv() {
+        if let Ok(ref event) = menu_rx.try_recv() {
+            log::debug!("Menu tray : event id={:?}", event.id);
             if event.id == item_quit.id() {
                 let _ = event_tx.send(AppEvent::Quit);
                 break;
