@@ -154,8 +154,10 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
         return Err(anyhow!("whisper-cli a échoué : {}", stderr));
     }
 
-    let stdout = String::from_utf8_lossy(&output.stdout);
-    let text = stdout
+    let raw_stdout = String::from_utf8_lossy(&output.stdout);
+    // Normaliser les fins de ligne Windows (CRLF → LF)
+    let stdout_clean = raw_stdout.replace("\r\n", "\n").replace('\r', "\n");
+    let text = stdout_clean
         .lines()
         // Filtre les tags Whisper : [BLANK_AUDIO], [Music], (Music), timestamps, etc.
         .filter(|l| {
