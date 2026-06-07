@@ -304,10 +304,8 @@ fn main() -> Result<()> {
         let cfg = state.config.lock().unwrap();
         let hist_len = state.history.lock().unwrap().len();
         log::info!("Historique : {} entrée(s)", hist_len);
-        log::info!("Modèle : {} ({})",
-            cfg.model_path.file_name().and_then(|n| n.to_str()).unwrap_or("?"),
-            if cfg.model_path.exists() { "présent" } else { "MANQUANT" }
-        );
+        log::info!("Modèle : {} ({})", cfg.model_name(),
+            if cfg.is_model_ready() { "présent" } else { "MANQUANT" });
         if cfg.has_substitutions() {
             log::info!("Substitutions : {} règle(s)", cfg.substitution_count());
         }
