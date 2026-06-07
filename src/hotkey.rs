@@ -86,6 +86,7 @@ pub fn start(config: Config, tx: Sender<AppEvent>) {
                 }
                 if mods_ok && !active {
                     active = true;
+                    log::info!("Hotkey pressée → démarrage enregistrement");
                     let _ = tx.send(AppEvent::RecordStart);
                 }
             }
