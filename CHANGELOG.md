@@ -1,5 +1,15 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.5.5 — Description et profils
+
+### Ajouté
+- `config.rs` : `description()` — one-liner `[profil] langue | modèle | hotkey | silence | beep`
+- `config.rs` : `profile_name()`, `whisper_config_display()`
+- `tray.rs` : tooltip utilise `config.description()`
+- `main.rs` : log `description()` avant `log_summary()`
+
+---
+
 ## 2026-06-07 — v0.5.4 — Profils et résumés
 
 ### Ajouté
