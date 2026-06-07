@@ -83,6 +83,14 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn keep_recent(&mut self, n: usize) {
+        while self.entries.len() > n {
+            self.entries.pop_back();
+        }
+        log::debug!("Historique tronqué à {} entrée(s)", self.entries.len());
+    }
+
+    #[allow(dead_code)]
     pub fn deduplicate(&mut self) {
         let mut seen = std::collections::HashSet::new();
         self.entries.retain(|e| seen.insert(e.text.clone()));
