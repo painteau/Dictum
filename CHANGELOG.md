@@ -1,5 +1,29 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.3.0 — RELEASE STABLE v1.3
+
+### Features v1.3
+- Reload config automatique après fermeture fenêtre paramètres
+- Fenêtre paramètres 4 onglets : Général / Microphone / Substitutions / Avancé
+- 30+ commandes CLI complètes
+- Mode batch transcription
+- Notifications toast (démarrage, pause, mise à jour, longue transcription)
+- Mono-instance Windows
+- Fallback audio sample rate
+- Filtre hallucinations bigrammes
+
+### Chiffres v1.3.0
+| Métrique | Valeur |
+|----------|--------|
+| Config méthodes | **222** |
+| History méthodes | **110** |
+| Total API | **332 méthodes** |
+| Commits | **578** |
+| Tags | **95+** |
+| Zéro warning | ✓ |
+
+---
+
 ## 2026-06-07 — v1.2.9 — CLI WORD-COUNT + 332 MÉTHODES
 
 ### Ajouté
