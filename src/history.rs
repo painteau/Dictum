@@ -63,6 +63,14 @@ impl History {
         self.entries.front().map(|e| e.text.clone())
     }
 
+    pub fn get_by_index(&self, idx: usize) -> Option<&HistoryEntry> {
+        self.entries.get(idx)
+    }
+
+    pub fn all_texts(&self) -> Vec<String> {
+        self.entries.iter().map(|e| e.text.clone()).collect()
+    }
+
     pub fn clear(&mut self) {
         self.entries.clear();
     }
