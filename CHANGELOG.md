@@ -1,5 +1,15 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.2.8 — EMOJI LANGUE + 328 MÉTHODES
+
+### Ajouté
+- Tray tooltip : emoji langue (🇫🇷🇬🇧🇩🇪...)
+- Config 218 méthodes : `clone_with_language/model`, `language_emoji`
+- History 110 méthodes : `entries_between`, `pop_last/first`, `push_front/back`
+- **328 méthodes API** (218 Config + 110 History) | 573 commits
+
+---
+
 ## 2026-06-07 — v1.2.7 — 320 MÉTHODES API
 
 ### Ajouté
