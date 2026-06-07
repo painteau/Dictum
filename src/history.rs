@@ -563,6 +563,37 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn entries_between(&self, from: u64, to: u64) -> Vec<&HistoryEntry> {
+        self.entries_in_range(from, to)
+    }
+
+    #[allow(dead_code)]
+    pub fn pop_last(&mut self) -> Option<HistoryEntry> {
+        self.entries.pop_back()
+    }
+
+    #[allow(dead_code)]
+    pub fn pop_first(&mut self) -> Option<HistoryEntry> {
+        self.entries.pop_front()
+    }
+
+    #[allow(dead_code)]
+    pub fn push_front(&mut self, text: String) {
+        let timestamp = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap_or_default().as_secs();
+        self.entries.push_front(HistoryEntry { text, timestamp });
+    }
+
+    #[allow(dead_code)]
+    pub fn push_back(&mut self, text: String) {
+        let timestamp = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap_or_default().as_secs();
+        self.entries.push_back(HistoryEntry { text, timestamp });
+    }
+
+    #[allow(dead_code)]
     pub fn avg_words_per_entry(&self) -> usize {
         if self.is_empty() { return 0; }
         self.words_count() / self.len()
