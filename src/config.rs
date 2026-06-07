@@ -151,6 +151,7 @@ impl Config {
         if self.language.is_empty() { self.language = "auto".to_string(); }
         if self.inject_delay_ms > 1000 { self.inject_delay_ms = 1000; }
         if self.whisper_threads > 32 { self.whisper_threads = 32; }
+        self.whisper_temperature = self.whisper_temperature.clamp(0.0, 1.0);
         // model_path doit pointer vers un .bin
         if let Some(ext) = self.model_path.extension() {
             if ext != "bin" {
