@@ -3,6 +3,9 @@ use crate::config::Substitution;
 const MAX_RULES: usize = 100;
 
 pub fn apply(rules: &[Substitution], text: &str) -> String {
+    if rules.is_empty() {
+        return text.to_string();
+    }
     // Appliquer les règles longues en premier (évite les substitutions partielles)
     let mut sorted_rules: Vec<&Substitution> = rules.iter()
         .filter(|r| !r.from.is_empty())
