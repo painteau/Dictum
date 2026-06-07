@@ -1,5 +1,14 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.1.7 — CLI HISTORY + API 272
+
+### Ajouté
+- CLI `--history` : affiche historique formaté avec stats
+- History 82 méthodes : `earliest_timestamp`, `age_secs`, `words_in_last_n`, `summary_line`
+- **272 méthodes API** (190 Config + 82 History)
+
+---
+
 ## 2026-06-07 — v1.1.6 — TOAST DÉMARRAGE + 268 MÉTHODES
 
 ### Ajouté
