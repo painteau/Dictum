@@ -25,7 +25,8 @@ pub fn apply(rules: &[Substitution], text: &str) -> String {
             result = result.replace(&rule.from, &rule.to);
         }
         if result != before {
-            log::debug!("Substitution : {:?} → {:?}", rule.from, rule.to);
+            log::debug!("Substitution appliquée : {:?} → {:?} (case_insensitive: {})",
+                rule.from, rule.to, rule.case_insensitive);
         }
     }
     result
