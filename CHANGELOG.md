@@ -1,5 +1,19 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.8.4 — Score et qualité
+
+### Ajouté
+- `config.rs` : `score()` — note 0-100 basée sur l'état de la config
+- `config.rs` : `score_label()` — "Excellent", "Très bon", "Bon", "Basique", "Incomplet"
+- `config.rs` : `is_ready_message()` enrichi avec score/100 et label
+- `config.rs` : `diagnose()` affiche le score en en-tête
+- Config : **109 méthodes** | Total : **151 méthodes API** ✓
+
+### Corrigé
+- v0.8.2 avait un bug compile (format string dupliqué) — corrigé en v0.8.3
+
+---
+
 ## 2026-06-07 — v0.8.2 — Profils et comparaison
 
 ### Ajouté
