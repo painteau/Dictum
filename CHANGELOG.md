@@ -1,5 +1,13 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.2.6 — SETTINGS 4 ONGLETS COMPLETS
+
+### Ajouté
+- Settings : 4 onglets (Général / Microphone / Substitutions / Avancé)
+- Onglet Microphone : sélection directe du micro depuis la GUI
+
+---
+
 ## 2026-06-07 — v1.2.5 — HISTORY 100 MÉTHODES MILESTONE
 
 ### Milestone
