@@ -122,8 +122,18 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                 }
             } else if event.id == item_settings.id() {
                 let cfg = state.config.lock().unwrap().clone();
+                let state_clone = state.clone();
+                let tx_clone = event_tx.clone();
                 std::thread::spawn(move || {
                     crate::settings::open(cfg);
+                    // Après fermeture, recharger la config automatiquement
+                    let _ = tx_clone.send(crate::AppEvent::ReloadConfig);
+                    log::info!("Config rechargée après fermeture fenêtre paramètres");
+                    // Notifier l'utilisateur si score a changé
+                    if let Ok(new_cfg) = crate::config::Config::load() {
+                        log::info!("Score config : {}/100", new_cfg.score());
+                        let _ = state_clone; // suppress unused warning
+                    }
                 });
             } else if event.id == item_history.id() {
                 let hist = state.history.lock().unwrap();
