@@ -1,5 +1,17 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.4.6 — Refactoring API
+
+### Ajouté
+- `config.rs` : `model_name()`, `hotkey_string()`, `models_dir()`, `substitution_count()`, `has_substitutions()`
+- `setup.rs` : utilise `Config::models_dir()`
+- `hotkey.rs` : utilise `config.hotkey_string()`
+- `tray.rs` : utilise `hotkey_string()` dans À propos et tooltip
+- `config.rs` : `log_summary()` utilise `model_name()` et `hotkey_string()`
+- `main.rs` : utilise `has_substitutions()` et `substitution_count()`
+
+---
+
 ## 2026-06-07 — v0.4.5 — Finitions API
 
 ### Ajouté
