@@ -249,6 +249,7 @@ fn main() -> Result<()> {
             println!("  --list-devices        Lister les microphones disponibles");
             println!("  --list-languages      Lister les langues Whisper (57)");
             println!("  --stats               Statistiques historique de dictée");
+            println!("  --diagnose            Rapport complet : fichiers, audio, réseau, config");
             println!("  --config-check        Valider la configuration sans démarrer");
             println!("  --reset-history       Effacer l'historique de dictée");
             println!("  --export [chemin]     Exporter l'historique en Markdown");
@@ -315,6 +316,35 @@ fn main() -> Result<()> {
                     }
                 }
                 Err(e) => { println!("Impossible de charger l'historique : {e}"); std::process::exit(1); }
+            }
+            return Ok(());
+        }
+        Some("--diagnose") => {
+            let cfg = Config::load().unwrap_or_default();
+            println!("=== Diagnostic Dictum v{} ===\n", env!("CARGO_PKG_VERSION"));
+            println!("{}", cfg.diagnose());
+            println!("\n--- Fichiers ---");
+            let cli_path = Config::data_dir().join("whisper-cli.exe");
+            println!("whisper-cli.exe : {}", if cli_path.exists() { "✓ présent" } else { "✗ manquant" });
+            println!("Modèle         : {}", if cfg.model_path.exists() { "✓ présent" } else { "✗ manquant" });
+            println!("Config         : {}", Config::data_dir().join("config.json").display());
+            println!("Log            : {}", Config::log_path().display());
+            println!("\n--- Audio ---");
+            let devices = audio::list_devices();
+            println!("Microphones    : {}", if devices.is_empty() { "aucun détecté".to_string() } else { devices.len().to_string() + " détecté(s)" });
+            for d in &devices { println!("  - {}", d); }
+            println!("\n--- Réseau ---");
+            let net = downloader::has_internet();
+            println!("Internet       : {}", if net { "✓ connecté" } else { "✗ hors ligne" });
+            println!("\n--- Score config : {}/100 ({}) ---", cfg.score(), cfg.score_label());
+            println!("{}", cfg.score_breakdown_display());
+            let issues = cfg.validate();
+            if issues.is_empty() {
+                println!("\n✓ Aucun problème détecté.");
+            } else {
+                println!("\n⚠ {} problème(s) :", issues.len());
+                for i in &issues { println!("  • {}", i); }
+                std::process::exit(1);
             }
             return Ok(());
         }
