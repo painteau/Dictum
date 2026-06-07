@@ -83,6 +83,13 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn deduplicate(&mut self) {
+        let mut seen = std::collections::HashSet::new();
+        self.entries.retain(|e| seen.insert(e.text.clone()));
+        log::debug!("Historique dédupliqué : {} entrée(s) restantes", self.entries.len());
+    }
+
+    #[allow(dead_code)]
     pub fn contains(&self, text: &str) -> bool {
         self.entries.iter().any(|e| e.text == text)
     }
