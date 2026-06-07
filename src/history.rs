@@ -133,6 +133,19 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn time_since_last(&self) -> Option<u64> {
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap_or_default().as_secs();
+        self.entries.front().map(|e| now.saturating_sub(e.timestamp))
+    }
+
+    #[allow(dead_code)]
+    pub fn is_empty_or_old(&self, max_age_secs: u64) -> bool {
+        self.is_empty() || self.time_since_last().map(|t| t > max_age_secs).unwrap_or(true)
+    }
+
+    #[allow(dead_code)]
     pub fn words_count(&self) -> usize {
         self.entries.iter().map(|e| e.text.split_whitespace().count()).sum()
     }
