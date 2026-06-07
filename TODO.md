@@ -98,7 +98,7 @@
 ## v1.2 — Prochaines étapes
 
 - [ ] Tester l'application sur une machine fraîche (wizard + dictée)
-- [ ] Fenêtre paramètres graphique egui (remplace Notepad)
+- [x] Fenêtre paramètres graphique egui (remplace Notepad)
 - [ ] Traduction automatique locale
 - [ ] Reformulation IA 7 styles
 - [ ] Plugin VS Code

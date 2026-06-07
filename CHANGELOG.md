@@ -1,5 +1,23 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.2.0 — FENÊTRE PARAMÈTRES GRAPHIQUE
+
+### Feature majeure
+- **Fenêtre paramètres graphique egui** — remplace l'ouverture de Notepad
+  - Sélection langue (fr/en/de/es/it/pt/auto)
+  - Modification hotkey (combo Ctrl/Alt/Shift + touche)
+  - Toutes les options booléennes (beep, capitalize, typo fr, auto-enter, prefix-space, pause-media)
+  - Slider seuil silence
+  - DragValue historique max
+  - Score config en temps réel
+  - Bouton Sauvegarder + Fermer
+
+### Chiffres v1.2.0
+- **285 méthodes API** (200 Config + 85 History)
+- **TODO : fenêtre paramètres ✓**
+
+---
+
 ## 2026-06-07 — v1.1.9 — CLI TOP WORDS + 285 MÉTHODES
 
 ### Ajouté
