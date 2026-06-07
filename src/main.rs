@@ -268,6 +268,8 @@ fn main() -> Result<()> {
             println!("  --list-devices        Lister les microphones disponibles");
             println!("  --list-languages      Lister les langues Whisper (57)");
             println!("  --list-models         Lister les modèles disponibles (CDN)");
+            println!("  --open-config         Ouvrir la config dans l'éditeur");
+            println!("  --open-dir            Ouvrir le dossier Dictum");
             println!("  --stats               Statistiques historique de dictée");
             println!("  --search <texte>      Rechercher dans l'historique");
             println!("  --diagnose            Rapport complet : fichiers, audio, réseau, config");
@@ -412,6 +414,21 @@ fn main() -> Result<()> {
                     println!("Impossible de charger la config : {e}");
                     std::process::exit(1);
                 }
+            }
+            return Ok(());
+        }
+        Some("--open-config") => {
+            if let Err(e) = Config::open_in_editor() {
+                println!("Erreur ouverture config : {e}");
+                println!("Chemin : {}", Config::data_dir().join("config.json").display());
+                std::process::exit(1);
+            }
+            return Ok(());
+        }
+        Some("--open-dir") => {
+            if let Err(e) = Config::open_data_dir() {
+                println!("Erreur ouverture dossier : {e}");
+                std::process::exit(1);
             }
             return Ok(());
         }
