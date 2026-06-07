@@ -160,6 +160,11 @@ where
         }
     }
 
+    let elapsed_secs = dl_start.elapsed().as_secs_f64().max(0.001);
+    let total_mb = (downloaded - existing_bytes) as f64 / 1_048_576.0;
+    let speed_mb = total_mb / elapsed_secs;
+    log::info!("Téléchargement terminé : {:.1} MB en {:.0}s ({:.1} MB/s)", total_mb, elapsed_secs, speed_mb);
+
     let actual_hash = hex::encode(hasher.finalize());
     if !entry.sha256.is_empty() && actual_hash != entry.sha256 {
         std::fs::remove_file(dest).ok();
