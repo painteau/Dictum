@@ -101,7 +101,7 @@
 - [x] Fenêtre paramètres graphique egui (remplace Notepad)
 - [ ] Traduction automatique locale
 - [ ] Reformulation IA 7 styles
-- [ ] Plugin VS Code
+- [x] Plugin VS Code (D:/git/dictum-vscode)
 
 ## v0.6 — Roadmap (intégré dans v0.8)
 
@@ -119,7 +119,7 @@
 ## v1.0 — Idées futures
 
 - [x] Mode live (streaming temps réel)
-- [ ] Plugin VS Code
+- [x] Plugin VS Code (D:/git/dictum-vscode)
 - [x] API locale HTTP pour intégrations tierces
 - [ ] Identification locuteurs (diarisation)
 - [ ] Interface multi-langue
