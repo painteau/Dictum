@@ -1,5 +1,17 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.0.6 — WIZARD + CLI SUBSTITUTIONS
+
+### Ajouté
+- Wizard : page récapitulatif avec bouton retour avant téléchargement
+- CLI `--rm-sub "depuis"` : supprimer une substitution
+- History 64 méthodes : `swap`, `retain_matching`, `clone_entries`
+- Log démarrage : score config + nb substitutions + oneliner
+- Tray : "Copier tout l'historique" dans le presse-papiers
+- **219 méthodes API** (155 Config + 64 History) | 503 commits
+
+---
+
 ## 2026-06-07 — v1.0.5 — NOTIFICATIONS + TRAY AMÉLIORÉ
 
 ### Ajouté
