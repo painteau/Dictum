@@ -1,5 +1,14 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.1.9 — CLI TOP WORDS + 285 MÉTHODES
+
+### Ajouté
+- CLI `--top-words [N]` : top N mots les plus fréquents de l'historique
+- History 85 méthodes : `top_words`, `has_entry_older_than`, `entries_with_char`
+- **285 méthodes API** (200 Config + 85 History) | 549 commits
+
+---
+
 ## 2026-06-07 — v1.1.8 — CONFIG 200 MÉTHODES MILESTONE
 
 ### Double milestone
