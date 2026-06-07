@@ -167,6 +167,9 @@ impl Config {
         if self.inject_delay_ms > 1000 { self.inject_delay_ms = 1000; }
         if self.whisper_threads > 32 { self.whisper_threads = 32; }
         self.whisper_temperature = self.whisper_temperature.clamp(0.0, 1.0);
+        if self.beep_start_freq < 100 || self.beep_start_freq > 20000 { self.beep_start_freq = 800; }
+        if self.beep_end_freq < 100 || self.beep_end_freq > 20000 { self.beep_end_freq = 600; }
+        if self.beep_duration_ms == 0 || self.beep_duration_ms > 2000 { self.beep_duration_ms = 80; }
         // model_path doit pointer vers un .bin
         if let Some(ext) = self.model_path.extension() {
             if ext != "bin" {
