@@ -1,5 +1,15 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.1.5 — 263 MÉTHODES API + ETA WIZARD
+
+### Ajouté
+- Wizard download : temps restant estimé (ETA) affiché en temps réel
+- Config 185 méthodes : builders `with_french_typography/whisper_threads/log_level/inject_delay/min_record`
+- History 78 méthodes : `count_longer/shorter_than`, `latest_timestamp`
+- **263 méthodes API** (185 Config + 78 History) | 535 commits
+
+---
+
 ## 2026-06-07 — v1.1.4 — CLI UTILITAIRES + 255 MÉTHODES
 
 ### Ajouté
