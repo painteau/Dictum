@@ -249,6 +249,7 @@ fn main() -> Result<()> {
             println!("  --list-devices        Lister les microphones disponibles");
             println!("  --list-languages      Lister les langues Whisper (57)");
             println!("  --stats               Statistiques historique de dictée");
+            println!("  --search <texte>      Rechercher dans l'historique");
             println!("  --diagnose            Rapport complet : fichiers, audio, réseau, config");
             println!("  --config-check        Valider la configuration sans démarrer");
             println!("  --reset-history       Effacer l'historique de dictée");
@@ -316,6 +317,29 @@ fn main() -> Result<()> {
                     }
                 }
                 Err(e) => { println!("Impossible de charger l'historique : {e}"); std::process::exit(1); }
+            }
+            return Ok(());
+        }
+        Some("--search") => {
+            let query = args.get(2).map(String::as_str).unwrap_or("");
+            if query.is_empty() {
+                println!("Usage : dictum --search <texte>");
+                std::process::exit(1);
+            }
+            match History::load() {
+                Ok(h) => {
+                    let results = h.search(query);
+                    if results.is_empty() {
+                        println!("Aucun résultat pour «{}».", query);
+                    } else {
+                        println!("{} résultat(s) pour «{}» :", results.len(), query);
+                        for (i, e) in results.iter().enumerate() {
+                            let preview = if e.text.len() > 100 { format!("{}...", &e.text[..97]) } else { e.text.clone() };
+                            println!("  {}. {}", i + 1, preview);
+                        }
+                    }
+                }
+                Err(e) => { println!("Erreur : {e}"); std::process::exit(1); }
             }
             return Ok(());
         }
