@@ -198,6 +198,7 @@ fn main() -> Result<()> {
     init_logger();
     let log_level = std::env::var("RUST_LOG").unwrap_or_else(|_| "info".to_string());
     log::info!("Dictum v{} démarrage [log={}]", env!("CARGO_PKG_VERSION"), log_level);
+    log::info!("{}", Config::load().map(|c| c.is_ready_message()).unwrap_or_else(|_| "Config non chargeable".to_string()));
 
     // Mode CLI
     let args: Vec<String> = std::env::args().collect();
