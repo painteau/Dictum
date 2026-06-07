@@ -172,6 +172,10 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
             } else if event.id == item_about.id() {
                 let config = state.config.lock().unwrap();
                 let count = *state.session_count.lock().unwrap();
+                let (hist_count, hist_total) = {
+                    let h = state.history.lock().unwrap();
+                    (h.len(), h.total_chars())
+                };
                 let log_path = crate::config::Config::data_dir().join("dictum.log");
                 let config_path = crate::config::Config::data_dir().join("config.json");
                 let cpu_threads = std::thread::available_parallelism()
@@ -179,7 +183,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                 let model_status = if config.is_model_ready() { "✓ présent" } else { "✗ MANQUANT" };
                 let cli_status = if crate::config::Config::is_whisper_cli_ready() { "✓ présent" } else { "✗ MANQUANT" };
                 let msg = format!(
-                    "Dictum v{}\ngithub.com/painteau/Dictum\n\nModèle  : {} ({}) [{}]\nwhisper : {}\nLangue  : {}\nHotkey  : {}\nThreads : {}\n\nSession : {} transcription{}\nConfig  : {}\nLog     : {}",
+                    "Dictum v{}\ngithub.com/painteau/Dictum\n\nModèle  : {} ({}) [{}]\nwhisper : {}\nLangue  : {}\nHotkey  : {}\nThreads : {}\n\nSession : {} transcription{}\nHistorique : {} entrée{} ({} chars)\nConfig  : {}\nLog     : {}",
                     env!("CARGO_PKG_VERSION"),
                     config.model_name(),
                     model_status,
@@ -190,6 +194,9 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                     cpu_threads,
                     count,
                     if count > 1 { "s" } else { "" },
+                    hist_count,
+                    if hist_count > 1 { "s" } else { "" },
+                    hist_total,
                     config_path.display(),
                     log_path.display()
                 );
