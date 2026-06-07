@@ -399,10 +399,7 @@ fn main() -> Result<()> {
                                         log::info!("Résultat vide (silence ou filtré), rien injecté");
                                     }
                                     Ok(text) => {
-                                        let text = substitution::apply(
-                                            &state.config.lock().unwrap().substitutions,
-                                            &text,
-                                        );
+                                        let text = state.config.lock().unwrap().apply_substitutions(&text);
                                         log::debug!("Pipeline reçoit texte : {} chars", text.len());
                                         *state.session_count.lock().unwrap() += 1;
                                         let max_h = config.max_history;
