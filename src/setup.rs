@@ -231,6 +231,8 @@ impl SetupWizard {
             beep_end_freq: 600,
             beep_duration_ms: 80,
             log_level: "info".to_string(),
+            translate_to: String::new(),
+            use_cuda: false,
         }
     }
 

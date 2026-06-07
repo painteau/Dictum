@@ -134,6 +134,9 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
         vec!["--language", &lang_str]
     };
 
+    // Traduction automatique : Whisper peut traduire vers l'anglais nativement
+    let translate = !config.translate_to.is_empty() && config.translate_to == "en";
+
     let cpu_threads = if config.whisper_threads > 0 {
         config.whisper_threads as usize
     } else {
@@ -160,6 +163,15 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
     }
     if config.whisper_temperature != 0.0 {
         cmd.arg("--temperature").arg(format!("{:.2}", config.whisper_temperature));
+    }
+    if translate {
+        cmd.arg("--task").arg("translate");
+        log::info!("Mode traduction : {} → en", config.language);
+    }
+    // Accélération GPU CUDA si activée
+    if config.use_cuda {
+        cmd.arg("--gpu-layers").arg("99");
+        log::debug!("GPU CUDA activé");
     }
 
     cmd.arg("--file").arg(&wav_path);

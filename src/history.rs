@@ -720,6 +720,32 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn avg_punctuation_per_entry(&self) -> f32 {
+        if self.is_empty() { return 0.0; }
+        self.total_punctuation() as f32 / self.len() as f32
+    }
+
+    #[allow(dead_code)]
+    pub fn entries_with_number(&self) -> Vec<&HistoryEntry> {
+        self.entries.iter().filter(|e| e.text.chars().any(|c| c.is_ascii_digit())).collect()
+    }
+
+    #[allow(dead_code)]
+    pub fn count_entries_with_number(&self) -> usize {
+        self.entries.iter().filter(|e| e.text.chars().any(|c| c.is_ascii_digit())).count()
+    }
+
+    #[allow(dead_code)]
+    pub fn last_entry_age_mins(&self) -> Option<u64> {
+        self.time_since_last().map(|s| s / 60)
+    }
+
+    #[allow(dead_code)]
+    pub fn is_recent(&self) -> bool {
+        self.has_recent_entry(300) // 5 min
+    }
+
+    #[allow(dead_code)]
     pub fn avg_words_per_entry(&self) -> usize {
         if self.is_empty() { return 0; }
         self.words_count() / self.len()

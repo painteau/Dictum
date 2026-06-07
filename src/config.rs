@@ -83,6 +83,12 @@ pub struct Config {
     /// Niveau de log : "error", "warn", "info", "debug"
     #[serde(default = "default_log_level")]
     pub log_level: String,
+    /// Traduction automatique après transcription. Vide = désactivé. "en" = traduire en anglais via Whisper.
+    #[serde(default)]
+    pub translate_to: String,
+    /// Activer l'accélération GPU CUDA si disponible
+    #[serde(default)]
+    pub use_cuda: bool,
 }
 
 impl Default for Config {
@@ -112,6 +118,8 @@ impl Default for Config {
             beep_end_freq: 600,
             beep_duration_ms: 80,
             log_level: "info".to_string(),
+            translate_to: String::new(),
+            use_cuda: false,
         }
     }
 }
