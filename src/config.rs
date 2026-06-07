@@ -293,6 +293,24 @@ impl Config {
         self.substitutions.len()
     }
 
+    /// Retourne la liste des problèmes de configuration (vide si tout est OK).
+    pub fn validate(&self) -> Vec<String> {
+        let mut issues = Vec::new();
+        if !self.is_model_ready() {
+            issues.push(format!("Modèle absent : {}", self.model_path.display()));
+        }
+        if !Self::is_whisper_cli_ready() {
+            issues.push("whisper-cli.exe manquant".to_string());
+        }
+        if self.hotkey.key.is_empty() {
+            issues.push("Hotkey non définie".to_string());
+        }
+        if self.max_record_secs == 0 {
+            issues.push("max_record_secs = 0 invalide".to_string());
+        }
+        issues
+    }
+
     pub fn full_status(&self) -> String {
         format!(
             "Dictum v{} | Modèle: {} [{}] | Langue: {} | Hotkey: {}\nWhisper: threads={} temp={:.1} | Enregistrement: {} | Silence: {}\nInjection: [{}] | Beep: {}",
