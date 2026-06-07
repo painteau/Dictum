@@ -83,6 +83,17 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn contains(&self, text: &str) -> bool {
+        self.entries.iter().any(|e| e.text == text)
+    }
+
+    #[allow(dead_code)]
+    pub fn count_containing(&self, query: &str) -> usize {
+        let q = query.to_lowercase();
+        self.entries.iter().filter(|e| e.text.to_lowercase().contains(&q)).count()
+    }
+
+    #[allow(dead_code)]
     pub fn sorted_by_length(&self) -> Vec<&HistoryEntry> {
         let mut v: Vec<&HistoryEntry> = self.entries.iter().collect();
         v.sort_by(|a, b| b.text.len().cmp(&a.text.len()));
