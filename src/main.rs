@@ -276,6 +276,7 @@ fn main() -> Result<()> {
     // Premier lancement : wizard si aucun modèle ou whisper-cli absent
     {
         let config = Config::load()?;
+        log::info!("{}", config.description());
         config.log_summary();
         if config.config_version < 1 {
             log::warn!("Config version {} détectée — réinitialisation", config.config_version);
