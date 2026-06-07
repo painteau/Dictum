@@ -748,8 +748,8 @@ impl Config {
         let ok = "✓".to_string();
         let nok = "✗".to_string();
         format!(
-            "=== Dictum {} Diagnostic ===\nModèle   : {} {}\nCLI      : {} {}\nConfig   : {} v{}\nProfil   : {}\nThreads  : {}\nSilence  : {}\nBeep     : {}\n{}\n===",
-            Self::app_version(),
+            "=== Dictum {} Diagnostic — Score: {}/100 ({}) ===\nModèle   : {} {}\nCLI      : {} {}\nConfig   : {} v{}\nProfil   : {}\nThreads  : {}\nSilence  : {}\nBeep     : {}\n{}\n===",
+            Self::app_version(), self.score(), self.score_label(),
             if self.is_model_ready() { &ok } else { &nok }, self.model_name(),
             if Self::is_whisper_cli_ready() { &ok } else { &nok }, "whisper-cli.exe",
             ok, self.config_version,
