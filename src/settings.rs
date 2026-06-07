@@ -3,7 +3,7 @@ use eframe::egui::{self, Color32, RichText, Vec2};
 use crate::config::Config;
 
 #[derive(PartialEq, Clone)]
-enum Tab { General, Substitutions, Advanced }
+enum Tab { General, Microphone, Substitutions, Advanced }
 
 struct SettingsWindow {
     cfg: Config,
@@ -11,6 +11,7 @@ struct SettingsWindow {
     save_error: Option<String>,
     dirty: bool,
     tab: Tab,
+    available_mics: Vec<String>,
     new_sub_from: String,
     new_sub_to: String,
     new_sub_case: bool,
@@ -21,6 +22,7 @@ impl SettingsWindow {
         Self {
             cfg, saved: false, save_error: None, dirty: false,
             tab: Tab::General,
+            available_mics: crate::audio::list_devices(),
             new_sub_from: String::new(), new_sub_to: String::new(), new_sub_case: true,
         }
     }
@@ -42,6 +44,9 @@ impl eframe::App for SettingsWindow {
                 let tab = self.tab.clone();
                 if ui.selectable_label(tab == Tab::General, "⚙ Général").clicked() {
                     self.tab = Tab::General;
+                }
+                if ui.selectable_label(tab == Tab::Microphone, "🎙 Microphone").clicked() {
+                    self.tab = Tab::Microphone;
                 }
                 if ui.selectable_label(tab == Tab::Substitutions, "🔄 Substitutions").clicked() {
                     self.tab = Tab::Substitutions;
@@ -121,6 +126,33 @@ impl eframe::App for SettingsWindow {
                         ui.label(RichText::new("entrées").color(Color32::GRAY).small());
                     });
                     ui.add_space(8.0);
+                }
+                Tab::Microphone => {
+                    ui.label(RichText::new("Sélection du microphone").color(Color32::GRAY));
+                    ui.add_space(8.0);
+
+                    let sel_default = self.cfg.microphone.is_none();
+                    if ui.selectable_label(sel_default, RichText::new("(défaut système)").color(Color32::from_rgb(80,200,120))).clicked() {
+                        self.cfg.microphone = None;
+                        self.dirty = true;
+                    }
+                    ui.add_space(4.0);
+
+                    for mic in self.available_mics.clone() {
+                        let is_sel = self.cfg.microphone.as_deref() == Some(&mic);
+                        if ui.selectable_label(is_sel, RichText::new(&mic).color(Color32::LIGHT_GRAY)).clicked() {
+                            self.cfg.microphone = Some(mic.clone());
+                            self.dirty = true;
+                        }
+                    }
+
+                    if self.available_mics.is_empty() {
+                        ui.label(RichText::new("Aucun microphone détecté.").color(Color32::RED).small());
+                    }
+
+                    ui.add_space(8.0);
+                    let mic_label = self.cfg.microphone.clone().unwrap_or_else(|| "défaut système".to_string());
+                    ui.label(RichText::new(format!("Actuel : {}", mic_label)).color(Color32::GRAY).small());
                 }
                 Tab::Substitutions => {
                     // Liste des substitutions existantes
