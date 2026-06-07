@@ -295,6 +295,15 @@ impl Config {
     }
 
     /// Retourne la liste des problèmes de configuration (vide si tout est OK).
+    pub fn whisper_config_display(&self) -> String {
+        format!("threads={} temp={:.1} no_speech={} speed={}",
+            self.threads_display(),
+            self.whisper_temperature,
+            self.whisper_no_speech,
+            self.whisper_speed_label()
+        )
+    }
+
     pub fn profile_name(&self) -> &'static str {
         match (self.french_typography, self.auto_capitalize, self.pause_media) {
             (true, true, false) => "Français standard",
