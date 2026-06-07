@@ -433,6 +433,31 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn entries_without_char(&self, ch: char) -> Vec<&HistoryEntry> {
+        self.entries.iter().filter(|e| !e.text.contains(ch)).collect()
+    }
+
+    #[allow(dead_code)]
+    pub fn average_word_length(&self) -> f32 {
+        let words = self.words_count();
+        if words == 0 { return 0.0; }
+        let chars: usize = self.entries.iter().flat_map(|e| e.text.split_whitespace()).map(|w| w.len()).sum();
+        chars as f32 / words as f32
+    }
+
+    #[allow(dead_code)]
+    pub fn has_duplicate(&self) -> bool {
+        let mut seen = std::collections::HashSet::new();
+        self.entries.iter().any(|e| !seen.insert(&e.text))
+    }
+
+    #[allow(dead_code)]
+    pub fn count_duplicates(&self) -> usize {
+        let mut seen = std::collections::HashSet::new();
+        self.entries.iter().filter(|e| !seen.insert(&e.text)).count()
+    }
+
+    #[allow(dead_code)]
     pub fn avg_words_per_entry(&self) -> usize {
         if self.is_empty() { return 0; }
         self.words_count() / self.len()
