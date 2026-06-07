@@ -219,6 +219,14 @@ impl Config {
         env!("CARGO_PKG_VERSION")
     }
 
+    /// Réinitialise et sauvegarde la config aux valeurs par défaut.
+    pub fn reset_to_default() -> Result<Self> {
+        let cfg = Config::default();
+        cfg.save()?;
+        log::info!("Config réinitialisée aux valeurs par défaut (v{})", Self::app_version());
+        Ok(cfg)
+    }
+
     pub fn open_data_dir() -> Result<()> {
         std::process::Command::new("explorer")
             .arg(data_dir())
