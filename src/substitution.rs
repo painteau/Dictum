@@ -2,6 +2,30 @@ use crate::config::Substitution;
 
 const MAX_RULES: usize = 100;
 
+/// Retourne le nombre de substitutions qui s'appliqueraient au texte.
+pub fn count_applicable(rules: &[Substitution], text: &str) -> usize {
+    rules.iter().filter(|r| {
+        if r.case_insensitive {
+            text.to_lowercase().contains(&r.from.to_lowercase())
+        } else {
+            text.contains(&r.from)
+        }
+    }).count()
+}
+
+/// Applique les substitutions et retourne aussi le nombre appliqué.
+pub fn apply_with_count(rules: &[Substitution], text: &str) -> (String, usize) {
+    let result = apply(rules, text);
+    let count = rules.iter().filter(|r| {
+        if r.case_insensitive {
+            text.to_lowercase().contains(&r.from.to_lowercase())
+        } else {
+            text.contains(&r.from)
+        }
+    }).count();
+    (result, count)
+}
+
 /// Substitutions françaises prédéfinies courantes (abréviations SMS/oral)
 pub fn french_defaults() -> Vec<Substitution> {
     vec![
