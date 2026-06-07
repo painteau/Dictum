@@ -58,8 +58,10 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
     let adaptive_timeout = (audio_secs * 10).max(60).min(300);
     log::debug!("Timeout adaptatif whisper : {}s pour {:.1}s audio", adaptive_timeout, audio_secs as f64);
 
-    if rms(samples) < config.silence_threshold {
-        log::debug!("Silence détecté (RMS={:.4}), transcription ignorée", rms(samples));
+    let sample_rms = rms(samples);
+    log::debug!("RMS audio : {:.4} (seuil silence : {:.4})", sample_rms, config.silence_threshold);
+    if sample_rms < config.silence_threshold {
+        log::info!("Silence ignoré (RMS={:.4} < {:.4})", sample_rms, config.silence_threshold);
         return Ok(String::new());
     }
     let cli = whisper_cli_path();
