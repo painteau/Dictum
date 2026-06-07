@@ -107,9 +107,9 @@
 
 - [ ] Fenêtre paramètres graphique (egui) — remplace Notepad
 - [x] Traduction automatique locale
-- [ ] Reformulation IA 7 styles
+- [x] Reformulation IA 7 styles
 - [x] Transcription drag & drop fichier audio/vidéo
-- [ ] Mode sélection (reformule texte sélectionné)
+- [x] Mode sélection (reformule texte sélectionné)
 - [ ] Moteur Parakeet (600 MB, plus rapide)
 - [x] Support CUDA via feature flag
 - [x] Rotation automatique fichier log

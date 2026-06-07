@@ -1,5 +1,21 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.5.0 — REFORMULATION OLLAMA LOCAL
+
+### Feature majeure
+- **Reformulation IA 7 styles via Ollama** — 100% local, zéro cloud
+  - 7 styles : formel, informel, résumé, bullet points, email pro, tweet, correction
+  - Onglet "Reformulation" dans settings : URL Ollama, test connexion, liste modèles auto, style par défaut
+  - Tray : "✨ Reformuler sélection" — sélectionner du texte → reformulation → injection
+  - `get_selected_text()` via Ctrl+C simulé
+  - Config : `ollama_url`, `ollama_model`, `reformulation_style`, `selection_mode`
+
+### TODO coché
+- [x] Reformulation IA 7 styles
+- [x] Mode sélection (reformule texte sélectionné)
+
+---
+
 ## 2026-06-07 — v1.4.0 — TRAD + DRAG & DROP + CUDA
 
 ### Features majeures
