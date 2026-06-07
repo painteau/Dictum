@@ -490,6 +490,35 @@ fn main() -> Result<()> {
             }
             return Ok(());
         }
+        Some("--set-beep") => {
+            let val = args.get(2).map(String::as_str).unwrap_or("on");
+            let enabled = matches!(val, "on" | "true" | "1" | "yes");
+            let mut cfg = Config::load().unwrap_or_default();
+            cfg.beep_enabled = enabled;
+            match cfg.save() {
+                Ok(_) => println!("Beep : {}", if enabled { "activé" } else { "désactivé" }),
+                Err(e) => { println!("Erreur : {e}"); std::process::exit(1); }
+            }
+            return Ok(());
+        }
+        Some("--set-silence") => {
+            let val = args.get(2).and_then(|s| s.parse::<f32>().ok());
+            match val {
+                Some(v) if (0.0..=1.0).contains(&v) => {
+                    let mut cfg = Config::load().unwrap_or_default();
+                    cfg.silence_threshold = v;
+                    match cfg.save() {
+                        Ok(_) => println!("Seuil silence : {:.4} ({})", v, cfg.silence_level_label()),
+                        Err(e) => { println!("Erreur : {e}"); std::process::exit(1); }
+                    }
+                }
+                _ => {
+                    println!("Usage : dictum --set-silence <0.0-1.0>  (ex: 0.005)");
+                    std::process::exit(1);
+                }
+            }
+            return Ok(());
+        }
         Some("--set-model") => {
             let model_name = args.get(2).map(String::as_str).unwrap_or("");
             if model_name.is_empty() {
