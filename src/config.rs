@@ -762,6 +762,16 @@ impl Config {
         )
     }
     pub fn can_transcribe(&self) -> bool { self.is_fully_ready() }
+    pub fn model_size_mb_estimate(&self) -> u32 {
+        let name = self.model_name();
+        if name.contains("large") { 3000 }
+        else if name.contains("medium") { 1500 }
+        else if name.contains("small") { 500 }
+        else if name.contains("base") { 150 }
+        else if name.contains("tiny") { 75 }
+        else { 1500 }
+    }
+
     pub fn performance_label(&self) -> &'static str {
         if self.is_optimized_for_speed() { "Rapide" }
         else if self.is_optimized_for_quality() { "Haute qualité" }
