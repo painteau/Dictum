@@ -470,6 +470,22 @@ impl Config {
     }
 
     #[allow(dead_code)]
+    pub fn set_log_level(&mut self, level: &str) -> &mut Self {
+        if ["error","warn","info","debug","trace"].contains(&level) {
+            self.log_level = level.to_string();
+        } else {
+            log::warn!("Niveau log '{}' invalide, ignoré", level);
+        }
+        self
+    }
+
+    #[allow(dead_code)]
+    pub fn set_inject_delay(&mut self, ms: u64) -> &mut Self {
+        self.inject_delay_ms = ms.min(1000);
+        self
+    }
+
+    #[allow(dead_code)]
     pub fn set_auto_capitalize(&mut self, val: bool) -> &mut Self {
         self.auto_capitalize = val;
         self
