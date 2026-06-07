@@ -19,6 +19,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
     let item_copy_all    = MenuItem::new("📋 Copier tout l'historique", true, None);
     let item_export_hist = MenuItem::new("💾 Exporter historique", true, None);
     let item_reset_cfg  = MenuItem::new("🔧 Réinitialiser la config", true, None);
+    let item_session_stats = MenuItem::new("📊 Statistiques session", true, None);
     let item_clear_hist = MenuItem::new("🗑  Effacer l'historique", true, None);
     let item_reload     = MenuItem::new("↺  Recharger la config", true, None);
     let item_open_log   = MenuItem::new("📄 Ouvrir le log", true, None);
@@ -46,6 +47,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
         &item_copy_last,
         &item_copy_all,
         &item_export_hist,
+        &item_session_stats,
         &item_clear_hist,
         &PredefinedMenuItem::separator(),
         // Système
@@ -132,6 +134,17 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                 };
                 drop(hist);
                 show_dialog("Dictum — Historique", &msg);
+            } else if event.id == item_session_stats.id() {
+                let count = *state.session_count.lock().unwrap();
+                let hist = state.history.lock().unwrap();
+                let msg = format!(
+                    "Session courante :\n  {} transcription{}\n  {} mots totaux\n\n{}",
+                    count, if count > 1 { "s" } else { "" },
+                    hist.words_count(),
+                    hist.stats_summary()
+                );
+                drop(hist);
+                show_dialog("Dictum — Statistiques session", &msg);
             } else if event.id == item_copy_all.id() {
                 let hist = state.history.lock().unwrap();
                 if hist.is_empty() {
