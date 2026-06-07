@@ -133,6 +133,28 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn words_count(&self) -> usize {
+        self.entries.iter().map(|e| e.text.split_whitespace().count()).sum()
+    }
+
+    #[allow(dead_code)]
+    pub fn has_recent_entry(&self, within_secs: u64) -> bool {
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap_or_default().as_secs();
+        self.entries.front().map(|e| now.saturating_sub(e.timestamp) <= within_secs).unwrap_or(false)
+    }
+
+    #[allow(dead_code)]
+    pub fn entries_today(&self) -> Vec<&HistoryEntry> {
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap_or_default().as_secs();
+        let start_of_day = now - (now % 86400);
+        self.entries.iter().filter(|e| e.timestamp >= start_of_day).collect()
+    }
+
+    #[allow(dead_code)]
     pub fn stats_summary(&self) -> String {
         if self.is_empty() {
             return "Historique vide".to_string();
