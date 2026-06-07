@@ -257,7 +257,8 @@ impl SetupWizard {
 
         if let Some(err) = &self.manifest_error {
             ui.add_space(8.0);
-            ui.label(RichText::new(format!("Erreur réseau : {}", err)).color(Color32::RED).small());
+            ui.label(RichText::new(format!("Erreur : {}", err)).color(Color32::RED).small());
+            ui.label(RichText::new(format!("URL manifest : {}", downloader::MANIFEST_URL)).color(Color32::GRAY).small());
         }
     }
 
