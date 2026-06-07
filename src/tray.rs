@@ -11,6 +11,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
     let tray_menu = Menu::new();
     let item_update    = MenuItem::new("🔄 Mise à jour disponible !", false, None);
     let item_sep_up    = PredefinedMenuItem::separator();
+    let item_pause     = MenuItem::new("⏸  Pause dictée", true, None);
     let item_settings  = MenuItem::new("⚙  Paramètres", true, None);
     let item_history   = MenuItem::new("📋 Historique (0)", true, None);
     let item_devices   = MenuItem::new("🎙  Microphones", true, None);
@@ -31,6 +32,9 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
     tray_menu.append_items(&[
         &item_update,         // caché au départ, visible si update
         &item_sep_up,         // séparateur update
+        // Contrôle
+        &item_pause,
+        &PredefinedMenuItem::separator(),
         // Config
         &item_settings,
         &item_reload,
@@ -79,9 +83,18 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
             }
         }
 
+        // Mettre à jour le label pause selon l'état
+        let paused = *state.is_paused.lock().unwrap();
+        item_pause.set_text(if paused { "▶  Reprendre dictée" } else { "⏸  Pause dictée" });
+
         if let Ok(ref event) = menu_rx.try_recv() {
             log::debug!("Menu tray : event id={:?}", event.id);
-            if event.id == item_quit.id() {
+            if event.id == item_pause.id() {
+                let mut p = state.is_paused.lock().unwrap();
+                *p = !*p;
+                let state_str = if *p { "en pause" } else { "active" };
+                log::info!("Dictée {} via menu tray", state_str);
+            } else if event.id == item_quit.id() {
                 let _ = event_tx.send(AppEvent::Quit);
                 break;
             } else if event.id == item_update.id() {
@@ -224,7 +237,10 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
             (cfg.description(), cfg.hotkey_string())
         };
         let words = state.history.lock().unwrap().words_count();
-        let tooltip = if recording {
+        let is_paused = *state.is_paused.lock().unwrap();
+        let tooltip = if is_paused {
+            format!("{} — EN PAUSE (cliquer tray pour reprendre)", desc)
+        } else if recording {
             format!("Enregistrement... relâcher {}", hotkey_str)
         } else if transcribing {
             "Transcription en cours...".to_string()

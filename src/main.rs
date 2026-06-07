@@ -164,6 +164,7 @@ pub enum AppEvent {
     RecordStart,
     RecordStop,
     ReloadConfig,
+    TogglePause,
     Quit,
 }
 
@@ -173,6 +174,7 @@ pub struct AppState {
     pub history: Arc<Mutex<History>>,
     pub is_recording: Arc<Mutex<bool>>,
     pub is_transcribing: Arc<Mutex<bool>>,
+    pub is_paused: Arc<Mutex<bool>>,
     pub session_count: Arc<Mutex<u32>>,
 }
 
@@ -183,6 +185,7 @@ impl AppState {
             history: Arc::new(Mutex::new(History::load()?)),
             is_recording: Arc::new(Mutex::new(false)),
             is_transcribing: Arc::new(Mutex::new(false)),
+            is_paused: Arc::new(Mutex::new(false)),
             session_count: Arc::new(Mutex::new(0)),
         })
     }
@@ -446,6 +449,10 @@ fn main() -> Result<()> {
             for event in &event_rx {
                 match event {
                     AppEvent::RecordStart => {
+                        if *state.is_paused.lock().unwrap() {
+                            log::debug!("Dictée en pause — hotkey ignorée");
+                            continue;
+                        }
                         if *state.is_transcribing.lock().unwrap() {
                             log::warn!("Transcription en cours — hotkey ignorée");
                             continue;
@@ -519,6 +526,11 @@ fn main() -> Result<()> {
                             }
                             Err(e) => log::error!("Reload config échoué : {e}"),
                         }
+                    }
+                    AppEvent::TogglePause => {
+                        let mut p = state.is_paused.lock().unwrap();
+                        *p = !*p;
+                        log::info!("Dictée {}", if *p { "mise en pause" } else { "reprise" });
                     }
                     AppEvent::Quit => break,
                 }
