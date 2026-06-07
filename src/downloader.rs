@@ -40,7 +40,13 @@ pub fn has_internet() -> bool {
 }
 
 pub fn fetch_manifest() -> Result<Manifest> {
-    let resp = reqwest::blocking::get(MANIFEST_URL)
+    let client = reqwest::blocking::Client::builder()
+        .user_agent(format!("Dictum/{}", env!("CARGO_PKG_VERSION")))
+        .timeout(std::time::Duration::from_secs(15))
+        .build()
+        .map_err(|e| anyhow!("Client HTTP manifest : {e}"))?;
+
+    let resp = client.get(MANIFEST_URL).send()
         .map_err(|e| anyhow!("Impossible de récupérer le manifest : {e}"))?;
 
     if !resp.status().is_success() {
