@@ -319,7 +319,7 @@ fn main() -> Result<()> {
         log::info!("Modèle : {} ({})", cfg.model_name(),
             if cfg.is_model_ready() { "présent" } else { "MANQUANT" });
         if cfg.has_substitutions() {
-            log::info!("Substitutions : {} règle(s)", cfg.substitution_count());
+            log::info!("Substitutions : {} règle(s) — {}", cfg.substitution_count(), cfg.substitutions_display());
         }
         if cfg.pause_media { log::info!("Pause médias : activée"); }
         log::info!("Beep : {}", cfg.beep_description());
