@@ -1,5 +1,22 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.8.0 — BILAN FINAL NUIT
+
+### Stats officielles de la nuit
+- **Config : 100 méthodes** ✓ milestone
+- **History : 42 méthodes** ✓
+- **Total API : 142 méthodes publiques**
+- **395+ commits** en une nuit
+- **60+ tags** releases CI/CD
+- Zéro warning `cargo build`
+- Logs 100% français
+- API fluent style (set_*, toggle_*, is_*)
+- Validations, diagnostics, exporters complets
+
+### Dictum v0.8.0 — Prêt pour test utilisateur
+
+---
+
 ## 2026-06-07 — v0.7.9 — MILESTONE History 40 méthodes
 
 ### DOUBLE MILESTONE
