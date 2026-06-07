@@ -826,6 +826,13 @@ impl Config {
         ]
     }
 
+    pub fn score_breakdown_display(&self) -> String {
+        self.score_breakdown().iter()
+            .map(|(label, pts)| format!("  {} : {}/{}pts", if *pts > 0 { "✓" } else { "✗" }, pts, pts.max(&1)))
+            .collect::<Vec<_>>()
+            .join("\n")
+    }
+
     pub fn score_label(&self) -> &'static str {
         match self.score() {
             90..=100 => "Excellent",
