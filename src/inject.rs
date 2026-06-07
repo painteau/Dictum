@@ -135,6 +135,12 @@ fn apply_french_typography(text: &str) -> String {
     text
 }
 
+/// Applique seulement l'apostrophe typographique (mode léger sans espaces insécables).
+#[allow(dead_code)]
+pub fn apply_minimal_typography(text: &str) -> String {
+    text.replace("...", "\u{2026}").replace("'", "\u{2019}")
+}
+
 fn replace_quotes_french(text: &str) -> String {
     // Remplace "texte" par « texte » (guillemets droits uniquement)
     let mut result = String::with_capacity(text.len());
