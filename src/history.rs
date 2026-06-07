@@ -286,6 +286,24 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn swap(&mut self, i: usize, j: usize) {
+        if i < self.entries.len() && j < self.entries.len() {
+            self.entries.swap(i, j);
+        }
+    }
+
+    #[allow(dead_code)]
+    pub fn retain_matching(&mut self, query: &str) {
+        let q = query.to_lowercase();
+        self.entries.retain(|e| e.text.to_lowercase().contains(&q));
+    }
+
+    #[allow(dead_code)]
+    pub fn clone_entries(&self) -> Vec<HistoryEntry> {
+        self.entries.iter().cloned().collect()
+    }
+
+    #[allow(dead_code)]
     pub fn avg_words_per_entry(&self) -> usize {
         if self.is_empty() { return 0; }
         self.words_count() / self.len()
