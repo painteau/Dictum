@@ -1,5 +1,14 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.3.3 — 357 MÉTHODES API
+
+### Ajouté
+- Config 232 méthodes : `has_any_substitution`, `substitutions_summary`, `config_age_label`
+- History 125 méthodes : `first/last_word`, `entry_starts_with_upper`, `texts_longer_than_words`, `ratio_short_entries`
+- **357 méthodes API** (232 Config + 125 History) | 588 commits
+
+---
+
 ## 2026-06-07 — v1.3.2 — ABOUT AMÉLIORÉ + 349 MÉTHODES
 
 ### Ajouté
