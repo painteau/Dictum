@@ -291,6 +291,22 @@ impl Config {
         !self.substitutions.is_empty()
     }
 
+    pub fn language_display(&self) -> String {
+        match self.language.as_str() {
+            "auto" => "Auto-détection".to_string(),
+            "fr" => "Français".to_string(),
+            "en" => "English".to_string(),
+            "de" => "Deutsch".to_string(),
+            "es" => "Español".to_string(),
+            "it" => "Italiano".to_string(),
+            "pt" => "Português".to_string(),
+            "ja" => "日本語".to_string(),
+            "zh" => "中文".to_string(),
+            "ko" => "한국어".to_string(),
+            other => other.to_string(),
+        }
+    }
+
     pub fn model_name(&self) -> &str {
         self.model_path
             .file_name()
