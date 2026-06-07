@@ -311,14 +311,15 @@ fn main() -> Result<()> {
         }
         if cfg.pause_media { log::info!("Pause médias : activée"); }
         log::info!("Beep : {}", cfg.beep_description());
-        log::info!("Whisper : threads={} temp={:.1} no_speech={}",
+        log::info!("Whisper : threads={} temp={:.1} no_speech={} vitesse={}",
             if cfg.whisper_threads == 0 { "auto".to_string() } else { cfg.whisper_threads.to_string() },
             cfg.whisper_temperature,
-            cfg.whisper_no_speech
+            cfg.whisper_no_speech,
+            cfg.whisper_speed_label()
         );
-        log::info!("Injection : délai={}ms prefix_space={}", cfg.inject_delay_ms, cfg.prefix_space);
-        log::info!("Enregistrement : max={}s min={}ms silence_thold={:.3}",
-            cfg.max_record_secs, cfg.min_record_ms, cfg.silence_threshold);
+        log::info!("Injection : mode=[{}] délai={}ms", cfg.inject_mode_label(), cfg.inject_delay_ms);
+        log::info!("Enregistrement : max={}s min={}ms silence=[{}]",
+            cfg.max_record_secs, cfg.min_record_ms, cfg.silence_level_label());
     }
     let (event_tx, event_rx) = bounded::<AppEvent>(32);
 
