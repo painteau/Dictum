@@ -183,10 +183,14 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                 } else {
                     format!("⚠ {} problème(s) :\n{}", issues.len(), issues.iter().map(|i| format!("  • {}", i)).collect::<Vec<_>>().join("\n"))
                 };
-                let _ = &diagnostic; // utilisé implicitement via issues_str
+                let score_label = config.score_label();
+                let score_breakdown = config.score_breakdown_display();
                 let msg = format!(
-                    "github.com/painteau/Dictum\n\n{}\n\n{}\n\nSession : {} transcription{}\nHistorique : {}\nConfig  : {}\nLog     : {}",
+                    "github.com/painteau/Dictum\n\n{}\n\nScore config : {}/100 ({})\n{}\n\n{}\n\nSession : {} transcription{}\nHistorique : {}\nConfig  : {}\nLog     : {}",
                     diagnostic,
+                    score,
+                    score_label,
+                    score_breakdown,
                     issues_str,
                     count,
                     if count > 1 { "s" } else { "" },
