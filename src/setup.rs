@@ -281,9 +281,17 @@ impl SetupWizard {
             ui.label(RichText::new("Aucun GPU NVIDIA détecté — mode CPU").color(Color32::GRAY));
         }
 
-        ui.add_space(32.0);
-        ui.label(RichText::new("Configuration rapide : 2 questions.").color(Color32::LIGHT_GRAY));
         ui.add_space(24.0);
+        ui.label(RichText::new(format!("Dictum v{}", env!("CARGO_PKG_VERSION"))).color(Color32::GRAY).small());
+        ui.add_space(8.0);
+        ui.label(RichText::new("Configuration rapide — 4 étapes.").color(Color32::LIGHT_GRAY));
+        ui.add_space(4.0);
+        if ui.link(RichText::new("github.com/painteau/Dictum").color(Color32::from_rgb(100, 160, 255)).small()).clicked() {
+            std::process::Command::new("cmd")
+                .args(["/c", "start", "https://github.com/painteau/Dictum"])
+                .spawn().ok();
+        }
+        ui.add_space(16.0);
 
         if ui.add(styled_button("Commencer →")).clicked() {
             self.fetch_manifest_sync();
