@@ -69,22 +69,49 @@ impl RecordHandle {
             };
             log::info!("Micro actif : {}", device.name().unwrap_or_else(|_| "inconnu".to_string()));
 
+            // Tenter 16kHz en priorité, fallback sur le taux natif du device
+            let (actual_rate, needs_resample) = {
+                let cfg_16k = StreamConfig {
+                    channels: 1,
+                    sample_rate: SampleRate(16000),
+                    buffer_size: cpal::BufferSize::Default,
+                };
+                if device.build_input_stream(&cfg_16k, |_: &[f32], _| {}, |_| {}, None).is_ok() {
+                    (16000u32, false)
+                } else {
+                    let supported = device.default_input_config()
+                        .map(|c| c.sample_rate().0)
+                        .unwrap_or(44100);
+                    log::warn!("16kHz non supporté — utilisation de {} Hz avec downsample", supported);
+                    (supported, supported != 16000)
+                }
+            };
+
             let config = StreamConfig {
                 channels: 1,
-                sample_rate: SampleRate(16000),
+                sample_rate: SampleRate(actual_rate),
                 buffer_size: cpal::BufferSize::Default,
             };
-            log::debug!("Stream audio : 1 canal, 16000 Hz, buffer défaut");
+            log::debug!("Stream audio : 1 canal, {} Hz, buffer défaut{}", actual_rate, if needs_resample { " (downsample vers 16kHz)" } else { "" });
 
             let samples: Arc<Mutex<Vec<f32>>> = Arc::new(Mutex::new(Vec::new()));
             let samples_write = samples.clone();
+            let ratio = actual_rate as f32 / 16000.0;
 
             let stream = device
                 .build_input_stream(
                     &config,
                     move |data: &[f32], _| {
                         if let Ok(mut buf) = samples_write.lock() {
-                            buf.extend_from_slice(data);
+                            if needs_resample && ratio > 1.0 {
+                                // Downsample simple par décimation
+                                let step = ratio as usize;
+                                for i in (0..data.len()).step_by(step.max(1)) {
+                                    buf.push(data[i]);
+                                }
+                            } else {
+                                buf.extend_from_slice(data);
+                            }
                         }
                     },
                     |err| log::error!("Erreur stream audio : {err}"),
