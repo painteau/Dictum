@@ -137,8 +137,8 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
     let mut child = cmd.spawn()
         .map_err(|e| anyhow!("Impossible de lancer whisper-cli : {e}"))?;
 
-    // Timeout : 5 minutes max pour la transcription
-    let timeout = std::time::Duration::from_secs(300);
+    // Timeout adaptatif calculé plus haut
+    let timeout = std::time::Duration::from_secs(adaptive_timeout);
     let start = std::time::Instant::now();
     let output = loop {
         match child.try_wait() {
@@ -149,7 +149,7 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
             Ok(None) => {
                 if start.elapsed() > timeout {
                     let _ = child.kill();
-                    return Err(anyhow!("Timeout whisper-cli (5 min dépassées)"));
+                    return Err(anyhow!("Timeout whisper-cli ({}s dépassées)", adaptive_timeout));
                 }
                 std::thread::sleep(std::time::Duration::from_millis(100));
             }
