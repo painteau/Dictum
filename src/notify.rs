@@ -41,3 +41,13 @@ pub fn notify_pause(paused: bool) {
         show_toast("Dictum — Reprise", "Dictée active.");
     }
 }
+
+/// Notifie quand une longue transcription est terminée (> 50 mots).
+pub fn notify_transcription_done(words: usize, secs: f32) {
+    if words >= 50 {
+        show_toast(
+            "Dictum — Transcription terminée",
+            &format!("{} mots transcrits en {:.1}s", words, secs),
+        );
+    }
+}

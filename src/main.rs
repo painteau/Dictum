@@ -818,7 +818,13 @@ fn main() -> Result<()> {
                                         let max_h = config.max_history;
                                         state.history.lock().unwrap().push_with_limit(text.clone(), max_h);
                                         let _ = state.history.lock().unwrap().save();
+                                        let word_count = text.split_whitespace().count();
                                         inject::inject_text(&text, &config);
+                                        // Notification si long texte (> 50 mots)
+                                        if word_count >= 50 {
+                                            let elapsed_secs = samples.len() as f32 / 16000.0;
+                                            crate::notify::notify_transcription_done(word_count, elapsed_secs);
+                                        }
                                     }
                                     Err(e) => log::error!("Transcription échouée : {e}"),
                                 }
