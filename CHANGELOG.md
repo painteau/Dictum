@@ -1,5 +1,19 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.0.4 — CLI CONFIG COMPLET
+
+### Ajouté
+- CLI `--set-lang <code>` : langue + typo_fr auto
+- CLI `--set-hotkey <touche>` : modifier hotkey sans éditeur
+- CLI `--set-model <medium|large-v3>` : changer le modèle
+- CLI `--set-beep <on|off>` : activer/désactiver le beep
+- CLI `--set-silence <0.0-1.0>` : seuil silence
+- Config 150 méthodes : `set_language_auto`, `history_limit_display`, `model_exists_locally`, `whisper_cli_exists`
+- History 61 méthodes : `median_length`, `texts_starting_with`, `remove_at`
+- **211 méthodes API** (150 Config + 61 History) | 493 commits
+
+---
+
 ## 2026-06-07 — v1.0.3 — WIZARD MIC + CLI COMPLET
 
 ### Ajouté
