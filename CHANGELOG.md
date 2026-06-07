@@ -1,5 +1,16 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.7.1 — Config 64 méthodes (API complète)
+
+### Ajouté
+- `config.rs` : `set_auto_capitalize()`, `set_auto_enter()`, `set_french_typography()`
+- `config.rs` : `set_max_history()`, `set_max_record_secs()`
+- `config.rs` : `set_silence_threshold()`, `set_threads()`
+- `config.rs` : `toggle_beep()`, `toggle_pause_media()`
+- Config : **64 méthodes** | History : **30 méthodes** | Total : **94 méthodes** ✓
+
+---
+
 ## 2026-06-07 — v0.7.0 — Milestone API 85 méthodes
 
 ### Milestone majeur
