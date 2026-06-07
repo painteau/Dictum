@@ -57,6 +57,7 @@ pub fn inject_text(text: &str, config: &Config) {
                 }
             }
             if config.auto_enter {
+                log::debug!("Auto-Enter déclenché");
                 let _ = enigo.key(Key::Return, Direction::Click);
             }
             log::info!("Texte injecté ({} chars)", text.len());
