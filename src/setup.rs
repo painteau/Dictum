@@ -308,6 +308,22 @@ impl SetupWizard {
             ui.label(RichText::new(format!("Recommandation GPU : {}", rec)).color(Color32::GRAY).small());
         }
 
+        // Espace disque disponible
+        let models_dir = Config::models_dir();
+        if let Some(free) = downloader::free_disk_space(&models_dir) {
+            let free_gb = free as f64 / 1_073_741_824.0;
+            let needed_gb = if self.model_choice == ModelKey::Large { 3.0 } else { 1.5 };
+            let color = if free_gb >= needed_gb {
+                Color32::from_rgb(80, 200, 120)
+            } else {
+                Color32::from_rgb(220, 80, 80)
+            };
+            ui.label(RichText::new(format!("Espace disque libre : {:.1} GB", free_gb)).color(color).small());
+            if free_gb < needed_gb {
+                ui.label(RichText::new(format!("⚠ Minimum requis : {:.1} GB pour ce modèle", needed_gb)).color(Color32::from_rgb(220, 80, 80)).small());
+            }
+        }
+
         ui.add_space(16.0);
         if ui.add(styled_button("Suivant →")).clicked() {
             self.step = Step::Language;
