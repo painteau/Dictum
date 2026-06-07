@@ -596,7 +596,10 @@ fn main() -> Result<()> {
     tray::run(state.clone(), event_tx)?;
 
     let count = *state.session_count.lock().unwrap();
-    let hist_count = state.history.lock().unwrap().len();
-    log::info!("Dictum arrêt propre — {} transcription(s), {} historique(s)", count, hist_count);
+    let hist = state.history.lock().unwrap();
+    let hist_count = hist.len();
+    let words = hist.words_count();
+    drop(hist);
+    log::info!("Dictum arrêt propre — {} transcription(s) cette session, {} mots total historique ({} entrées)", count, words, hist_count);
     Ok(())
 }
