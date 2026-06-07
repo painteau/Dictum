@@ -800,6 +800,28 @@ impl Config {
     pub fn effective_language(&self) -> &str {
         if self.language == "auto" { "auto-detect" } else { &self.language }
     }
+
+    pub fn score(&self) -> u8 {
+        let mut s = 0u8;
+        if self.is_model_ready() { s += 30; }
+        if Self::is_whisper_cli_ready() { s += 20; }
+        if self.validate().is_empty() { s += 20; }
+        if self.has_substitutions() { s += 10; }
+        if self.language != "auto" { s += 5; }
+        if self.beep_enabled { s += 5; }
+        if self.whisper_threads > 0 || self.whisper_temperature < 0.1 { s += 10; }
+        s
+    }
+
+    pub fn score_label(&self) -> &'static str {
+        match self.score() {
+            90..=100 => "Excellent",
+            70..=89  => "Très bon",
+            50..=69  => "Bon",
+            30..=49  => "Basique",
+            _        => "Incomplet",
+        }
+    }
     pub fn is_french(&self) -> bool { self.language == "fr" }
     pub fn is_auto_detect(&self) -> bool { self.language == "auto" }
     pub fn is_beep_enabled(&self) -> bool { self.beep_enabled }
