@@ -245,6 +245,7 @@ fn main() -> Result<()> {
             println!("  --list-devices        Lister les microphones disponibles");
             println!("  --list-languages      Lister les langues Whisper (57)");
             println!("  --stats               Statistiques historique de dictée");
+            println!("  --config-check        Valider la configuration sans démarrer");
             println!("  --version, -v         Afficher la version");
             return Ok(());
         }
@@ -270,6 +271,29 @@ fn main() -> Result<()> {
                 println!("  {}", chunk.join("  "));
             }
             println!("\nDétection automatique : utiliser \"auto\"");
+            return Ok(());
+        }
+        Some("--config-check") => {
+            match Config::load() {
+                Ok(cfg) => {
+                    println!("Config : {}", Config::data_dir().join("config.json").display());
+                    println!("{}", cfg.diagnose());
+                    let issues = cfg.validate();
+                    if issues.is_empty() {
+                        println!("\n✓ Configuration valide (score {}/100)", cfg.score());
+                    } else {
+                        println!("\n⚠ {} problème(s) :", issues.len());
+                        for issue in &issues {
+                            println!("  • {}", issue);
+                        }
+                        std::process::exit(1);
+                    }
+                }
+                Err(e) => {
+                    println!("Impossible de charger la config : {e}");
+                    std::process::exit(1);
+                }
+            }
             return Ok(());
         }
         Some("--stats") => {
