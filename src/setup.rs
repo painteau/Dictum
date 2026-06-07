@@ -232,7 +232,7 @@ impl SetupWizard {
             beep_duration_ms: 80,
             log_level: "info".to_string(),
             translate_to: String::new(),
-            use_cuda: false,
+            use_cuda: self.nvidia.as_ref().map(|g| g.capable).unwrap_or(false),
         }
     }
 
@@ -351,8 +351,11 @@ impl SetupWizard {
 
         // Auto-select notice
         if let Some(gpu) = &self.nvidia {
-            let rec = if gpu.capable { "large-v3 (GPU capable)" } else { "medium (VRAM insuffisante)" };
-            ui.label(RichText::new(format!("Recommandation GPU : {}", rec)).color(Color32::GRAY).small());
+            let capable = gpu.capable;
+            let rec = if capable { "large-v3 (GPU capable)" } else { "medium (VRAM insuffisante)" };
+            let cuda_str = if capable { " — CUDA activé automatiquement" } else { "" };
+            let color = if capable { Color32::from_rgb(80,200,120) } else { Color32::GRAY };
+            ui.label(RichText::new(format!("Recommandation GPU : {}{}", rec, cuda_str)).color(color).small());
         }
 
         // Espace disque disponible
