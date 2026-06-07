@@ -3,7 +3,7 @@ use eframe::egui::{self, Color32, RichText, Vec2};
 use crate::config::Config;
 
 #[derive(PartialEq, Clone)]
-enum Tab { General, Substitutions }
+enum Tab { General, Substitutions, Advanced }
 
 struct SettingsWindow {
     cfg: Config,
@@ -45,6 +45,9 @@ impl eframe::App for SettingsWindow {
                 }
                 if ui.selectable_label(tab == Tab::Substitutions, "🔄 Substitutions").clicked() {
                     self.tab = Tab::Substitutions;
+                }
+                if ui.selectable_label(tab == Tab::Advanced, "🔬 Avancé").clicked() {
+                    self.tab = Tab::Advanced;
                 }
             });
             ui.separator();
@@ -161,6 +164,58 @@ impl eframe::App for SettingsWindow {
                         self.new_sub_to.clear();
                         self.dirty = true;
                     }
+                }
+                Tab::Advanced => {
+                    ui.label(RichText::new("Paramètres avancés").color(Color32::GRAY));
+                    ui.add_space(8.0);
+
+                    // Inject delay
+                    ui.horizontal(|ui| {
+                        ui.label(RichText::new("Délai injection (ms) :").color(Color32::GRAY));
+                        let mut n = self.cfg.inject_delay_ms as i32;
+                        if ui.add(egui::DragValue::new(&mut n).clamp_range(0..=2000)).changed() {
+                            self.cfg.inject_delay_ms = n as u64;
+                            self.dirty = true;
+                        }
+                    });
+
+                    // Max record secs
+                    ui.horizontal(|ui| {
+                        ui.label(RichText::new("Durée max enregistrement (s) :").color(Color32::GRAY));
+                        let mut n = self.cfg.max_record_secs as i32;
+                        if ui.add(egui::DragValue::new(&mut n).clamp_range(5..=600)).changed() {
+                            self.cfg.max_record_secs = n as u64;
+                            self.dirty = true;
+                        }
+                    });
+
+                    // Min record ms
+                    ui.horizontal(|ui| {
+                        ui.label(RichText::new("Durée min enregistrement (ms) :").color(Color32::GRAY));
+                        let mut n = self.cfg.min_record_ms as i32;
+                        if ui.add(egui::DragValue::new(&mut n).clamp_range(100..=5000)).changed() {
+                            self.cfg.min_record_ms = n as u64;
+                            self.dirty = true;
+                        }
+                    });
+
+                    // Whisper threads
+                    ui.horizontal(|ui| {
+                        ui.label(RichText::new("Threads Whisper (0=auto) :").color(Color32::GRAY));
+                        let mut n = self.cfg.whisper_threads as i32;
+                        if ui.add(egui::DragValue::new(&mut n).clamp_range(0..=32)).changed() {
+                            self.cfg.whisper_threads = n as u32;
+                            self.dirty = true;
+                        }
+                        ui.label(RichText::new(self.cfg.thread_count_display()).color(Color32::LIGHT_GRAY).small());
+                    });
+
+                    ui.add_space(8.0);
+                    if ui.checkbox(&mut self.cfg.whisper_no_speech, "Filtre no-speech Whisper").changed() { self.dirty = true; }
+
+                    ui.add_space(8.0);
+                    ui.label(RichText::new(format!("Score config : {}/100", self.cfg.score())).color(Color32::GRAY).small());
+                    ui.label(RichText::new(self.cfg.score_breakdown_display()).color(Color32::GRAY).small());
                 }
             }
 
