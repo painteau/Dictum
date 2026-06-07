@@ -745,6 +745,33 @@ impl Config {
         self
     }
 
+    #[allow(dead_code)]
+    pub fn apply_profile_quiet(&mut self) -> &mut Self {
+        self.beep_enabled = false;
+        self.pause_media = false;
+        self.auto_enter = false;
+        self.prefix_space = false;
+        self
+    }
+
+    #[allow(dead_code)]
+    pub fn apply_profile_english(&mut self) -> &mut Self {
+        self.language = "en".to_string();
+        self.french_typography = false;
+        self.auto_capitalize = true;
+        self
+    }
+
+    #[allow(dead_code)]
+    pub fn apply_profile_dictaphone(&mut self) -> &mut Self {
+        self.max_record_secs = 120;
+        self.auto_enter = false;
+        self.prefix_space = false;
+        self.auto_capitalize = true;
+        self.beep_enabled = true;
+        self
+    }
+
     pub fn diagnose(&self) -> String {
         let issues = self.validate();
         let ok = "✓".to_string();
