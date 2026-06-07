@@ -389,7 +389,7 @@ fn main() -> Result<()> {
                                 }
                                 match transcribe::transcribe(&samples, &config) {
                                     Ok(text) if text.is_empty() => {
-                                        log::debug!("Silence détecté, rien injecté");
+                                        log::info!("Résultat vide (silence ou filtré), rien injecté");
                                     }
                                     Ok(text) => {
                                         let text = substitution::apply(
