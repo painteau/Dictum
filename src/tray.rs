@@ -185,7 +185,8 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                     format!("⚠ {} problème(s) :\n{}", issues.len(), issues.iter().map(|i| format!("  • {}", i)).collect::<Vec<_>>().join("\n"))
                 };
                 let msg = format!(
-                    "github.com/painteau/Dictum\n\n{}\nwhisper : {}\n\n{}\n\nSession : {} transcription{}\nHistorique : {} entrée{} ({} chars)\nConfig  : {}\nLog     : {}",
+                    "github.com/painteau/Dictum\n\nProfil : {}\n\n{}\nwhisper : {}\n\n{}\n\nSession : {} transcription{}\nHistorique : {} entrée{} ({} chars)\nConfig  : {}\nLog     : {}",
+                    config.profile_name(),
                     config.full_status(),
                     if crate::config::Config::is_whisper_cli_ready() { "✓ présent" } else { "✗ MANQUANT" },
                     issues_str,
