@@ -235,5 +235,9 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
 }
 
 pub fn is_ready(config: &Config) -> bool {
-    whisper_cli_path().exists() && config.model_path.exists()
+    let cli_ok = Config::is_whisper_cli_ready();
+    let model_ok = config.is_model_ready();
+    if !cli_ok { log::warn!("whisper-cli.exe manquant dans {}", Config::data_dir().display()); }
+    if !model_ok { log::warn!("Modèle manquant : {}", config.model_path.display()); }
+    cli_ok && model_ok
 }
