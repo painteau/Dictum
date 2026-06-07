@@ -1,5 +1,26 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.7.6 — MILESTONE Config 100 méthodes
+
+### MILESTONE HISTORIQUE
+**Config atteint 100 méthodes publiques** en une seule nuit de travail.
+
+### Ajouté
+- `config.rs` : `effective_threads()` — threads réels utilisés (auto ou fixe)
+- `config.rs` : `effective_timeout()` — timeout adaptatif calculé
+- `config.rs` : `substitution_index()` — trouve index d'une règle
+- `config.rs` : `can_transcribe()`, `recording_is_limited()`, `silence_detection_active()`
+- `config.rs` : `has_min_record_limit()`, `is_history_full()`, `history_capacity_remaining()`
+
+### Bilan total
+- **Config : 100 méthodes** ✓
+- **History : 30 méthodes** ✓
+- **Total API : 130 méthodes** ✓
+- Zéro warning, 100% français
+- 390+ commits en une nuit
+
+---
+
 ## 2026-06-07 — v0.7.5 — Config 91 méthodes
 
 ### Ajouté

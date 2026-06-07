@@ -701,6 +701,19 @@ impl Config {
     pub fn history_capacity_remaining(&self, current_count: usize) -> usize {
         self.max_history.saturating_sub(current_count)
     }
+    pub fn effective_threads(&self) -> usize {
+        if self.whisper_threads == 0 {
+            std::thread::available_parallelism().map(|n| n.get().min(8)).unwrap_or(4)
+        } else {
+            self.whisper_threads as usize
+        }
+    }
+    pub fn effective_timeout(&self, audio_secs: u64) -> u64 {
+        (audio_secs * 10).max(60).min(300)
+    }
+    pub fn substitution_index(&self, from: &str) -> Option<usize> {
+        self.substitutions.iter().position(|s| s.from == from)
+    }
     pub fn uses_large_model(&self) -> bool { self.model_name().contains("large") }
     pub fn uses_medium_model(&self) -> bool { self.model_name().contains("medium") }
     pub fn is_low_latency(&self) -> bool {
