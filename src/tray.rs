@@ -214,7 +214,10 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
         let count = *state.session_count.lock().unwrap();
         let (model_name, hotkey_str) = {
             let cfg = state.config.lock().unwrap();
-            let m = cfg.model_path.file_stem().and_then(|n| n.to_str()).unwrap_or("?").to_string();
+            let m = cfg.model_path.file_stem()
+                .and_then(|n| n.to_str())
+                .unwrap_or(cfg.model_name())
+                .to_string();
             let h = cfg.hotkey_string();
             (m, h)
         };
