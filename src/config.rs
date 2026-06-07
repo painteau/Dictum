@@ -1088,4 +1088,31 @@ impl Config {
     pub fn is_language(&self, code: &str) -> bool {
         self.language == code
     }
+
+    #[allow(dead_code)]
+    pub fn set_language_auto(&mut self) -> &mut Self {
+        self.language = "auto".to_string();
+        self.french_typography = false;
+        self
+    }
+
+    #[allow(dead_code)]
+    pub fn history_limit_display(&self) -> String {
+        format!("{} entrées max", self.max_history)
+    }
+
+    #[allow(dead_code)]
+    pub fn is_history_large(&self) -> bool {
+        self.max_history >= 50
+    }
+
+    #[allow(dead_code)]
+    pub fn model_exists_locally(&self) -> bool {
+        self.model_path.exists()
+    }
+
+    #[allow(dead_code)]
+    pub fn whisper_cli_exists(&self) -> bool {
+        Self::data_dir().join("whisper-cli.exe").exists()
+    }
 }
