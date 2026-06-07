@@ -206,6 +206,11 @@ impl Config {
         data_dir()
     }
 
+    /// Version de l'application (depuis Cargo.toml).
+    pub fn app_version() -> &'static str {
+        env!("CARGO_PKG_VERSION")
+    }
+
     pub fn open_data_dir() -> Result<()> {
         std::process::Command::new("explorer")
             .arg(data_dir())
