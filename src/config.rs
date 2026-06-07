@@ -1258,4 +1258,34 @@ impl Config {
         self.microphone = mic;
         self
     }
+
+    #[allow(dead_code)]
+    pub fn with_french_typography(mut self, enabled: bool) -> Self {
+        self.french_typography = enabled;
+        self
+    }
+
+    #[allow(dead_code)]
+    pub fn with_whisper_threads(mut self, n: u32) -> Self {
+        self.whisper_threads = n;
+        self
+    }
+
+    #[allow(dead_code)]
+    pub fn with_log_level(mut self, level: &str) -> Self {
+        self.log_level = level.to_string();
+        self
+    }
+
+    #[allow(dead_code)]
+    pub fn with_inject_delay(mut self, ms: u64) -> Self {
+        self.inject_delay_ms = ms;
+        self
+    }
+
+    #[allow(dead_code)]
+    pub fn with_min_record_ms(mut self, ms: u64) -> Self {
+        self.min_record_ms = ms;
+        self
+    }
 }
