@@ -1,5 +1,15 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.0.9 — CLI MICRO + STATS SESSION
+
+### Ajouté
+- CLI `--test-mic` : teste le micro 2s, affiche RMS vs seuil config
+- CLI `--set-mic <nom>` : changer le microphone sans ouvrir l'éditeur
+- Tray : item "Statistiques session" (transcriptions + mots)
+- **233 méthodes API** | 516 commits
+
+---
+
 ## 2026-06-07 — v1.0.8 — CLI PROFILES + API 233 MÉTHODES
 
 ### Ajouté
