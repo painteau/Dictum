@@ -470,6 +470,14 @@ impl Config {
     }
 
     #[allow(dead_code)]
+    pub fn set_beep_freqs(&mut self, start: u32, end: u32, duration_ms: u32) -> &mut Self {
+        self.beep_start_freq = start.clamp(100, 20000);
+        self.beep_end_freq = end.clamp(100, 20000);
+        self.beep_duration_ms = duration_ms.clamp(1, 2000);
+        self
+    }
+
+    #[allow(dead_code)]
     pub fn set_prefix_space(&mut self, val: bool) -> &mut Self {
         self.prefix_space = val;
         self
