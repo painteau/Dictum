@@ -1,5 +1,17 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.0.1 — POST-RELEASE FIXES + FEATURES
+
+### Ajouté
+- Protection mono-instance via WinAPI CreateMutexW (dialog si 2e instance)
+- Audio : fallback sample rate natif + downsample décimation si 16kHz non supporté
+- Transcription : filtre tags Whisper français (Musique, Silence, Rires, Applaudissements)
+- History 55 méthodes : `longest_word`, `char_frequency`, `entries_in_range`, `push_unique`, `average_words_per_char`
+- Config 138 méthodes | History 55 méthodes | Total API : **193 méthodes**
+- 477 commits
+
+---
+
 ## 2026-06-07 — v1.0.0 — RELEASE STABLE
 
 ### Milestone
