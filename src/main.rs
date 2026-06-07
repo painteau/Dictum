@@ -244,6 +244,7 @@ fn main() -> Result<()> {
             println!("Informations :");
             println!("  --list-devices        Lister les microphones disponibles");
             println!("  --list-languages      Lister les langues Whisper (57)");
+            println!("  --stats               Statistiques historique de dictée");
             println!("  --version, -v         Afficher la version");
             return Ok(());
         }
@@ -269,6 +270,27 @@ fn main() -> Result<()> {
                 println!("  {}", chunk.join("  "));
             }
             println!("\nDétection automatique : utiliser \"auto\"");
+            return Ok(());
+        }
+        Some("--stats") => {
+            match History::load() {
+                Ok(h) => {
+                    println!("Historique Dictum");
+                    println!("-----------------");
+                    println!("{}", h.stats_summary());
+                    println!("Mots uniques  : {}", h.unique_words_count());
+                    println!("Mot fréquent  : {}", h.most_common_word().unwrap_or_else(|| "—".into()));
+                    println!("Dictées auj.  : {}", h.entries_today().len());
+                    if let Some(secs) = h.time_since_last() {
+                        if secs < 3600 {
+                            println!("Dernière dictée : il y a {}min", secs / 60);
+                        } else {
+                            println!("Dernière dictée : il y a {}h{}min", secs / 3600, (secs % 3600) / 60);
+                        }
+                    }
+                }
+                Err(e) => println!("Impossible de charger l'historique : {e}"),
+            }
             return Ok(());
         }
         Some(path) => {
