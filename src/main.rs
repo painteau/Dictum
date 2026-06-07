@@ -429,8 +429,12 @@ fn main() -> Result<()> {
             println!("=== Diagnostic Dictum v{} ===\n", env!("CARGO_PKG_VERSION"));
             println!("{}", cfg.diagnose());
             println!("\n--- Fichiers ---");
-            let cli_path = Config::data_dir().join("whisper-cli.exe");
-            println!("whisper-cli.exe : {}", if cli_path.exists() { "✓ présent" } else { "✗ manquant" });
+            let missing = downloader::missing_binaries(&Config::data_dir());
+            if missing.is_empty() {
+                println!("Binaires       : ✓ tous présents");
+            } else {
+                println!("Binaires manquants : {}", missing.join(", "));
+            }
             println!("Modèle         : {}", if cfg.model_path.exists() { "✓ présent" } else { "✗ manquant" });
             println!("Config         : {}", Config::data_dir().join("config.json").display());
             println!("Log            : {}", Config::log_path().display());
