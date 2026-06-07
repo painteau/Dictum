@@ -72,6 +72,16 @@ impl History {
         self.entries.iter().map(|e| e.text.clone()).collect()
     }
 
+    #[allow(dead_code)]
+    pub fn total_chars(&self) -> usize {
+        self.entries.iter().map(|e| e.text.len()).sum()
+    }
+
+    pub fn average_length(&self) -> usize {
+        if self.entries.is_empty() { return 0; }
+        self.total_chars() / self.entries.len()
+    }
+
     pub fn clear(&mut self) {
         self.entries.clear();
     }
