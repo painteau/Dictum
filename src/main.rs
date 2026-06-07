@@ -843,6 +843,35 @@ fn main() -> Result<()> {
             }
             return Ok(());
         }
+        Some("--config-export") => {
+            let out = args.get(2)
+                .map(std::path::PathBuf::from)
+                .unwrap_or_else(|| std::path::PathBuf::from("dictum-config.json"));
+            match Config::load() {
+                Ok(cfg) => match cfg.export_json_to(&out) {
+                    Ok(_) => println!("Config exportée : {}", out.display()),
+                    Err(e) => { println!("Erreur export : {e}"); std::process::exit(1); }
+                },
+                Err(e) => { println!("Erreur chargement : {e}"); std::process::exit(1); }
+            }
+            return Ok(());
+        }
+        Some("--config-import") => {
+            let path = args.get(2).map(std::path::PathBuf::from);
+            match path {
+                Some(p) if p.exists() => {
+                    match Config::load_from(&p) {
+                        Ok(cfg) => match cfg.save() {
+                            Ok(_) => println!("Config importée depuis : {}", p.display()),
+                            Err(e) => { println!("Erreur sauvegarde : {e}"); std::process::exit(1); }
+                        },
+                        Err(e) => { println!("Erreur import : {e}"); std::process::exit(1); }
+                    }
+                }
+                _ => { println!("Usage : dictum --config-import chemin.json"); std::process::exit(1); }
+            }
+            return Ok(());
+        }
         Some("--config-reset") => {
             match Config::reset_to_default() {
                 Ok(cfg) => {
