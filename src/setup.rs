@@ -117,7 +117,7 @@ impl SetupWizard {
             }
         };
 
-        let dest = Config::data_dir().join("models").join(format!("ggml-{}.bin", key));
+        let dest = Config::models_dir().join(format!("ggml-{}.bin", key));
         let progress = self.progress.clone();
 
         let data_dir = Config::data_dir();
@@ -163,8 +163,7 @@ impl SetupWizard {
 
     fn build_config(&self) -> Config {
         let key = self.model_choice.as_str();
-        let model_path = Config::data_dir()
-            .join("models")
+        let model_path = Config::models_dir()
             .join(format!("ggml-{}.bin", key));
 
         Config {
