@@ -1027,4 +1027,21 @@ impl Config {
     pub fn hotkey_key(&self) -> &str {
         &self.hotkey.key
     }
+
+    #[allow(dead_code)]
+    pub fn remove_substitution_by_from(&mut self, from: &str) -> bool {
+        let before = self.substitutions.len();
+        self.substitutions.retain(|s| s.from != from);
+        self.substitutions.len() < before
+    }
+
+    #[allow(dead_code)]
+    pub fn find_substitution(&self, from: &str) -> Option<&Substitution> {
+        self.substitutions.iter().find(|s| s.from == from)
+    }
+
+    #[allow(dead_code)]
+    pub fn min_record_ms_display(&self) -> String {
+        format!("{}ms", self.min_record_ms)
+    }
 }
