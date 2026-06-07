@@ -450,6 +450,15 @@ impl Config {
         format!("max={}s min={}ms silence={}", self.max_record_secs, self.min_record_ms, self.silence_level_label())
     }
 
+    #[allow(dead_code)]
+    pub fn inject_delay_display(&self) -> String {
+        match self.inject_delay_ms {
+            d if d < 50  => format!("{}ms (rapide)", d),
+            d if d < 150 => format!("{}ms (normal)", d),
+            d            => format!("{}ms (lent)", d),
+        }
+    }
+
     pub fn language_display(&self) -> String {
         match self.language.as_str() {
             "auto" => "Auto-détection".to_string(),
