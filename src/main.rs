@@ -429,8 +429,8 @@ fn main() -> Result<()> {
     // Main thread: tray icon + Windows message pump
     tray::run(state.clone(), event_tx)?;
 
-    log::info!("Dictum arrêt propre ({} transcription(s) cette session)",
-        *state.session_count.lock().unwrap()
-    );
+    let count = *state.session_count.lock().unwrap();
+    let hist_count = state.history.lock().unwrap().len();
+    log::info!("Dictum arrêt propre — {} transcription(s), {} historique(s)", count, hist_count);
     Ok(())
 }
