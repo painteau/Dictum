@@ -11,6 +11,7 @@ enum Step {
     Language,
     MicSelect,
     Hotkey,
+    Summary,
     Downloading,
     Done,
 }
@@ -250,6 +251,7 @@ impl eframe::App for SetupWizard {
                 Step::Language   => self.ui_language(ui),
                 Step::MicSelect  => self.ui_mic_select(ui),
                 Step::Hotkey     => self.ui_hotkey(ui),
+                Step::Summary    => self.ui_summary(ui),
                 Step::Downloading => self.ui_downloading(ui),
                 Step::Done       => {
                     let cfg = self.build_config();
@@ -462,9 +464,50 @@ impl SetupWizard {
         }
 
         ui.add_space(24.0);
-        if ui.add(styled_button("Télécharger le modèle →")).clicked() {
-            self.start_download();
+        if ui.add(styled_button("Récapitulatif →")).clicked() {
+            self.step = Step::Summary;
         }
+    }
+
+    fn ui_summary(&mut self, ui: &mut egui::Ui) {
+        ui.label(RichText::new("Récapitulatif").size(22.0).color(Color32::WHITE).strong());
+        ui.add_space(16.0);
+
+        let model_size = if self.model_choice == ModelKey::Large { "3.0 GB" } else { "1.5 GB" };
+        let mic_label = self.microphone.clone().unwrap_or_else(|| "défaut système".to_string());
+        let combo = format!(
+            "{}{}{}{}",
+            if self.hotkey_ctrl { "Ctrl+" } else { "" },
+            if self.hotkey_alt { "Alt+" } else { "" },
+            if self.hotkey_shift { "Shift+" } else { "" },
+            self.hotkey_key
+        );
+
+        for (label, value) in &[
+            ("Modèle", format!("{} ({})", self.model_choice.as_str(), model_size)),
+            ("Langue", self.language.clone()),
+            ("Microphone", mic_label),
+            ("Hotkey", combo),
+        ] {
+            ui.horizontal(|ui| {
+                ui.label(RichText::new(format!("{} :", label)).color(Color32::GRAY).strong());
+                ui.label(RichText::new(value).color(Color32::WHITE));
+            });
+        }
+
+        ui.add_space(16.0);
+        ui.label(RichText::new("Le téléchargement va commencer. Ne pas fermer la fenêtre.").color(Color32::GRAY).small());
+        ui.add_space(16.0);
+
+        ui.horizontal(|ui| {
+            if ui.add(styled_button("← Retour")).clicked() {
+                self.step = Step::Hotkey;
+            }
+            ui.add_space(16.0);
+            if ui.add(styled_button("Télécharger →")).clicked() {
+                self.start_download();
+            }
+        });
     }
 
     fn ui_downloading(&mut self, ui: &mut egui::Ui) {
