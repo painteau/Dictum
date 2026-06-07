@@ -523,6 +523,24 @@ fn main() -> Result<()> {
             }
             return Ok(());
         }
+        Some("--top-words") => {
+            let n = args.get(2).and_then(|s| s.parse::<usize>().ok()).unwrap_or(10);
+            match History::load() {
+                Ok(h) => {
+                    if h.is_empty() {
+                        println!("Historique vide.");
+                        return Ok(());
+                    }
+                    let top = h.top_words(n);
+                    println!("Top {} mots :", n.min(top.len()));
+                    for (i, (word, count)) in top.iter().enumerate() {
+                        println!("  {}. {} ({}x)", i + 1, word, count);
+                    }
+                }
+                Err(e) => { println!("Erreur : {e}"); std::process::exit(1); }
+            }
+            return Ok(());
+        }
         Some("--history") => {
             let n = args.get(2).and_then(|s| s.parse::<usize>().ok()).unwrap_or(10);
             match History::load() {
