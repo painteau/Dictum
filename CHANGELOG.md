@@ -1,5 +1,20 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.3.6 — Robustesse avancée
+
+### Ajouté
+- `downloader.rs` : vérification Content-Length vs taille attendue
+- `history.rs` : `get_by_index()`, `all_texts()`, drop explicite lock avant dialog
+- `main.rs` : AppEvent::ReloadConfig dans le pipeline
+- `tray.rs` : Recharger config notifie le pipeline
+- `setup.rs` : URL manifest affichée en cas d'erreur réseau
+- `hotkey.rs` : Escape/ESC supporté
+- `config.rs` : sanitize whisper_temperature clamp(0, 1)
+- `transcribe.rs` : log debug args whisper-cli complets
+- `substitution.rs` : log case_insensitive dans debug
+
+---
+
 ## 2026-06-07 — v0.3.5 — Whisper avancé
 
 ### Ajouté
