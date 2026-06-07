@@ -440,6 +440,16 @@ impl Config {
         crate::substitution::apply(&self.substitutions, text)
     }
 
+    #[allow(dead_code)]
+    pub fn max_history_display(&self) -> String {
+        format!("{} entrée{}", self.max_history, if self.max_history > 1 { "s" } else { "" })
+    }
+
+    #[allow(dead_code)]
+    pub fn record_config_display(&self) -> String {
+        format!("max={}s min={}ms silence={}", self.max_record_secs, self.min_record_ms, self.silence_level_label())
+    }
+
     pub fn language_display(&self) -> String {
         match self.language.as_str() {
             "auto" => "Auto-détection".to_string(),
