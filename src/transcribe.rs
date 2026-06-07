@@ -26,6 +26,44 @@ fn write_wav(samples: &[f32], path: &std::path::Path) -> Result<()> {
     Ok(())
 }
 
+/// Détecte et filtre les hallucinations Whisper (répétitions excessives).
+/// Retourne une chaîne vide si le texte est jugé halluciné.
+fn filter_hallucination(text: String) -> String {
+    if text.is_empty() { return text; }
+    let words: Vec<&str> = text.split_whitespace().collect();
+    let n = words.len();
+    if n < 4 { return text; }
+
+    // Test 1 : un seul mot répété plus de 50%
+    let mut freq: std::collections::HashMap<&str, usize> = std::collections::HashMap::new();
+    for &w in &words {
+        *freq.entry(w).or_insert(0) += 1;
+    }
+    if let Some((&word, &count)) = freq.iter().max_by_key(|(_, &v)| v) {
+        if count > n / 2 {
+            log::warn!("Hallucination Whisper supprimée : mot '{}' répété {}/{}", word, count, n);
+            return String::new();
+        }
+    }
+
+    // Test 2 : bigrammes répétés (phrase en boucle)
+    if n >= 8 {
+        let bigrams: Vec<(&str, &str)> = words.windows(2).map(|w| (w[0], w[1])).collect();
+        let mut bigram_freq: std::collections::HashMap<(&str, &str), usize> = std::collections::HashMap::new();
+        for &b in &bigrams {
+            *bigram_freq.entry(b).or_insert(0) += 1;
+        }
+        if let Some((_, &count)) = bigram_freq.iter().max_by_key(|(_, &v)| v) {
+            if count > bigrams.len() / 3 {
+                log::warn!("Hallucination Whisper supprimée : bigramme répété {}/{}", count, bigrams.len());
+                return String::new();
+            }
+        }
+    }
+
+    text
+}
+
 /// Supprime les codes d'échappement ANSI d'une chaîne.
 fn strip_ansi(s: &str) -> String {
     let mut out = String::with_capacity(s.len());
@@ -209,17 +247,8 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
     // Nettoyer les espaces multiples générés par la jointure de segments
     let text = text.split_whitespace().collect::<Vec<_>>().join(" ");
 
-    // Détecter si Whisper a hallucination (texte répétitif)
-    if !text.is_empty() {
-        let words: Vec<&str> = text.split_whitespace().collect();
-        if words.len() >= 4 {
-            let first = words[0];
-            let repeated = words.iter().filter(|&&w| w == first).count();
-            if repeated > words.len() / 2 {
-                log::warn!("Possible hallucination Whisper détectée (mot '{}' répété {}/{})", first, repeated, words.len());
-            }
-        }
-    }
+    // Détecter et supprimer les hallucinations Whisper (texte répétitif)
+    let text = filter_hallucination(text);
 
     let elapsed = transcribe_start.elapsed();
     let duration_secs = samples.len() as f32 / 16000.0;
