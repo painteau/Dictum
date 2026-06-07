@@ -467,6 +467,15 @@ impl Config {
     }
 
     #[allow(dead_code)]
+    pub fn audio_input_display(&self) -> String {
+        format!("micro=[{}] rec=[{}] silence=[{}]",
+            self.microphone_display(),
+            self.record_duration_label(),
+            self.silence_level_label()
+        )
+    }
+
+    #[allow(dead_code)]
     pub fn inject_delay_display(&self) -> String {
         match self.inject_delay_ms {
             d if d < 50  => format!("{}ms (rapide)", d),
