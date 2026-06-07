@@ -41,8 +41,16 @@ fn key_from_str(s: &str) -> Key {
         "KPMULTIPLY" | "NUMPADMULTIPLY" => Key::KpMultiply,
         "KPDIVIDE" | "NUMPADDIVIDE" => Key::KpDivide,
         "KPRETURN" | "NUMPADENTER" => Key::KpReturn,
+        // Touches lettres A-Z (nécessitent un modificateur pour ne pas interférer avec la frappe)
+        "A" => Key::KeyA, "B" => Key::KeyB, "C" => Key::KeyC, "D" => Key::KeyD,
+        "E" => Key::KeyE, "F" => Key::KeyF, "G" => Key::KeyG, "H" => Key::KeyH,
+        "I" => Key::KeyI, "J" => Key::KeyJ, "K" => Key::KeyK, "L" => Key::KeyL,
+        "M" => Key::KeyM, "N" => Key::KeyN, "O" => Key::KeyO, "P" => Key::KeyP,
+        "Q" => Key::KeyQ, "R" => Key::KeyR, "S" => Key::KeyS, "T" => Key::KeyT,
+        "U" => Key::KeyU, "V" => Key::KeyV, "W" => Key::KeyW, "X" => Key::KeyX,
+        "Y" => Key::KeyY, "Z" => Key::KeyZ,
         _ => {
-            log::warn!("Touche '{}' inconnue, fallback F9. Valides : F1-F12, Space, Insert, Home, End, PageUp, PageDown, ScrollLock, Pause, CapsLock", s);
+            log::warn!("Touche '{}' inconnue, fallback F9. Valides : F1-F12, A-Z, Space, Insert, Home, End, PageUp, PageDown, ScrollLock, Pause, CapsLock", s);
             Key::F9
         }
     }
