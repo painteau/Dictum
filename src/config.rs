@@ -266,6 +266,11 @@ impl Config {
         data_dir().join("whisper-cli.exe").exists()
     }
 
+    /// Vérifie que tout est en ordre pour transcrire.
+    pub fn is_fully_ready(&self) -> bool {
+        self.is_model_ready() && Self::is_whisper_cli_ready()
+    }
+
     pub fn log_path() -> PathBuf {
         data_dir().join("dictum.log")
     }
