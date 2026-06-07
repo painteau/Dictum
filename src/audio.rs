@@ -90,9 +90,9 @@ impl RecordHandle {
                     |err| log::error!("Erreur stream audio : {err}"),
                     None,
                 )
-                .expect("Failed to build input stream");
+                .expect("Impossible de créer le stream audio");
 
-            stream.play().expect("Failed to start audio stream");
+            stream.play().expect("Impossible de démarrer le stream audio");
 
             // Beep démarrage géré depuis main.rs (config.beep_enabled)
 
