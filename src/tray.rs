@@ -179,16 +179,13 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                 let model_status = if config.is_model_ready() { "✓ présent" } else { "✗ MANQUANT" };
                 let cli_status = if crate::config::Config::is_whisper_cli_ready() { "✓ présent" } else { "✗ MANQUANT" };
                 let msg = format!(
-                    "Dictum v{}\ngithub.com/painteau/Dictum\n\nModèle  : {} ({})\nwhisper : {}\nLangue  : {}\nHotkey  : {}{}{}{}\nThreads : {}\n\nSession : {} transcription{}\nConfig  : {}\nLog     : {}",
+                    "Dictum v{}\ngithub.com/painteau/Dictum\n\nModèle  : {} ({})\nwhisper : {}\nLangue  : {}\nHotkey  : {}\nThreads : {}\n\nSession : {} transcription{}\nConfig  : {}\nLog     : {}",
                     env!("CARGO_PKG_VERSION"),
                     config.model_path.file_name().and_then(|n| n.to_str()).unwrap_or("?"),
                     model_status,
                     cli_status,
                     config.language,
-                    if config.hotkey.ctrl  { "Ctrl+" } else { "" },
-                    if config.hotkey.alt   { "Alt+"  } else { "" },
-                    if config.hotkey.shift { "Shift+"} else { "" },
-                    config.hotkey.key,
+                    config.hotkey_string(),
                     cpu_threads,
                     count,
                     if count > 1 { "s" } else { "" },
@@ -218,12 +215,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
         let (model_name, hotkey_str) = {
             let cfg = state.config.lock().unwrap();
             let m = cfg.model_path.file_stem().and_then(|n| n.to_str()).unwrap_or("?").to_string();
-            let h = format!("{}{}{}{}",
-                if cfg.hotkey.ctrl  { "Ctrl+" } else { "" },
-                if cfg.hotkey.alt   { "Alt+"  } else { "" },
-                if cfg.hotkey.shift { "Shift+"} else { "" },
-                cfg.hotkey.key
-            );
+            let h = cfg.hotkey_string();
             (m, h)
         };
         let tooltip = if recording {
