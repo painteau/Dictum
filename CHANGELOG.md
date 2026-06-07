@@ -1,5 +1,17 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.6.4 — History 30 méthodes
+
+### Ajouté
+- `history.rs` : `deduplicate()`, `keep_recent(n)`
+- `history.rs` : `contains()`, `count_containing()`
+- `history.rs` : `sorted_by_length()`, `sorted_by_date()`
+- `history.rs` : `longest_entry()`, `shortest_entry()`
+- `history.rs` : `to_markdown()` — export enrichi avec stats
+- History : **30 méthodes** ✓
+
+---
+
 ## 2026-06-07 — v0.6.3 — History API finale
 
 ### Ajouté
