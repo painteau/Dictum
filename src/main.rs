@@ -412,6 +412,7 @@ fn main() -> Result<()> {
                     AppEvent::ReloadConfig => {
                         match Config::load() {
                             Ok(new_cfg) => {
+                                new_cfg.log_summary();
                                 *state.config.lock().unwrap() = new_cfg;
                                 log::info!("Config rechargée depuis pipeline");
                             }
