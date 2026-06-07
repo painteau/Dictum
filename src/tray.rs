@@ -184,7 +184,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                     config.model_name(),
                     model_status,
                     cli_status,
-                    config.language,
+                    config.language_display(),
                     config.hotkey_string(),
                     cpu_threads,
                     count,
