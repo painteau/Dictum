@@ -9,6 +9,7 @@ enum Step {
     Welcome,
     ModelChoice,
     Language,
+    MicSelect,
     Hotkey,
     Downloading,
     Done,
@@ -70,6 +71,8 @@ struct SetupWizard {
     nvidia: Option<NvidiaInfo>,
     manifest: Option<Manifest>,
     manifest_error: Option<String>,
+    microphone: Option<String>,
+    available_mics: Vec<String>,
 
     model_choice: ModelKey,
     language: String,
@@ -91,6 +94,8 @@ impl SetupWizard {
             ModelKey::Medium
         };
 
+        let available_mics = crate::audio::list_devices();
+
         Self {
             step: Step::Welcome,
             nvidia,
@@ -98,6 +103,8 @@ impl SetupWizard {
             manifest_error: None,
             model_choice,
             language: "fr".to_string(),
+            microphone: None,
+            available_mics,
             hotkey_key: "F9".to_string(),
             hotkey_ctrl: false,
             hotkey_alt: false,
@@ -195,7 +202,7 @@ impl SetupWizard {
             auto_capitalize: true,
             auto_enter: false,
             substitutions: vec![],
-            microphone: None,
+            microphone: self.microphone.clone(),
             config_version: 1,
             max_record_secs: 30,
             min_record_ms: 300,
@@ -241,6 +248,7 @@ impl eframe::App for SetupWizard {
                 Step::Welcome    => self.ui_welcome(ui),
                 Step::ModelChoice => self.ui_model(ui),
                 Step::Language   => self.ui_language(ui),
+                Step::MicSelect  => self.ui_mic_select(ui),
                 Step::Hotkey     => self.ui_hotkey(ui),
                 Step::Downloading => self.ui_downloading(ui),
                 Step::Done       => {
@@ -366,6 +374,41 @@ impl SetupWizard {
         }
 
         ui.add_space(24.0);
+        if ui.add(styled_button("Suivant →")).clicked() {
+            self.step = Step::MicSelect;
+        }
+    }
+
+    fn ui_mic_select(&mut self, ui: &mut egui::Ui) {
+        ui.label(RichText::new("Microphone").size(22.0).color(Color32::WHITE).strong());
+        ui.add_space(8.0);
+        ui.label(RichText::new("Choisir le microphone à utiliser pour la dictée.").color(Color32::GRAY));
+        ui.add_space(16.0);
+
+        let selected = self.microphone.clone().unwrap_or_else(|| "(défaut système)".to_string());
+
+        // Option défaut système
+        let is_default = self.microphone.is_none();
+        if ui.selectable_label(is_default, RichText::new("(défaut système)").color(Color32::from_rgb(80, 200, 120))).clicked() {
+            self.microphone = None;
+        }
+        ui.add_space(4.0);
+
+        for mic in self.available_mics.clone() {
+            let is_sel = self.microphone.as_deref() == Some(&mic);
+            if ui.selectable_label(is_sel, RichText::new(&mic).color(Color32::LIGHT_GRAY)).clicked() {
+                self.microphone = Some(mic.clone());
+            }
+        }
+
+        if self.available_mics.is_empty() {
+            ui.label(RichText::new("Aucun microphone détecté.").color(Color32::RED).small());
+        }
+
+        ui.add_space(8.0);
+        ui.label(RichText::new(format!("Sélectionné : {}", selected)).color(Color32::GRAY).small());
+
+        ui.add_space(16.0);
         if ui.add(styled_button("Suivant →")).clicked() {
             self.step = Step::Hotkey;
         }
