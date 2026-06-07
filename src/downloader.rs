@@ -81,7 +81,7 @@ where
         let size = std::fs::metadata(dest).map(|m| m.len()).unwrap_or(0);
         // Si le fichier est déjà complet, skip direct
         if entry.size_bytes > 0 && size >= entry.size_bytes {
-            log::info!("Fichier déjà complet : {}", filename);
+            log::info!("Skip {} — déjà complet ({} MB)", filename, size / 1_048_576);
             on_progress(entry.size_bytes, entry.size_bytes);
             return Ok(());
         }
