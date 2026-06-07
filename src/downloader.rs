@@ -6,7 +6,7 @@ use anyhow::{anyhow, Result};
 use sha2::{Digest, Sha256};
 
 /// URL du manifest hébergé — changer cette URL sans recompiler le logiciel.
-pub const MANIFEST_URL: &str = "https://cdn.breizhzion.com/dictum/manifest.json";
+pub const MANIFEST_URL: &str = "https://dictum.breizhzion.com/manifest.json";
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct ModelEntry {
