@@ -157,6 +157,12 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
         }
     };
 
+    // Log stderr si non vide (warnings whisper)
+    let stderr = String::from_utf8_lossy(&output.stderr);
+    if !stderr.trim().is_empty() {
+        log::debug!("whisper-cli stderr : {}", stderr.trim());
+    }
+
     // Nettoyage — whisper-cli génère parfois un .txt même sans --output-txt
     std::fs::remove_file(&wav_path).ok();
     let txt_sidecar = wav_path.with_extension("wav.txt");
