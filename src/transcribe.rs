@@ -51,7 +51,7 @@ fn rms(samples: &[f32]) -> f32 {
 }
 
 pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
-    let _start = std::time::Instant::now();
+    let transcribe_start = std::time::Instant::now();
 
     // Timeout adaptatif : 10s par seconde audio, minimum 60s, maximum 300s
     let audio_secs = (samples.len() as f64 / 16000.0) as u64;
@@ -211,7 +211,7 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
         }
     }
 
-    let elapsed = start.elapsed();
+    let elapsed = transcribe_start.elapsed();
     let duration_secs = samples.len() as f32 / 16000.0;
     log::info!("Transcription : {:.1}s audio en {:.1}s ({:.1}x temps réel)",
         duration_secs, elapsed.as_secs_f32(),
