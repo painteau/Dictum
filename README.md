@@ -93,6 +93,9 @@ Cliquer **"Paramètres"** dans le menu tray pour l'ouvrir dans Notepad.
 | `inject_delay_ms` | `80` | Délai avant injection texte en ms (augmenter si texte mal injecté) |
 | `whisper_no_speech` | `false` | Ignorer segments sans parole (`--no-speech-thold 0.6`) |
 | `whisper_temperature` | `0.0` | Température whisper (0.0=déterministe, 0.2=légèrement créatif) |
+| `beep_start_freq` | `800` | Fréquence Hz du beep de début (100-20000) |
+| `beep_end_freq` | `600` | Fréquence Hz du beep de fin (100-20000) |
+| `beep_duration_ms` | `80` | Durée des beeps en ms (max 2000) |
 
 ## Modèles disponibles
 
