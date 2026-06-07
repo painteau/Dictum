@@ -1,5 +1,16 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.9.1 — Config 127 méthodes
+
+### Ajouté
+- `config.rs` : `total_config_fields()`, `required_fields_present()`, `optional_fields_count()`
+- `config.rs` : `copy_with_model()`, `diff_fields()`
+- `config.rs` : `is_configured_for_french_dictation()`, `min_disk_space_mb()`
+- `config.rs` : `config_age_display()`, `is_compatible_with_version()`
+- Config : **127 méthodes** | Total : **169 méthodes API** ✓
+
+---
+
 ## 2026-06-07 — v0.9.0 — FIN DE SESSION NOCTURNE
 
 ### Bilan final officiel
