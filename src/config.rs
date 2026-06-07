@@ -293,6 +293,15 @@ impl Config {
         self.substitutions.len()
     }
 
+    pub fn inject_mode_label(&self) -> String {
+        let mut parts = Vec::new();
+        if self.auto_capitalize { parts.push("majuscule"); }
+        if self.french_typography { parts.push("typo_fr"); }
+        if self.prefix_space { parts.push("espace_avant"); }
+        if self.auto_enter { parts.push("auto_enter"); }
+        if parts.is_empty() { "minimal".to_string() } else { parts.join("+") }
+    }
+
     pub fn whisper_speed_label(&self) -> &'static str {
         match self.model_name() {
             name if name.contains("tiny") => "ultra-rapide",
