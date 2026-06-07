@@ -696,6 +696,11 @@ impl Config {
     pub fn can_transcribe(&self) -> bool { self.is_fully_ready() }
     pub fn recording_is_limited(&self) -> bool { self.max_record_secs < 60 }
     pub fn silence_detection_active(&self) -> bool { self.silence_threshold > 0.001 }
+    pub fn has_min_record_limit(&self) -> bool { self.min_record_ms > 0 }
+    pub fn is_history_full(&self, current_count: usize) -> bool { current_count >= self.max_history }
+    pub fn history_capacity_remaining(&self, current_count: usize) -> usize {
+        self.max_history.saturating_sub(current_count)
+    }
     pub fn uses_large_model(&self) -> bool { self.model_name().contains("large") }
     pub fn uses_medium_model(&self) -> bool { self.model_name().contains("medium") }
     pub fn is_low_latency(&self) -> bool {
