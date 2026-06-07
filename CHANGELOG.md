@@ -1,5 +1,19 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.7.0 — Milestone API 85 méthodes
+
+### Milestone majeur
+**85 méthodes publiques** au total : Config (55) + History (30)
+
+### Depuis v0.6.4
+- `config.rs` : `set_model()`, `set_microphone()`, `set_language()`, `set_hotkey()`
+- `config.rs` : `add_substitution()`, `remove_substitution()`, `clear_substitutions()`
+- `config.rs` : **55 méthodes** — API Rust complète
+- `history.rs` : `deduplicate()`, `keep_recent()`, `contains()`, `count_containing()`
+- `history.rs` : **30 méthodes** — History API mature
+
+---
+
 ## 2026-06-07 — v0.6.4 — History 30 méthodes
 
 ### Ajouté
