@@ -1144,4 +1144,19 @@ impl Config {
 
     #[allow(dead_code)]
     pub fn app_name() -> &'static str { "Dictum" }
+
+    #[allow(dead_code)]
+    pub fn is_english(&self) -> bool { self.language == "en" }
+
+    #[allow(dead_code)]
+    pub fn is_german(&self) -> bool { self.language == "de" }
+
+    #[allow(dead_code)]
+    pub fn is_spanish(&self) -> bool { self.language == "es" }
+
+    #[allow(dead_code)]
+    pub fn is_italian(&self) -> bool { self.language == "it" }
+
+    #[allow(dead_code)]
+    pub fn is_portuguese(&self) -> bool { self.language == "pt" }
 }
