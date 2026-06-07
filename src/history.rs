@@ -37,6 +37,7 @@ impl History {
             .duration_since(std::time::UNIX_EPOCH)
             .unwrap_or_default()
             .as_secs();
+        log::debug!("Historique : ajout entrée ({}/{} max)", self.entries.len() + 1, max);
         self.entries.push_front(HistoryEntry { text, timestamp });
         while self.entries.len() > max.max(1) {
             self.entries.pop_back();
