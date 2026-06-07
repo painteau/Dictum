@@ -107,6 +107,8 @@ fn apply_french_typography(text: &str) -> String {
     let text = text.replace("...", "\u{2026}");
     // Apostrophe typographique
     let text = text.replace("'", "\u{2019}");
+    // Guillemets français : "texte" → « texte »
+    let text = replace_quotes_french(&text);
     // Espaces insécables avant ponctuation double (espace normale ET espace insécable déjà présente)
     let text = text
         .replace(" ?", "\u{00A0}?")
@@ -120,4 +122,23 @@ fn apply_french_typography(text: &str) -> String {
         text
     };
     text
+}
+
+fn replace_quotes_french(text: &str) -> String {
+    // Remplace "texte" par « texte » (guillemets droits uniquement)
+    let mut result = String::with_capacity(text.len());
+    let mut open = false;
+    for ch in text.chars() {
+        if ch == '"' {
+            if open {
+                result.push_str("\u{00A0}»"); // espace insécable + »
+            } else {
+                result.push_str("«\u{00A0}"); // « + espace insécable
+            }
+            open = !open;
+        } else {
+            result.push(ch);
+        }
+    }
+    result
 }
