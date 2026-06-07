@@ -1,5 +1,17 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.5.2 — Validation et diagnostics
+
+### Ajouté
+- `config.rs` : `validate()` — liste des problèmes de config
+- `config.rs` : `full_status()` — rapport complet 2 lignes
+- `tray.rs` : À propos affiche `validate()` + `full_status()`
+- `main.rs` : `validate()` au démarrage avec log warn
+- `config.rs` : `threads_display()`, `record_duration_label()`
+- `history.rs` : `last_timestamp()`, `total_chars()`, `average_length()`
+
+---
+
 ## 2026-06-07 — v0.5.1 — Helpers finaux
 
 ### Ajouté
