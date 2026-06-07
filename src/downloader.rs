@@ -39,6 +39,7 @@ pub fn user_agent() -> String {
 
 pub fn has_internet() -> bool {
     reqwest::blocking::Client::builder()
+        .user_agent(format!("Dictum/{}", env!("CARGO_PKG_VERSION")))
         .timeout(std::time::Duration::from_secs(5))
         .build()
         .map(|c| c.head(MANIFEST_URL).send().map(|r| r.status().is_success()).unwrap_or(false))
