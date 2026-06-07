@@ -1381,4 +1381,19 @@ impl Config {
             && self.hotkey.alt == other.hotkey.alt
             && self.hotkey.shift == other.hotkey.shift
     }
+
+    #[allow(dead_code)]
+    pub fn log_level_is_debug(&self) -> bool { self.log_level == "debug" }
+
+    #[allow(dead_code)]
+    pub fn log_level_is_info(&self) -> bool { self.log_level == "info" }
+
+    #[allow(dead_code)]
+    pub fn log_level_is_warn(&self) -> bool { self.log_level == "warn" }
+
+    #[allow(dead_code)]
+    pub fn set_log_debug(&mut self) -> &mut Self { self.log_level = "debug".into(); self }
+
+    #[allow(dead_code)]
+    pub fn set_log_info(&mut self) -> &mut Self { self.log_level = "info".into(); self }
 }
