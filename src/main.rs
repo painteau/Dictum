@@ -246,6 +246,7 @@ fn main() -> Result<()> {
             println!("  --list-languages      Lister les langues Whisper (57)");
             println!("  --stats               Statistiques historique de dictée");
             println!("  --config-check        Valider la configuration sans démarrer");
+            println!("  --reset-history       Effacer l'historique de dictée");
             println!("  --version, -v         Afficher la version");
             return Ok(());
         }
@@ -271,6 +272,20 @@ fn main() -> Result<()> {
                 println!("  {}", chunk.join("  "));
             }
             println!("\nDétection automatique : utiliser \"auto\"");
+            return Ok(());
+        }
+        Some("--reset-history") => {
+            match History::load() {
+                Ok(mut h) => {
+                    let count = h.len();
+                    h.clear();
+                    match h.save() {
+                        Ok(_) => println!("Historique effacé ({} entrée{} supprimée{}).", count, if count > 1 { "s" } else { "" }, if count > 1 { "s" } else { "" }),
+                        Err(e) => { println!("Erreur lors de la sauvegarde : {e}"); std::process::exit(1); }
+                    }
+                }
+                Err(e) => { println!("Impossible de charger l'historique : {e}"); std::process::exit(1); }
+            }
             return Ok(());
         }
         Some("--config-check") => {
