@@ -79,6 +79,7 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
     }
 
     let wav_path = std::env::temp_dir().join("dictum_record.wav");
+    log::debug!("WAV temp : {}", wav_path.display());
     write_wav(samples, &wav_path)?;
 
     // Vérifier que le WAV a bien été écrit
