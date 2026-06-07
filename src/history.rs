@@ -270,6 +270,22 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn median_length(&self) -> usize {
+        self.percentile_length(50.0)
+    }
+
+    #[allow(dead_code)]
+    pub fn texts_starting_with(&self, prefix: &str) -> Vec<&HistoryEntry> {
+        let p = prefix.to_lowercase();
+        self.entries.iter().filter(|e| e.text.to_lowercase().starts_with(&p)).collect()
+    }
+
+    #[allow(dead_code)]
+    pub fn remove_at(&mut self, idx: usize) -> Option<HistoryEntry> {
+        self.entries.remove(idx)
+    }
+
+    #[allow(dead_code)]
     pub fn avg_words_per_entry(&self) -> usize {
         if self.is_empty() { return 0; }
         self.words_count() / self.len()
