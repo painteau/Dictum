@@ -417,6 +417,16 @@ fn main() -> Result<()> {
             }
             return Ok(());
         }
+        Some("--config-reset") => {
+            match Config::reset_to_default() {
+                Ok(cfg) => {
+                    println!("Config réinitialisée (score {}/100).", cfg.score());
+                    println!("Redémarrer Dictum pour appliquer.");
+                }
+                Err(e) => { println!("Erreur reset config : {e}"); std::process::exit(1); }
+            }
+            return Ok(());
+        }
         Some("--open-config") => {
             if let Err(e) = Config::open_in_editor() {
                 println!("Erreur ouverture config : {e}");
