@@ -1,5 +1,22 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.6.3 — History API finale
+
+### Ajouté
+- `history.rs` : `to_markdown()` — export Markdown enrichi avec stats
+- `history.rs` : `sorted_by_length()`, `sorted_by_date()`
+- `history.rs` : `longest_entry()`, `shortest_entry()`
+- `history.rs` : `export_to_file()` simplifié (délègue à `to_markdown()`)
+- History : **26 méthodes publiques** ✓
+
+### Bilan nuit
+- Config : 48 méthodes
+- History : 26 méthodes
+- Zéro warning
+- v0.6.0 → v0.6.3 tout en releases CI
+
+---
+
 ## 2026-06-07 — v0.6.2 — History stats complets
 
 ### Ajouté
