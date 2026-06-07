@@ -175,17 +175,17 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                 let hist_stats = state.history.lock().unwrap().stats_summary();
                 let log_path = crate::config::Config::log_path();
                 let config_path = crate::config::Config::data_dir().join("config.json");
+                let diagnostic = config.diagnose();
                 let issues = config.validate();
                 let issues_str = if issues.is_empty() {
                     "✓ Configuration valide".to_string()
                 } else {
                     format!("⚠ {} problème(s) :\n{}", issues.len(), issues.iter().map(|i| format!("  • {}", i)).collect::<Vec<_>>().join("\n"))
                 };
+                let _ = &diagnostic; // utilisé implicitement via issues_str
                 let msg = format!(
-                    "github.com/painteau/Dictum\n\nProfil : {}\n\n{}\nwhisper : {}\n\n{}\n\nSession : {} transcription{}\nHistorique : {}\nConfig  : {}\nLog     : {}",
-                    config.profile_name(),
-                    config.full_status(),
-                    if crate::config::Config::is_whisper_cli_ready() { "✓ présent" } else { "✗ MANQUANT" },
+                    "github.com/painteau/Dictum\n\n{}\n\n{}\n\nSession : {} transcription{}\nHistorique : {}\nConfig  : {}\nLog     : {}",
+                    diagnostic,
                     issues_str,
                     count,
                     if count > 1 { "s" } else { "" },
