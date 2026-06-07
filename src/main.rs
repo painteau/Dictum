@@ -506,6 +506,23 @@ fn main() -> Result<()> {
             }
             return Ok(());
         }
+        Some("--apply-subs") => {
+            // dictum --apply-subs "texte à traiter"
+            let text = args.get(2).map(String::as_str).unwrap_or("");
+            if text.is_empty() {
+                println!("Usage : dictum --apply-subs \"texte\"");
+                std::process::exit(1);
+            }
+            let cfg = Config::load().unwrap_or_default();
+            if cfg.substitutions.is_empty() {
+                println!("{}", text);
+            } else {
+                let (result, count) = crate::substitution::apply_with_count(&cfg.substitutions, text);
+                eprintln!("({} substitution(s) appliquée(s))", count);
+                println!("{}", result);
+            }
+            return Ok(());
+        }
         Some("--last") => {
             match History::load() {
                 Ok(h) => match h.last_text() {
