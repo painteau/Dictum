@@ -51,3 +51,10 @@ pub fn notify_transcription_done(words: usize, secs: f32) {
         );
     }
 }
+
+pub fn notify_ready(hotkey: &str, model: &str) {
+    show_toast(
+        "Dictum — Prêt",
+        &format!("Maintenir {} pour dicter. Modèle : {}", hotkey, model),
+    );
+}

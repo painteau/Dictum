@@ -1059,6 +1059,14 @@ fn main() -> Result<()> {
         });
     }
 
+    // Notification de démarrage (non bloquante)
+    {
+        let cfg = state.config.lock().unwrap();
+        if cfg.is_fully_ready() {
+            notify::notify_ready(&cfg.hotkey_string(), cfg.model_name());
+        }
+    }
+
     // Main thread: tray icon + Windows message pump
     tray::run(state.clone(), event_tx)?;
 
