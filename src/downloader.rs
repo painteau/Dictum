@@ -95,6 +95,18 @@ where
         return Err(anyhow!("Erreur HTTP {} lors du téléchargement", resp.status()));
     }
 
+    // Vérifier Content-Length si disponible
+    if let Some(content_len) = resp.headers()
+        .get("content-length")
+        .and_then(|v| v.to_str().ok())
+        .and_then(|v| v.parse::<u64>().ok())
+    {
+        let expected = if existing_bytes > 0 { entry.size_bytes.saturating_sub(existing_bytes) } else { entry.size_bytes };
+        if expected > 0 && (content_len as i64 - expected as i64).abs() > 1024 {
+            log::warn!("Content-Length ({}) différent de la taille attendue ({})", content_len, expected);
+        }
+    }
+
     let mut file = std::fs::OpenOptions::new()
         .create(true)
         .append(existing_bytes > 0)
