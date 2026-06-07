@@ -484,6 +484,10 @@ impl Config {
         }
     }
 
+    pub fn config_version_display(&self) -> String {
+        format!("config v{} | app v{}", self.config_version, Self::app_version())
+    }
+
     pub fn language_display(&self) -> String {
         match self.language.as_str() {
             "auto" => "Auto-détection".to_string(),
