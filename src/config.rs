@@ -762,6 +762,13 @@ impl Config {
         )
     }
     pub fn can_transcribe(&self) -> bool { self.is_fully_ready() }
+    pub fn performance_label(&self) -> &'static str {
+        if self.is_optimized_for_speed() { "Rapide" }
+        else if self.is_optimized_for_quality() { "Haute qualité" }
+        else if self.uses_large_model() { "Qualité" }
+        else { "Standard" }
+    }
+
     pub fn is_optimized_for_speed(&self) -> bool {
         self.uses_medium_model() && self.effective_threads() >= 4 && self.inject_delay_ms <= 80
     }
