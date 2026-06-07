@@ -161,6 +161,16 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn longest_text_length(&self) -> usize {
+        self.entries.iter().map(|e| e.text.len()).max().unwrap_or(0)
+    }
+
+    #[allow(dead_code)]
+    pub fn shortest_text_length(&self) -> usize {
+        self.entries.iter().map(|e| e.text.len()).min().unwrap_or(0)
+    }
+
+    #[allow(dead_code)]
     pub fn sentences_count(&self) -> usize {
         self.entries.iter().map(|e| {
             e.text.chars().filter(|&c| c == '.' || c == '!' || c == '?').count().max(1)
