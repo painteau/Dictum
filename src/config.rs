@@ -814,6 +814,18 @@ impl Config {
         s
     }
 
+    pub fn score_breakdown(&self) -> Vec<(&'static str, u8)> {
+        vec![
+            ("Modèle présent", if self.is_model_ready() { 30 } else { 0 }),
+            ("whisper-cli présent", if Self::is_whisper_cli_ready() { 20 } else { 0 }),
+            ("Config valide", if self.validate().is_empty() { 20 } else { 0 }),
+            ("Substitutions configurées", if self.has_substitutions() { 10 } else { 0 }),
+            ("Langue explicite", if self.language != "auto" { 5 } else { 0 }),
+            ("Beep activé", if self.beep_enabled { 5 } else { 0 }),
+            ("Whisper optimisé", if self.whisper_threads > 0 || self.whisper_temperature < 0.1 { 10 } else { 0 }),
+        ]
+    }
+
     pub fn score_label(&self) -> &'static str {
         match self.score() {
             90..=100 => "Excellent",
