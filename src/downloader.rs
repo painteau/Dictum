@@ -31,6 +31,12 @@ pub struct Manifest {
 }
 
 /// Vérifie rapidement la connectivité internet (HEAD sur le manifest).
+/// Retourne le User-Agent utilisé pour toutes les requêtes HTTP.
+#[allow(dead_code)]
+pub fn user_agent() -> String {
+    format!("Dictum/{} (Windows)", env!("CARGO_PKG_VERSION"))
+}
+
 pub fn has_internet() -> bool {
     reqwest::blocking::Client::builder()
         .timeout(std::time::Duration::from_secs(5))
