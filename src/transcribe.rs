@@ -213,10 +213,10 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
 
     let elapsed = transcribe_start.elapsed();
     let duration_secs = samples.len() as f32 / 16000.0;
-    log::info!("Transcription : {:.1}s audio en {:.1}s ({:.1}x temps réel)",
-        duration_secs, elapsed.as_secs_f32(),
-        duration_secs / elapsed.as_secs_f32().max(0.001)
-    );
+    let preview = if text.len() > 50 { format!("{}...", &text[..47]) } else { text.clone() };
+    let speed = duration_secs / elapsed.as_secs_f32().max(0.001);
+    log::info!("Transcription OK [{:.1}x] : «{}»", speed, preview);
+    log::debug!("Détails : {:.1}s audio en {:.1}s", duration_secs, elapsed.as_secs_f32());
 
     Ok(text)
 }
