@@ -67,7 +67,7 @@ impl RecordHandle {
             } else {
                 host.default_input_device().unwrap()
             };
-            log::debug!("Micro actif : {}", device.name().unwrap_or_else(|_| "inconnu".to_string()));
+            log::info!("Micro actif : {}", device.name().unwrap_or_else(|_| "inconnu".to_string()));
 
             let config = StreamConfig {
                 channels: 1,
