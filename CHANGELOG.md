@@ -1,5 +1,15 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.8.2 — Profils et comparaison
+
+### Ajouté
+- `config.rs` : `apply_profile_french_standard()`, `apply_profile_minimal()`, `apply_profile_performance()`
+- `config.rs` : `changes_from_default()`, `changes_summary_display()`
+- `config.rs` : `log_summary()` enrichi avec changements vs défaut
+- Config : **106 méthodes** | Total : **148 méthodes API** ✓
+
+---
+
 ## 2026-06-07 — v0.8.1 — Diagnostic intégré
 
 ### Ajouté
