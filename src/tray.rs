@@ -125,13 +125,12 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                     None => show_dialog("Dictum", "Aucune dictée à copier."),
                 }
             } else if event.id == item_reset_cfg.id() {
-                log::info!("Réinitialisation config aux valeurs par défaut");
-                let default_cfg = crate::config::Config::default();
-                if let Err(e) = default_cfg.save() {
-                    log::error!("Reset config échoué : {e}");
-                } else {
-                    *state.config.lock().unwrap() = default_cfg;
-                    show_dialog("Dictum", "Config réinitialisée aux valeurs par défaut.\nRedémarrer pour appliquer le hotkey.");
+                match crate::config::Config::reset_to_default() {
+                    Ok(cfg) => {
+                        *state.config.lock().unwrap() = cfg;
+                        show_dialog("Dictum", "Config réinitialisée aux valeurs par défaut.\nRedémarrer pour appliquer le hotkey.");
+                    }
+                    Err(e) => log::error!("Reset config échoué : {e}"),
                 }
             } else if event.id == item_export_hist.id() {
                 let export_path = crate::config::Config::history_export_path();
