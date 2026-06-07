@@ -157,6 +157,7 @@ pub fn take_update() -> Option<UpdateInfo> {
 pub enum AppEvent {
     RecordStart,
     RecordStop,
+    ReloadConfig,
     Quit,
 }
 
@@ -406,6 +407,15 @@ fn main() -> Result<()> {
                                 }
                                 *state.is_transcribing.lock().unwrap() = false;
                             });
+                        }
+                    }
+                    AppEvent::ReloadConfig => {
+                        match Config::load() {
+                            Ok(new_cfg) => {
+                                *state.config.lock().unwrap() = new_cfg;
+                                log::info!("Config rechargée depuis pipeline");
+                            }
+                            Err(e) => log::error!("Reload config échoué : {e}"),
                         }
                     }
                     AppEvent::Quit => break,
