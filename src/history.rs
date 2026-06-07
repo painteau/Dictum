@@ -171,6 +171,17 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn avg_words_per_entry(&self) -> usize {
+        if self.is_empty() { return 0; }
+        self.words_count() / self.len()
+    }
+
+    #[allow(dead_code)]
+    pub fn entries_after(&self, timestamp: u64) -> Vec<&HistoryEntry> {
+        self.entries.iter().filter(|e| e.timestamp >= timestamp).collect()
+    }
+
+    #[allow(dead_code)]
     pub fn sentences_count(&self) -> usize {
         self.entries.iter().map(|e| {
             e.text.chars().filter(|&c| c == '.' || c == '!' || c == '?').count().max(1)
