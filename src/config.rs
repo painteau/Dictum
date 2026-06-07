@@ -280,4 +280,12 @@ impl Config {
     pub fn models_dir() -> PathBuf {
         data_dir().join("models")
     }
+
+    pub fn substitution_count(&self) -> usize {
+        self.substitutions.len()
+    }
+
+    pub fn has_substitutions(&self) -> bool {
+        !self.substitutions.is_empty()
+    }
 }
