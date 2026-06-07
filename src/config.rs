@@ -490,6 +490,16 @@ impl Config {
     }
 
     #[allow(dead_code)]
+    pub fn export_to_file(&self, path: &std::path::Path) -> Result<()> {
+        self.save_to(path)
+    }
+
+    #[allow(dead_code)]
+    pub fn export_to_string(&self) -> Result<String> {
+        Ok(serde_json::to_string_pretty(self)?)
+    }
+
+    #[allow(dead_code)]
     pub fn from_json_string(json: &str) -> Result<Self> {
         let mut config: Config = serde_json::from_str(json)?;
         config.sanitize();
