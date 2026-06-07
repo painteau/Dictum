@@ -304,6 +304,27 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn count_chars_total(&self) -> usize {
+        self.entries.iter().map(|e| e.text.chars().count()).sum()
+    }
+
+    #[allow(dead_code)]
+    pub fn texts_ending_with(&self, suffix: &str) -> Vec<&HistoryEntry> {
+        let s = suffix.to_lowercase();
+        self.entries.iter().filter(|e| e.text.to_lowercase().ends_with(&s)).collect()
+    }
+
+    #[allow(dead_code)]
+    pub fn has_entry_with_min_chars(&self, min: usize) -> bool {
+        self.entries.iter().any(|e| e.text.len() >= min)
+    }
+
+    #[allow(dead_code)]
+    pub fn last_n(&self, n: usize) -> Vec<&HistoryEntry> {
+        self.entries.iter().take(n).collect()
+    }
+
+    #[allow(dead_code)]
     pub fn avg_words_per_entry(&self) -> usize {
         if self.is_empty() { return 0; }
         self.words_count() / self.len()
