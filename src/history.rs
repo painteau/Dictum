@@ -351,6 +351,21 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn entry_word_count(&self, idx: usize) -> usize {
+        self.entries.get(idx).map(|e| e.text.split_whitespace().count()).unwrap_or(0)
+    }
+
+    #[allow(dead_code)]
+    pub fn richest_entry(&self) -> Option<&HistoryEntry> {
+        self.entries.iter().max_by_key(|e| e.text.split_whitespace().count())
+    }
+
+    #[allow(dead_code)]
+    pub fn is_full(&self, max: usize) -> bool {
+        self.entries.len() >= max
+    }
+
+    #[allow(dead_code)]
     pub fn avg_words_per_entry(&self) -> usize {
         if self.is_empty() { return 0; }
         self.words_count() / self.len()
