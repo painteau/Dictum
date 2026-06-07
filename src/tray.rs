@@ -124,6 +124,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                     None => show_dialog("Dictum", "Aucune dictée à copier."),
                 }
             } else if event.id == item_reset_cfg.id() {
+                log::info!("Réinitialisation config aux valeurs par défaut");
                 let default_cfg = crate::config::Config::default();
                 if let Err(e) = default_cfg.save() {
                     log::error!("Reset config échoué : {e}");
