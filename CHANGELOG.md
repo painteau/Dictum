@@ -1,5 +1,17 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.2.5 — HISTORY 100 MÉTHODES MILESTONE
+
+### Milestone
+- History : **100 méthodes** ✓
+- Total API : **310 méthodes** (210 Config + 100 History)
+
+### Ajouté
+- History : `contains_all`, `contains_any`, `entry_index`, `save_to`, `load_from`
+- 564 commits
+
+---
+
 ## 2026-06-07 — v1.2.4 — CLI CONFIG BACKUP/RESTORE
 
 ### Ajouté
