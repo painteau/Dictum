@@ -68,10 +68,14 @@ pub fn check_update() -> Option<UpdateInfo> {
     let latest = release.tag_name.trim_start_matches('v');
     let current = CURRENT_VERSION;
 
+    log::debug!("Version actuelle : v{} | Dernière : v{}", current, latest);
+
     if !is_newer(latest, current) {
         log::info!("Dictum à jour (v{})", current);
         return None;
     }
+
+    log::info!("Mise à jour disponible : v{} → v{}", current, latest);
 
     // Cherche Dictum-Setup-*.exe dans les assets
     let installer = release.assets.iter().find(|a| {
