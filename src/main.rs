@@ -480,6 +480,31 @@ fn main() -> Result<()> {
             }
             return Ok(());
         }
+        Some("--profile") => {
+            let profile = args.get(2).map(String::as_str).unwrap_or("");
+            if profile.is_empty() {
+                println!("Usage : dictum --profile <nom>");
+                println!("Profiles : french-standard, minimal, performance, quiet, english, dictaphone");
+                std::process::exit(1);
+            }
+            let mut cfg = Config::load().unwrap_or_default();
+            let applied = match profile {
+                "french-standard" | "fr" => { cfg.apply_profile_french_standard(); true }
+                "minimal"                => { cfg.apply_profile_minimal(); true }
+                "performance"            => { cfg.apply_profile_performance(); true }
+                "quiet"                  => { cfg.apply_profile_quiet(); true }
+                "english" | "en"         => { cfg.apply_profile_english(); true }
+                "dictaphone"             => { cfg.apply_profile_dictaphone(); true }
+                _ => { println!("Profile inconnu : {}", profile); false }
+            };
+            if applied {
+                match cfg.save() {
+                    Ok(_) => println!("Profile appliqué : {} (score {}/100)", profile, cfg.score()),
+                    Err(e) => { println!("Erreur sauvegarde : {e}"); std::process::exit(1); }
+                }
+            }
+            return Ok(());
+        }
         Some("--set-lang") => {
             let lang = args.get(2).map(String::as_str).unwrap_or("");
             if lang.is_empty() {
