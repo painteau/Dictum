@@ -971,4 +971,33 @@ impl Config {
             self.hotkey.key
         )
     }
+
+    #[allow(dead_code)]
+    pub fn from_json_str(s: &str) -> Result<Self> {
+        Ok(serde_json::from_str(s)?)
+    }
+
+    #[allow(dead_code)]
+    pub fn substitutions_count(&self) -> usize {
+        self.substitutions.len()
+    }
+
+    #[allow(dead_code)]
+    pub fn record_max_secs_display(&self) -> String {
+        if self.max_record_secs >= 60 {
+            format!("{}min{}s", self.max_record_secs / 60, self.max_record_secs % 60)
+        } else {
+            format!("{}s", self.max_record_secs)
+        }
+    }
+
+    #[allow(dead_code)]
+    pub fn is_hotkey_with_modifier(&self) -> bool {
+        self.hotkey.ctrl || self.hotkey.alt || self.hotkey.shift
+    }
+
+    #[allow(dead_code)]
+    pub fn hotkey_key(&self) -> &str {
+        &self.hotkey.key
+    }
 }
