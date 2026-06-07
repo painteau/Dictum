@@ -1,5 +1,23 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.4.3 — Logs 100% français
+
+### Corrigé
+- Tous les messages log traduits en français
+- `audio.rs` : "Audio stream error" → "Erreur stream audio"
+- `hotkey.rs` : "Hotkey listener error" → "Erreur listener hotkey"
+- `main.rs` : "Recording started/too short/Failed" → français
+- `main.rs` : "Busy transcribing" → "Transcription en cours"
+
+### Ajouté
+- `transcribe.rs` : log debug chemin WAV temp
+- `inject.rs` : log debug Auto-Enter déclenché
+- `setup.rs` : log info/error fin téléchargement wizard
+- `updater.rs` : log fermeture avant mise à jour
+- `downloader.rs` : log SHA256 vérifié
+
+---
+
 ## 2026-06-07 — v0.4.2 — Diagnostics complets
 
 ### Ajouté
