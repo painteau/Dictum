@@ -83,6 +83,20 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn sorted_by_length(&self) -> Vec<&HistoryEntry> {
+        let mut v: Vec<&HistoryEntry> = self.entries.iter().collect();
+        v.sort_by(|a, b| b.text.len().cmp(&a.text.len()));
+        v
+    }
+
+    #[allow(dead_code)]
+    pub fn sorted_by_date(&self) -> Vec<&HistoryEntry> {
+        let mut v: Vec<&HistoryEntry> = self.entries.iter().collect();
+        v.sort_by(|a, b| b.timestamp.cmp(&a.timestamp));
+        v
+    }
+
+    #[allow(dead_code)]
     pub fn longest_entry(&self) -> Option<&HistoryEntry> {
         self.entries.iter().max_by_key(|e| e.text.len())
     }
