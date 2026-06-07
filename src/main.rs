@@ -505,6 +505,40 @@ fn main() -> Result<()> {
             }
             return Ok(());
         }
+        Some("--test-mic") => {
+            let cfg = Config::load().unwrap_or_default();
+            let mic = cfg.microphone.as_deref();
+            println!("Test microphone (2 secondes)...");
+            println!("Micro : {}", mic.unwrap_or("défaut système"));
+            match audio::RecordHandle::start(mic, 2) {
+                Ok(handle) => {
+                    std::thread::sleep(std::time::Duration::from_secs(2));
+                    let samples = handle.stop();
+                    if samples.is_empty() {
+                        println!("Aucun sample reçu — vérifier le microphone.");
+                        std::process::exit(1);
+                    }
+                    let rms: f32 = {
+                        let sum: f32 = samples.iter().map(|s| s * s).sum();
+                        (sum / samples.len() as f32).sqrt()
+                    };
+                    let level = if rms < 0.001 { "très faible (silence?)" }
+                        else if rms < 0.01 { "faible" }
+                        else if rms < 0.05 { "bon" }
+                        else { "fort" };
+                    println!("RMS : {:.4} — niveau {}", rms, level);
+                    println!("Samples : {} ({:.1}s)", samples.len(), samples.len() as f32 / 16000.0);
+                    println!("Seuil config : {:.4} ({})", cfg.silence_threshold, cfg.silence_level_label());
+                    if rms < cfg.silence_threshold {
+                        println!("AVERTISSEMENT : niveau < seuil silence — la dictée sera ignorée.");
+                    } else {
+                        println!("✓ Microphone fonctionnel.");
+                    }
+                }
+                Err(e) => { println!("Erreur démarrage micro : {e}"); std::process::exit(1); }
+            }
+            return Ok(());
+        }
         Some("--set-mic") => {
             let name = args.get(2).map(String::as_str).unwrap_or("");
             let mut cfg = Config::load().unwrap_or_default();
