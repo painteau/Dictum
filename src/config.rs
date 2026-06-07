@@ -171,6 +171,7 @@ impl Config {
         if self.language.is_empty() { self.language = "auto".to_string(); }
         if self.inject_delay_ms > 1000 { self.inject_delay_ms = 1000; }
         if !["error","warn","info","debug","trace"].contains(&self.log_level.as_str()) {
+            log::warn!("log_level '{}' invalide, réinitialisé à 'info'", self.log_level);
             self.log_level = "info".to_string();
         }
         if self.whisper_threads > 32 { self.whisper_threads = 32; }
