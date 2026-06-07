@@ -104,7 +104,8 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
         .arg("--threads").arg(cpu_threads.to_string())
         .arg("--best-of").arg("1")
         .arg("--beam-size").arg("1")
-        .arg("--print-colors").arg("false");
+        .arg("--print-colors").arg("false")
+        .arg("--print-special").arg("false");
 
     if config.whisper_no_speech {
         cmd.arg("--no-speech-thold").arg("0.6");
