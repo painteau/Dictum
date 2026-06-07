@@ -83,6 +83,15 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn stats_summary(&self) -> String {
+        if self.is_empty() {
+            return "Historique vide".to_string();
+        }
+        format!("{} entrée(s) | {} chars total | moy.{} | {} mots uniques",
+            self.len(), self.total_chars(), self.average_length(), self.unique_words_count())
+    }
+
+    #[allow(dead_code)]
     pub fn unique_words_count(&self) -> usize {
         let mut words = std::collections::HashSet::new();
         for e in &self.entries {
