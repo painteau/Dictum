@@ -1448,4 +1448,29 @@ impl Config {
     pub fn is_hotkey_no_modifier(&self) -> bool {
         !self.hotkey.ctrl && !self.hotkey.alt && !self.hotkey.shift
     }
+
+    #[allow(dead_code)]
+    pub fn clone_with_language(&self, lang: &str) -> Self {
+        let mut c = self.clone();
+        c.language = lang.to_string();
+        c.french_typography = lang == "fr";
+        c
+    }
+
+    #[allow(dead_code)]
+    pub fn clone_with_model(&self, path: std::path::PathBuf) -> Self {
+        let mut c = self.clone();
+        c.model_path = path;
+        c
+    }
+
+    #[allow(dead_code)]
+    pub fn language_emoji(&self) -> &'static str {
+        match self.language.as_str() {
+            "fr" => "🇫🇷", "en" => "🇬🇧", "de" => "🇩🇪",
+            "es" => "🇪🇸", "it" => "🇮🇹", "pt" => "🇵🇹",
+            "ja" => "🇯🇵", "zh" => "🇨🇳", "ru" => "🇷🇺",
+            "ar" => "🇸🇦", "auto" => "🌐", _ => "🌍",
+        }
+    }
 }
