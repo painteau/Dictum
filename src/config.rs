@@ -691,6 +691,17 @@ impl Config {
         format!("config v{} | app v{}", self.config_version, Self::app_version())
     }
 
+    pub fn is_french(&self) -> bool { self.language == "fr" }
+    pub fn is_auto_detect(&self) -> bool { self.language == "auto" }
+    pub fn is_beep_enabled(&self) -> bool { self.beep_enabled }
+    pub fn is_pause_media_enabled(&self) -> bool { self.pause_media }
+    pub fn is_prefix_space_enabled(&self) -> bool { self.prefix_space }
+    pub fn is_auto_enter_enabled(&self) -> bool { self.auto_enter }
+    pub fn is_french_typography_enabled(&self) -> bool { self.french_typography }
+    pub fn is_auto_capitalize_enabled(&self) -> bool { self.auto_capitalize }
+    pub fn is_no_speech_enabled(&self) -> bool { self.whisper_no_speech }
+    pub fn is_debug_mode(&self) -> bool { self.log_level == "debug" || self.log_level == "trace" }
+
     pub fn language_display(&self) -> String {
         match self.language.as_str() {
             "auto" => "Auto-détection".to_string(),
