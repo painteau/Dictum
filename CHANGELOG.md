@@ -1,5 +1,14 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.3.4 — 366 MÉTHODES API
+
+### Ajouté
+- Config 236 méthodes : `score_percentage`, `is_score_perfect/poor`, `hotkey_summary`
+- History 130 méthodes : `max/min_word_count`, `has/entries_with_word`, `total_punctuation`
+- **366 méthodes API** (236 Config + 130 History)
+
+---
+
 ## 2026-06-07 — v1.3.3 — 357 MÉTHODES API
 
 ### Ajouté
