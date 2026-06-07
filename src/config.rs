@@ -462,6 +462,10 @@ impl Config {
         format!("max={}s min={}ms silence={}", self.max_record_secs, self.min_record_ms, self.silence_level_label())
     }
 
+    pub fn microphone_display(&self) -> String {
+        self.microphone.clone().unwrap_or_else(|| "défaut système".to_string())
+    }
+
     #[allow(dead_code)]
     pub fn inject_delay_display(&self) -> String {
         match self.inject_delay_ms {
