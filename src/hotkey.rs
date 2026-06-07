@@ -93,6 +93,7 @@ pub fn start(config: Config, tx: Sender<AppEvent>) {
             EventType::KeyRelease(ref k) if *k == target => {
                 if active {
                     active = false;
+                    log::info!("Hotkey relâchée → arrêt enregistrement");
                     let _ = tx.send(AppEvent::RecordStop);
                 }
             }
