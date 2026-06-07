@@ -233,6 +233,14 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
                 && !t.starts_with('(')
                 && !t.starts_with("-->")
                 && t != "BLANK_AUDIO"
+                // Tags Whisper fréquents à filtrer explicitement
+                && !t.contains("[Musique]")
+                && !t.contains("[Silence]")
+                && !t.contains("[Inaudible]")
+                && !t.contains("[ Musique ]")
+                && !t.contains("[Music]")
+                && !t.contains("[Applaudissements]")
+                && !t.contains("[Rires]")
         })
         // Filtre les numéros de séquence SRT (lignes purement numériques)
         .filter(|l| !l.trim().chars().all(|c| c.is_ascii_digit()))
