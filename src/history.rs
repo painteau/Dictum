@@ -458,6 +458,40 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn texts_matching(&self, predicate: impl Fn(&str) -> bool) -> Vec<&HistoryEntry> {
+        self.entries.iter().filter(|e| predicate(&e.text)).collect()
+    }
+
+    #[allow(dead_code)]
+    pub fn word_count_histogram(&self) -> Vec<(usize, usize)> {
+        let mut bins: std::collections::BTreeMap<usize, usize> = std::collections::BTreeMap::new();
+        for e in &self.entries {
+            let bucket = (e.text.split_whitespace().count() / 10) * 10;
+            *bins.entry(bucket).or_insert(0) += 1;
+        }
+        bins.into_iter().collect()
+    }
+
+    #[allow(dead_code)]
+    pub fn timestamps(&self) -> Vec<u64> {
+        self.entries.iter().map(|e| e.timestamp).collect()
+    }
+
+    #[allow(dead_code)]
+    pub fn at_timestamp(&self, ts: u64) -> Option<&HistoryEntry> {
+        self.entries.iter().find(|e| e.timestamp == ts)
+    }
+
+    #[allow(dead_code)]
+    pub fn merge(&mut self, other: &History, max: usize) {
+        for entry in other.entries.iter() {
+            if !self.contains(&entry.text) {
+                self.push_with_limit(entry.text.clone(), max);
+            }
+        }
+    }
+
+    #[allow(dead_code)]
     pub fn avg_words_per_entry(&self) -> usize {
         if self.is_empty() { return 0; }
         self.words_count() / self.len()
