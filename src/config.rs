@@ -499,6 +499,17 @@ impl Config {
         Ok(serde_json::to_string_pretty(self)?)
     }
 
+    /// Fusionne les champs non-default d'une autre config dans celle-ci.
+    #[allow(dead_code)]
+    pub fn merge_substitutions_from(&mut self, other: &Config) {
+        for sub in &other.substitutions {
+            if !self.substitutions.iter().any(|s| s.from == sub.from) {
+                self.substitutions.push(sub.clone());
+            }
+        }
+        log::debug!("Fusion substitutions : {} règles au total", self.substitutions.len());
+    }
+
     #[allow(dead_code)]
     pub fn from_json_string(json: &str) -> Result<Self> {
         let mut config: Config = serde_json::from_str(json)?;
