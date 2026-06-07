@@ -1,5 +1,19 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.3.9 — Finitions 1h du matin
+
+### Ajouté
+- `history.rs` : export format Markdown avec en-tête
+- `substitution.rs` : limite 100 règles max
+- `inject.rs` : log debug longueur et flags avant injection
+- `downloader.rs` : `user_agent()` helper, User-Agent propre dans `has_internet()`
+- `config.rs` : `Config::app_version()` helper statique
+- `transcribe.rs` : fallback si whisper-cli retourne erreur mais stdout non vide
+- `updater.rs` : log version actuelle vs dernière lors du check
+- `transcribe.rs` : log info threads/temp/lang par transcription
+
+---
+
 ## 2026-06-07 — v0.3.8 — Nettoyage output Whisper
 
 ### Ajouté
