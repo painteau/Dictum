@@ -235,6 +235,7 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
     Ok(text)
 }
 
+#[allow(dead_code)]
 pub fn is_ready(config: &Config) -> bool {
     let cli_ok = Config::is_whisper_cli_ready();
     let model_ok = config.is_model_ready();
