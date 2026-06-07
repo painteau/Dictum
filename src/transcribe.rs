@@ -52,6 +52,12 @@ fn rms(samples: &[f32]) -> f32 {
 
 pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
     let _start = std::time::Instant::now();
+
+    // Timeout adaptatif : 10s par seconde audio, minimum 60s, maximum 300s
+    let audio_secs = (samples.len() as f64 / 16000.0) as u64;
+    let adaptive_timeout = (audio_secs * 10).max(60).min(300);
+    log::debug!("Timeout adaptatif whisper : {}s pour {:.1}s audio", adaptive_timeout, audio_secs as f64);
+
     if rms(samples) < config.silence_threshold {
         log::debug!("Silence détecté (RMS={:.4}), transcription ignorée", rms(samples));
         return Ok(String::new());
