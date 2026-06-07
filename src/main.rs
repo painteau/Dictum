@@ -475,6 +475,35 @@ fn main() -> Result<()> {
             }
             return Ok(());
         }
+        Some("--set-lang") => {
+            let lang = args.get(2).map(String::as_str).unwrap_or("");
+            if lang.is_empty() {
+                println!("Usage : dictum --set-lang <code>  (ex: fr, en, auto)");
+                std::process::exit(1);
+            }
+            let mut cfg = Config::load().unwrap_or_default();
+            cfg.language = lang.to_string();
+            cfg.french_typography = lang == "fr";
+            match cfg.save() {
+                Ok(_) => println!("Langue définie : {} (typo_fr={})", lang, cfg.french_typography),
+                Err(e) => { println!("Erreur sauvegarde : {e}"); std::process::exit(1); }
+            }
+            return Ok(());
+        }
+        Some("--set-hotkey") => {
+            let key = args.get(2).map(String::as_str).unwrap_or("");
+            if key.is_empty() {
+                println!("Usage : dictum --set-hotkey <touche>  (ex: F9, F10, Insert)");
+                std::process::exit(1);
+            }
+            let mut cfg = Config::load().unwrap_or_default();
+            cfg.hotkey.key = key.to_string();
+            match cfg.save() {
+                Ok(_) => println!("Hotkey définie : {} (redémarrer Dictum pour appliquer)", cfg.hotkey_string()),
+                Err(e) => { println!("Erreur sauvegarde : {e}"); std::process::exit(1); }
+            }
+            return Ok(());
+        }
         Some("--update-check") => {
             println!("Vérification mise à jour Dictum v{}...", env!("CARGO_PKG_VERSION"));
             match updater::check_update() {

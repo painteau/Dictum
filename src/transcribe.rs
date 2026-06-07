@@ -267,7 +267,7 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
     } else {
         log::info!("Transcription OK [{:.1}x] : «{}»", speed, preview);
     }
-    log::debug!("Détails : {:.1}s audio en {:.1}s", duration_secs, elapsed.as_secs_f32());
+    log::debug!("Détails : {:.1}s audio en {:.1}s (lang={} model={})", duration_secs, elapsed.as_secs_f32(), config.language, config.model_name());
 
     Ok(text)
 }
