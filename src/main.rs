@@ -490,6 +490,30 @@ fn main() -> Result<()> {
             }
             return Ok(());
         }
+        Some("--set-model") => {
+            let model_name = args.get(2).map(String::as_str).unwrap_or("");
+            if model_name.is_empty() {
+                println!("Usage : dictum --set-model <medium|large-v3|chemin/vers/modele.bin>");
+                std::process::exit(1);
+            }
+            let mut cfg = Config::load().unwrap_or_default();
+            let path = if model_name.contains('/') || model_name.contains('\\') {
+                std::path::PathBuf::from(model_name)
+            } else {
+                Config::models_dir().join(format!("ggml-{}.bin", model_name))
+            };
+            if !path.exists() {
+                println!("Modèle introuvable : {}", path.display());
+                println!("Lancer le wizard pour télécharger : dictum.exe");
+                std::process::exit(1);
+            }
+            cfg.model_path = path.clone();
+            match cfg.save() {
+                Ok(_) => println!("Modèle défini : {}", path.display()),
+                Err(e) => { println!("Erreur : {e}"); std::process::exit(1); }
+            }
+            return Ok(());
+        }
         Some("--set-hotkey") => {
             let key = args.get(2).map(String::as_str).unwrap_or("");
             if key.is_empty() {
