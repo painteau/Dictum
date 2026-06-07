@@ -96,6 +96,7 @@ Cliquer **"Paramètres"** dans le menu tray pour l'ouvrir dans Notepad.
 | `beep_start_freq` | `800` | Fréquence Hz du beep de début (100-20000) |
 | `beep_end_freq` | `600` | Fréquence Hz du beep de fin (100-20000) |
 | `beep_duration_ms` | `80` | Durée des beeps en ms (max 2000) |
+| `log_level` | `"info"` | Niveau de log : `error`, `warn`, `info`, `debug` |
 
 ## Modèles disponibles
 
