@@ -470,6 +470,22 @@ impl Config {
     }
 
     #[allow(dead_code)]
+    pub fn set_language(&mut self, lang: &str) -> &mut Self {
+        self.language = lang.to_string();
+        self.french_typography = lang == "fr";
+        self
+    }
+
+    #[allow(dead_code)]
+    pub fn set_hotkey(&mut self, key: &str, ctrl: bool, alt: bool, shift: bool) -> &mut Self {
+        self.hotkey.key = key.to_string();
+        self.hotkey.ctrl = ctrl;
+        self.hotkey.alt = alt;
+        self.hotkey.shift = shift;
+        self
+    }
+
+    #[allow(dead_code)]
     pub fn max_history_display(&self) -> String {
         format!("{} entrée{}", self.max_history, if self.max_history > 1 { "s" } else { "" })
     }
