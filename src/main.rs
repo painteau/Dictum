@@ -506,6 +506,25 @@ fn main() -> Result<()> {
             }
             return Ok(());
         }
+        Some("--copy-last") => {
+            match History::load() {
+                Ok(h) => match h.last_text() {
+                    Some(text) => {
+                        match arboard::Clipboard::new().and_then(|mut c| c.set_text(&text)) {
+                            Ok(_) => {
+                                let words = text.split_whitespace().count();
+                                println!("Copié : {} chars, {} mots", text.len(), words);
+                                println!("{}", if text.len() > 80 { format!("{}...", &text[..77]) } else { text });
+                            }
+                            Err(e) => { println!("Erreur clipboard : {e}"); std::process::exit(1); }
+                        }
+                    }
+                    None => println!("Historique vide."),
+                },
+                Err(e) => { println!("Erreur : {e}"); std::process::exit(1); }
+            }
+            return Ok(());
+        }
         Some("--batch") => {
             // dictum --batch *.wav [--output-dir chemin]
             let output_dir = args.windows(2)
