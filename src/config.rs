@@ -295,6 +295,17 @@ impl Config {
     }
 
     /// Retourne la liste des problèmes de configuration (vide si tout est OK).
+    pub fn description(&self) -> String {
+        format!("[{}] {} | {} | hotkey:{} | silence:{} | beep:{}",
+            self.profile_name(),
+            self.language_display(),
+            self.model_name(),
+            self.hotkey_string(),
+            self.silence_level_label(),
+            self.beep_description()
+        )
+    }
+
     pub fn whisper_config_display(&self) -> String {
         format!("threads={} temp={:.1} no_speech={} speed={}",
             self.threads_display(),
