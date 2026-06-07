@@ -16,6 +16,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
     let item_history   = MenuItem::new("📋 Historique (0)", true, None);
     let item_devices   = MenuItem::new("🎙  Microphones", true, None);
     let item_copy_last   = MenuItem::new("📋 Copier dernière dictée", true, None);
+    let item_copy_all    = MenuItem::new("📋 Copier tout l'historique", true, None);
     let item_export_hist = MenuItem::new("💾 Exporter historique", true, None);
     let item_reset_cfg  = MenuItem::new("🔧 Réinitialiser la config", true, None);
     let item_clear_hist = MenuItem::new("🗑  Effacer l'historique", true, None);
@@ -43,6 +44,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
         // Historique
         &item_history,
         &item_copy_last,
+        &item_copy_all,
         &item_export_hist,
         &item_clear_hist,
         &PredefinedMenuItem::separator(),
@@ -130,6 +132,18 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                 };
                 drop(hist);
                 show_dialog("Dictum — Historique", &msg);
+            } else if event.id == item_copy_all.id() {
+                let hist = state.history.lock().unwrap();
+                if hist.is_empty() {
+                    show_dialog("Dictum", "Historique vide.");
+                } else {
+                    let all = hist.all_texts().join("\n");
+                    drop(hist);
+                    match arboard::Clipboard::new().and_then(|mut c| c.set_text(&all)) {
+                        Ok(_) => log::info!("Historique complet copié ({} entrées)", all.lines().count()),
+                        Err(e) => show_dialog("Dictum", &format!("Erreur clipboard : {e}")),
+                    }
+                }
             } else if event.id == item_copy_last.id() {
                 let last = state.history.lock().unwrap().last_text();
                 match last {
