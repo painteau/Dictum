@@ -83,6 +83,11 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn filter_by_min_length(&self, min_chars: usize) -> Vec<&HistoryEntry> {
+        self.entries.iter().filter(|e| e.text.len() >= min_chars).collect()
+    }
+
+    #[allow(dead_code)]
     pub fn search(&self, query: &str) -> Vec<&HistoryEntry> {
         let query_lower = query.to_lowercase();
         self.entries
