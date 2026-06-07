@@ -141,6 +141,8 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                 match crate::config::Config::load() {
                     Ok(new_cfg) => {
                         *state.config.lock().unwrap() = new_cfg;
+                        // Notifier aussi le pipeline thread
+                        let _ = event_tx.send(crate::AppEvent::ReloadConfig);
                         log::info!("Config rechargée");
                     }
                     Err(e) => log::error!("Erreur reload config : {e}"),
