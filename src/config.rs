@@ -286,6 +286,13 @@ impl Config {
         !self.substitutions.is_empty()
     }
 
+    pub fn model_name(&self) -> &str {
+        self.model_path
+            .file_name()
+            .and_then(|n| n.to_str())
+            .unwrap_or("?")
+    }
+
     pub fn hotkey_string(&self) -> String {
         format!("{}{}{}{}",
             if self.hotkey.ctrl  { "Ctrl+" } else { "" },
