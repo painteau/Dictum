@@ -70,6 +70,7 @@ pub fn start(config: Config, tx: Sender<AppEvent>) {
     let mut shift_down = false;
     let mut active     = false;
 
+    log::debug!("Hotkey thread démarré, écoute rdev...");
     if let Err(e) = listen(move |event| {
         match event.event_type {
             EventType::KeyPress(Key::ControlLeft) | EventType::KeyPress(Key::ControlRight) => ctrl_down = true,
@@ -103,5 +104,7 @@ pub fn start(config: Config, tx: Sender<AppEvent>) {
         }
     }) {
         log::error!("Erreur listener hotkey : {e:?}");
+        log::error!("Conseil : lancer Dictum en tant qu'administrateur si le problème persiste.");
     }
+    log::warn!("Thread hotkey terminé — la dictée ne fonctionnera plus.");
 }
