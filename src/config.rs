@@ -1336,4 +1336,49 @@ impl Config {
          self.whisper_no_speech, self.microphone.is_some()]
             .iter().filter(|&&b| b).count()
     }
+
+    #[allow(dead_code)]
+    pub fn is_minimal_config(&self) -> bool {
+        !self.beep_enabled && !self.french_typography && !self.auto_capitalize && !self.auto_enter
+    }
+
+    #[allow(dead_code)]
+    pub fn is_maximal_config(&self) -> bool {
+        self.beep_enabled && self.french_typography && self.auto_capitalize && self.pause_media
+    }
+
+    #[allow(dead_code)]
+    pub fn compatible_with_french(&self) -> bool {
+        self.is_french() && self.french_typography && self.auto_capitalize
+    }
+
+    #[allow(dead_code)]
+    pub fn thread_count_display(&self) -> String {
+        if self.whisper_threads == 0 {
+            "auto".to_string()
+        } else {
+            format!("{} threads", self.whisper_threads)
+        }
+    }
+
+    #[allow(dead_code)]
+    pub fn summary_for_about(&self) -> String {
+        format!(
+            "v{} | {} | {}/100",
+            Self::app_version(), self.hotkey_string(), self.score()
+        )
+    }
+
+    #[allow(dead_code)]
+    pub fn is_same_language(&self, other: &Config) -> bool {
+        self.language == other.language
+    }
+
+    #[allow(dead_code)]
+    pub fn is_same_hotkey(&self, other: &Config) -> bool {
+        self.hotkey.key == other.hotkey.key
+            && self.hotkey.ctrl == other.hotkey.ctrl
+            && self.hotkey.alt == other.hotkey.alt
+            && self.hotkey.shift == other.hotkey.shift
+    }
 }
