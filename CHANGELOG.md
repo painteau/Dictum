@@ -1,5 +1,16 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.0.7 — DIAGNOSTIC + LANGUE HELPERS
+
+### Ajouté
+- `--diagnose` : liste détaillée des binaires manquants (missing_binaries)
+- `downloader::binaries_ready()` et `missing_binaries()` 
+- Config 160 méthodes : `is_english/german/spanish/italian/portuguese`
+- `inject::apply_minimal_typography()` (apostrophe seule)
+- **224 méthodes API** (160 Config + 64 History) | 508 commits
+
+---
+
 ## 2026-06-07 — v1.0.6 — WIZARD + CLI SUBSTITUTIONS
 
 ### Ajouté
