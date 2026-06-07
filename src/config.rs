@@ -293,6 +293,17 @@ impl Config {
         self.substitutions.len()
     }
 
+    pub fn whisper_speed_label(&self) -> &'static str {
+        match self.model_name() {
+            name if name.contains("tiny") => "ultra-rapide",
+            name if name.contains("base") => "très rapide",
+            name if name.contains("small") => "rapide",
+            name if name.contains("medium") => "normal",
+            name if name.contains("large") => "lent",
+            _ => "inconnu",
+        }
+    }
+
     pub fn beep_description(&self) -> String {
         if !self.beep_enabled {
             "désactivé".to_string()
