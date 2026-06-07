@@ -226,6 +226,20 @@ impl Config {
         Ok(())
     }
 
+    /// Affiche un résumé compact de la config dans les logs.
+    pub fn log_summary(&self) {
+        log::info!("Config résumé : lang={} model={} hotkey={}{}{}{} threads={} temp={:.1}",
+            self.language,
+            self.model_path.file_name().and_then(|n| n.to_str()).unwrap_or("?"),
+            if self.hotkey.ctrl  { "Ctrl+" } else { "" },
+            if self.hotkey.alt   { "Alt+"  } else { "" },
+            if self.hotkey.shift { "Shift+"} else { "" },
+            self.hotkey.key,
+            if self.whisper_threads == 0 { "auto".to_string() } else { self.whisper_threads.to_string() },
+            self.whisper_temperature
+        );
+    }
+
     pub fn log_path() -> PathBuf {
         data_dir().join("dictum.log")
     }
