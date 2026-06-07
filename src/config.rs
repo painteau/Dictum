@@ -1315,4 +1315,25 @@ impl Config {
         else if self.inject_delay_ms <= 150 { "normal" }
         else { "lent" }
     }
+
+    #[allow(dead_code)]
+    pub fn silence_category(&self) -> &'static str {
+        if self.silence_threshold < 0.002 { "très sensible" }
+        else if self.silence_threshold < 0.01 { "sensible" }
+        else if self.silence_threshold < 0.05 { "normal" }
+        else { "sourd" }
+    }
+
+    #[allow(dead_code)]
+    pub fn is_privacy_mode(&self) -> bool {
+        !self.beep_enabled && !self.pause_media
+    }
+
+    #[allow(dead_code)]
+    pub fn total_feature_flags(&self) -> usize {
+        [self.beep_enabled, self.auto_capitalize, self.french_typography,
+         self.auto_enter, self.prefix_space, self.pause_media,
+         self.whisper_no_speech, self.microphone.is_some()]
+            .iter().filter(|&&b| b).count()
+    }
 }
