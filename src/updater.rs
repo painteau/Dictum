@@ -123,10 +123,21 @@ pub fn apply_update(info: &UpdateInfo) -> Result<()> {
         let mut file = std::fs::File::create(&dest)
             .map_err(|e| anyhow!("Impossible de créer le fichier : {e}"))?;
         let mut buf = vec![0u8; 65_536];
+        let mut written = 0u64;
+        let mut last_pct = 0u64;
         loop {
             let n = resp.read(&mut buf).map_err(|e| anyhow!("Erreur lecture : {e}"))?;
             if n == 0 { break; }
             file.write_all(&buf[..n]).map_err(|e| anyhow!("Erreur écriture : {e}"))?;
+            written += n as u64;
+            if info.installer_size > 0 {
+                let pct = written * 100 / info.installer_size;
+                if pct >= last_pct + 25 {
+                    last_pct = pct;
+                    log::info!("Setup téléchargement : {}% ({:.1}/{:.1} MB)", pct,
+                        written as f64 / 1_048_576.0, info.installer_size as f64 / 1_048_576.0);
+                }
+            }
         }
     }
 
