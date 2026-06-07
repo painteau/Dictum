@@ -170,6 +170,9 @@ impl Config {
         if self.hotkey.key.is_empty() { self.hotkey.key = "F9".to_string(); }
         if self.language.is_empty() { self.language = "auto".to_string(); }
         if self.inject_delay_ms > 1000 { self.inject_delay_ms = 1000; }
+        if !["error","warn","info","debug","trace"].contains(&self.log_level.as_str()) {
+            self.log_level = "info".to_string();
+        }
         if self.whisper_threads > 32 { self.whisper_threads = 32; }
         self.whisper_temperature = self.whisper_temperature.clamp(0.0, 1.0);
         if self.beep_start_freq < 100 || self.beep_start_freq > 20000 { self.beep_start_freq = 800; }
