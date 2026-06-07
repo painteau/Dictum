@@ -1176,4 +1176,25 @@ impl Config {
     pub fn hotkey_is_function_key(&self) -> bool {
         self.hotkey.key.starts_with('F') && self.hotkey.key[1..].parse::<u8>().is_ok()
     }
+
+    #[allow(dead_code)]
+    pub fn full_description(&self) -> String {
+        format!("{} | {} | score {}/100", self.description(), self.hotkey_string(), self.score())
+    }
+
+    #[allow(dead_code)]
+    pub fn is_beep_disabled(&self) -> bool { !self.beep_enabled }
+
+    #[allow(dead_code)]
+    pub fn is_auto_enter_disabled(&self) -> bool { !self.auto_enter }
+
+    #[allow(dead_code)]
+    pub fn models_dir_display(&self) -> String {
+        Self::models_dir().display().to_string()
+    }
+
+    #[allow(dead_code)]
+    pub fn log_path_display(&self) -> String {
+        Self::log_path().display().to_string()
+    }
 }
