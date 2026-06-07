@@ -533,6 +533,36 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn words_today(&self) -> usize {
+        self.entries_today().iter().map(|e| e.text.split_whitespace().count()).sum()
+    }
+
+    #[allow(dead_code)]
+    pub fn chars_today(&self) -> usize {
+        self.entries_today().iter().map(|e| e.text.len()).sum()
+    }
+
+    #[allow(dead_code)]
+    pub fn most_recent_n_words(&self, n: usize) -> String {
+        self.entries.iter().take(n)
+            .flat_map(|e| e.text.split_whitespace().map(str::to_string))
+            .collect::<Vec<_>>()
+            .join(" ")
+    }
+
+    #[allow(dead_code)]
+    pub fn random_entry_index(&self) -> Option<usize> {
+        if self.is_empty() { return None; }
+        // Déterministe : basé sur timestamp de la dernière entrée
+        Some(self.entries.front()?.timestamp as usize % self.entries.len())
+    }
+
+    #[allow(dead_code)]
+    pub fn json_string(&self) -> anyhow::Result<String> {
+        Ok(serde_json::to_string_pretty(self)?)
+    }
+
+    #[allow(dead_code)]
     pub fn avg_words_per_entry(&self) -> usize {
         if self.is_empty() { return 0; }
         self.words_count() / self.len()
