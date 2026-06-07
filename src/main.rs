@@ -267,6 +267,7 @@ fn main() -> Result<()> {
             println!("Informations :");
             println!("  --list-devices        Lister les microphones disponibles");
             println!("  --list-languages      Lister les langues Whisper (57)");
+            println!("  --list-models         Lister les modèles disponibles (CDN)");
             println!("  --stats               Statistiques historique de dictée");
             println!("  --search <texte>      Rechercher dans l'historique");
             println!("  --diagnose            Rapport complet : fichiers, audio, réseau, config");
@@ -412,6 +413,29 @@ fn main() -> Result<()> {
                     std::process::exit(1);
                 }
             }
+            return Ok(());
+        }
+        Some("--list-models") => {
+            println!("Modèles Whisper disponibles sur le CDN :");
+            println!();
+            match downloader::fetch_manifest() {
+                Ok(manifest) => {
+                    for (name, entry) in &manifest.models {
+                        let size_gb = entry.size_bytes as f64 / 1_073_741_824.0;
+                        let local = Config::models_dir().join(format!("ggml-{}.bin", name));
+                        let status = if local.exists() { "✓ installé" } else { "  absent" };
+                        println!("  {} {} — {:.1} GB", status, name, size_gb);
+                    }
+                }
+                Err(_) => {
+                    // Afficher les modèles connus sans CDN
+                    println!("  (hors ligne) medium — 1.5 GB");
+                    println!("  (hors ligne) large-v3 — 3.0 GB");
+                    println!("\n⚠ Manifest CDN inaccessible — vérifier la connexion.");
+                }
+            }
+            println!();
+            println!("Dossier modèles : {}", Config::models_dir().display());
             return Ok(());
         }
         Some("--stats") => {
