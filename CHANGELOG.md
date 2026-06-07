@@ -1,5 +1,17 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.5.7 — Helpers audio et micro
+
+### Ajouté
+- `config.rs` : `microphone_display()` — "défaut système" ou nom configuré
+- `config.rs` : `audio_input_display()` — résumé complet config audio
+- `config.rs` : `substitutions_display()` — aperçu 3 premières règles
+- `config.rs` : `max_history_display()`, `record_config_display()`
+- `config.rs` : `inject_delay_display()` — rapide/normal/lent
+- `main.rs` : log `microphone_display()` et aperçu substitutions
+
+---
+
 ## 2026-06-07 — v0.5.6 — API centralisée
 
 ### Ajouté
