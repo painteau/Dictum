@@ -161,6 +161,13 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn sentences_count(&self) -> usize {
+        self.entries.iter().map(|e| {
+            e.text.chars().filter(|&c| c == '.' || c == '!' || c == '?').count().max(1)
+        }).sum()
+    }
+
+    #[allow(dead_code)]
     pub fn word_frequency(&self) -> std::collections::HashMap<String, usize> {
         let mut freq = std::collections::HashMap::new();
         for e in &self.entries {
