@@ -291,6 +291,16 @@ impl Config {
         self.substitutions.len()
     }
 
+    pub fn silence_level_label(&self) -> &'static str {
+        match self.silence_threshold {
+            t if t < 0.001 => "désactivé",
+            t if t < 0.003 => "très faible",
+            t if t < 0.008 => "normal",
+            t if t < 0.02  => "élevé",
+            _              => "très élevé",
+        }
+    }
+
     pub fn has_substitutions(&self) -> bool {
         !self.substitutions.is_empty()
     }
