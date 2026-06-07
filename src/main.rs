@@ -382,6 +382,7 @@ fn main() -> Result<()> {
                                 }
                                 *state.is_transcribing.lock().unwrap() = true;
                                 let config = state.config.lock().unwrap().clone();
+                                log::debug!("Pipeline : {} samples reçus, lancement transcription", samples.len());
                                 if !transcribe::is_ready(&config) {
                                     log::warn!("whisper-cli ou modèle manquant — relancer le wizard");
                                     *state.is_transcribing.lock().unwrap() = false;
