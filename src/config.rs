@@ -1159,4 +1159,21 @@ impl Config {
 
     #[allow(dead_code)]
     pub fn is_portuguese(&self) -> bool { self.language == "pt" }
+
+    #[allow(dead_code)]
+    pub fn is_chinese(&self) -> bool { self.language == "zh" }
+
+    #[allow(dead_code)]
+    pub fn is_japanese(&self) -> bool { self.language == "ja" }
+
+    #[allow(dead_code)]
+    pub fn is_arabic(&self) -> bool { self.language == "ar" }
+
+    #[allow(dead_code)]
+    pub fn is_russian(&self) -> bool { self.language == "ru" }
+
+    #[allow(dead_code)]
+    pub fn hotkey_is_function_key(&self) -> bool {
+        self.hotkey.key.starts_with('F') && self.hotkey.key[1..].parse::<u8>().is_ok()
+    }
 }
