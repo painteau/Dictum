@@ -355,9 +355,9 @@ fn main() -> Result<()> {
                                 *state.is_recording.lock().unwrap() = true;
                                 record_handle = Some(handle);
                                 record_start = Some(std::time::Instant::now());
-                                log::info!("Recording started");
+                                log::info!("Enregistrement démarré");
                             }
-                            Err(e) => log::error!("Failed to start recording: {e}"),
+                            Err(e) => log::error!("Impossible de démarrer l'enregistrement : {e}"),
                         }
                     }
                     AppEvent::RecordStop => {
@@ -377,7 +377,7 @@ fn main() -> Result<()> {
                             thread::spawn(move || {
                                 let samples = handle.stop();
                                 if samples.len() < 1600 {
-                                    log::warn!("Recording too short, skipping");
+                                    log::warn!("Enregistrement trop court, ignoré");
                                     return;
                                 }
                                 *state.is_transcribing.lock().unwrap() = true;
