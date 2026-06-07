@@ -1,5 +1,17 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.1.3 — 250 MÉTHODES API MILESTONE
+
+### Milestone
+- **250 méthodes API** atteint (175 Config + 75 History)
+
+### Ajouté
+- History 75 méthodes : `entry_word_count`, `richest_entry`, `is_full`
+- Substitutions : `count_applicable()`, `apply_with_count()`
+- 527 commits
+
+---
+
 ## 2026-06-07 — v1.1.2 — BUILDERS FLUIDES + WIZARD POLISH
 
 ### Ajouté
