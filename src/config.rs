@@ -453,6 +453,23 @@ impl Config {
     }
 
     #[allow(dead_code)]
+    pub fn add_substitution(&mut self, from: &str, to: &str, case_insensitive: bool) {
+        if !from.is_empty() && !self.substitutions.iter().any(|s| s.from == from) {
+            self.substitutions.push(Substitution { from: from.to_string(), to: to.to_string(), case_insensitive });
+        }
+    }
+
+    #[allow(dead_code)]
+    pub fn remove_substitution(&mut self, from: &str) {
+        self.substitutions.retain(|s| s.from != from);
+    }
+
+    #[allow(dead_code)]
+    pub fn clear_substitutions(&mut self) {
+        self.substitutions.clear();
+    }
+
+    #[allow(dead_code)]
     pub fn max_history_display(&self) -> String {
         format!("{} entrée{}", self.max_history, if self.max_history > 1 { "s" } else { "" })
     }
