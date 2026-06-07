@@ -1,5 +1,14 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.2.9 — CLI WORD-COUNT + 332 MÉTHODES
+
+### Ajouté
+- CLI `--word-count` : stats mots/chars/entrées de l'historique
+- Config 222 méthodes : `has_high_thread_count`, `has_custom_beep`, `record_limit_category`, `is_same_model`
+- **332 méthodes API** (222 Config + 110 History)
+
+---
+
 ## 2026-06-07 — v1.2.8 — EMOJI LANGUE + 328 MÉTHODES
 
 ### Ajouté
