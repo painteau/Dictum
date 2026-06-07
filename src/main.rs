@@ -280,6 +280,13 @@ fn main() -> Result<()> {
             log::warn!("Config version {} détectée — réinitialisation", config.config_version);
             Config::default().save()?;
         }
+        // Valider la config et alerter les problèmes
+        let issues = config.validate();
+        if !issues.is_empty() {
+            for issue in &issues {
+                log::warn!("Config: {}", issue);
+            }
+        }
         if setup::needs_setup(&config) {
             log::info!("Premier lancement ou binaires manquants — démarrage du wizard");
             setup::run_wizard()?;
