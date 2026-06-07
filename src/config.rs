@@ -1066,4 +1066,26 @@ impl Config {
             self.model_name(), self.language, self.hotkey_string(),
             self.beep_enabled, self.french_typography)
     }
+
+    #[allow(dead_code)]
+    pub fn is_valid_language_code(&self) -> bool {
+        const VALID: &[&str] = &[
+            "af","ar","hy","az","be","bs","bg","ca","zh","hr","cs","da","nl","en",
+            "et","fi","fr","gl","de","el","he","hi","hu","is","id","it","ja","kn",
+            "kk","ko","lv","lt","mk","ms","mr","mi","ne","no","fa","pl","pt","ro",
+            "ru","sr","sk","sl","es","sw","sv","tl","ta","th","tr","uk","ur","vi","cy",
+            "auto",
+        ];
+        VALID.contains(&self.language.as_str())
+    }
+
+    #[allow(dead_code)]
+    pub fn hotkey_modifier_count(&self) -> u8 {
+        self.hotkey.ctrl as u8 + self.hotkey.alt as u8 + self.hotkey.shift as u8
+    }
+
+    #[allow(dead_code)]
+    pub fn is_language(&self, code: &str) -> bool {
+        self.language == code
+    }
 }
