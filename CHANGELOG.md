@@ -1,5 +1,15 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.7.5 — Config 91 méthodes
+
+### Ajouté
+- `config.rs` : `needs_wizard()`, `is_production_ready()`, `has_whisper_optimizations()`
+- `config.rs` : `is_using_cuda()`, `is_using_default_microphone()`, `has_custom_model_path()`
+- `config.rs` : `uses_large_model()`, `uses_medium_model()`, `is_low_latency()`, `is_verbose_mode()`
+- Config : **91 méthodes** | Total : **121 méthodes API** ✓
+
+---
+
 ## 2026-06-07 — v0.7.4 — Config 81 méthodes + predicats
 
 ### Ajouté
