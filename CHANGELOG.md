@@ -1,5 +1,15 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.1.6 — TOAST DÉMARRAGE + 268 MÉTHODES
+
+### Ajouté
+- Notification toast au démarrage (si Dictum prêt)
+- CLI `--apply-subs "texte"` : applique les substitutions à un texte
+- Config 190 méthodes : `has_long/short_record_limit`, `is_whisper_temperature_zero`, `inject_delay_category`
+- **268 méthodes API** (190 Config + 78 History) | 539 commits
+
+---
+
 ## 2026-06-07 — v1.1.5 — 263 MÉTHODES API + ETA WIZARD
 
 ### Ajouté
