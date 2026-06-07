@@ -1,5 +1,14 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.1.1 — API 242 MÉTHODES
+
+### Ajouté
+- Config 170 méthodes : `full_description`, `is_beep_disabled`, `models_dir_display`, `log_path_display`
+- History 72 méthodes : `oldest_n`, `average_timestamp_gap`, `to_plain_text`, `truncate_to`
+- **242 méthodes API** (170 Config + 72 History)
+
+---
+
 ## 2026-06-07 — v1.1.0 — BATCH MODE + CLI COMPLET
 
 ### Feature majeure
