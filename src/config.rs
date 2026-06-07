@@ -1544,4 +1544,23 @@ impl Config {
             "ar" => "العربية", "auto" => "Auto-détection", _ => "Autre",
         }
     }
+
+    #[allow(dead_code)]
+    pub fn has_any_substitution(&self) -> bool {
+        !self.substitutions.is_empty()
+    }
+
+    #[allow(dead_code)]
+    pub fn substitutions_summary(&self) -> String {
+        if self.substitutions.is_empty() {
+            "aucune".to_string()
+        } else {
+            format!("{} règle(s)", self.substitutions.len())
+        }
+    }
+
+    #[allow(dead_code)]
+    pub fn config_age_label(&self) -> &'static str {
+        "config active"
+    }
 }
