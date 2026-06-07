@@ -252,7 +252,6 @@ impl Config {
         let flags_str = if flags.is_empty() { "aucun".to_string() } else { flags.join(",") };
         log::info!("Config [{}] | {} | flags=[{}]", self.profile_name(), self.changes_summary_display(), flags_str);
         log::info!("Détails : lang={} model=[{}|{}] hotkey={} threads={} rec=[{}] silence={} inject=[{}]",
-            self.profile_name(),
             self.language_display(),
             self.model_name(),
             self.whisper_speed_label(),
@@ -797,6 +796,9 @@ impl Config {
     pub fn is_using_default_microphone(&self) -> bool { self.microphone.is_none() }
     pub fn has_custom_model_path(&self) -> bool {
         self.model_path != Self::default().model_path
+    }
+    pub fn effective_language(&self) -> &str {
+        if self.language == "auto" { "auto-detect" } else { &self.language }
     }
     pub fn is_french(&self) -> bool { self.language == "fr" }
     pub fn is_auto_detect(&self) -> bool { self.language == "auto" }
