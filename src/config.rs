@@ -166,7 +166,11 @@ impl Config {
             self.max_history = 10;
             log::warn!("max_history hors limites, réinitialisé à 10");
         }
+        let before = self.silence_threshold;
         self.silence_threshold = self.silence_threshold.clamp(0.0, 1.0);
+        if (before - self.silence_threshold).abs() > 0.001 {
+            log::warn!("silence_threshold {} hors limites, clamped à {:.4}", before, self.silence_threshold);
+        }
         if self.hotkey.key.is_empty() { self.hotkey.key = "F9".to_string(); }
         if self.language.is_empty() { self.language = "auto".to_string(); }
         if self.inject_delay_ms > 1000 { self.inject_delay_ms = 1000; }
