@@ -131,9 +131,14 @@ fn init_logger() {
         .suffix("log")
         .suppress_timestamp();
 
+    let rotate = flexi_logger::Criterion::Size(5_000_000); // 5 MB
+    let naming = flexi_logger::Naming::Timestamps;
+    let cleanup = flexi_logger::Cleanup::KeepLogFiles(3);
+
     let started = flexi_logger::Logger::try_with_str(&level)
         .map(|l| l
             .log_to_file(file_spec)
+            .rotate(rotate, naming, cleanup)
             .duplicate_to_stderr(flexi_logger::Duplicate::Warn)
             .format(flexi_logger::opt_format)
             .start()
