@@ -322,6 +322,7 @@ fn main() -> Result<()> {
             log::info!("Substitutions : {} règle(s) — {}", cfg.substitution_count(), cfg.substitutions_display());
         }
         if cfg.pause_media { log::info!("Pause médias : activée"); }
+        log::info!("Micro : {}", cfg.microphone_display());
         log::info!("Beep : {}", cfg.beep_description());
         log::info!("Whisper : {}", cfg.whisper_config_display());
         log::info!("Injection : mode=[{}] délai={}ms", cfg.inject_mode_label(), cfg.inject_delay_ms);
