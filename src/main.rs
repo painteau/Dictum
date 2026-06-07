@@ -204,6 +204,7 @@ fn main() -> Result<()> {
     log::info!("Dictum v{} démarrage [{}]", env!("CARGO_PKG_VERSION"), log_label);
     if let Ok(c) = Config::load() {
         log::info!("{} | {}", c.config_version_display(), c.is_ready_message());
+        log::debug!("\n{}", c.diagnose());
     }
 
     // Mode CLI
