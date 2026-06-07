@@ -158,7 +158,12 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
 
     if !output.status.success() {
         let stderr = String::from_utf8_lossy(&output.stderr);
-        return Err(anyhow!("whisper-cli a échoué : {}", stderr));
+        let stdout_len = output.stdout.len();
+        // Si le code d'erreur est non-zéro mais stdout contient du texte, on tente quand même
+        if stdout_len < 10 {
+            return Err(anyhow!("whisper-cli a échoué (code {:?}) : {}", output.status.code(), stderr.trim()));
+        }
+        log::warn!("whisper-cli code {:?} mais {} bytes stdout — on tente l'extraction", output.status.code(), stdout_len);
     }
 
     let raw_stdout = String::from_utf8_lossy(&output.stdout);
