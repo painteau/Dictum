@@ -485,6 +485,11 @@ impl Config {
     }
 
     #[allow(dead_code)]
+    pub fn defaults() -> Self {
+        Config::default()
+    }
+
+    #[allow(dead_code)]
     pub fn from_json_string(json: &str) -> Result<Self> {
         let mut config: Config = serde_json::from_str(json)?;
         config.sanitize();
