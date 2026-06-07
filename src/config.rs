@@ -294,6 +294,16 @@ impl Config {
     }
 
     /// Retourne la liste des problèmes de configuration (vide si tout est OK).
+    pub fn profile_name(&self) -> &'static str {
+        match (self.french_typography, self.auto_capitalize, self.pause_media) {
+            (true, true, false) => "Français standard",
+            (true, true, true)  => "Français professionnel",
+            (false, true, false) => "Standard",
+            (false, false, false) => "Minimal",
+            _ => "Personnalisé",
+        }
+    }
+
     pub fn is_ready_message(&self) -> String {
         let issues = self.validate();
         if issues.is_empty() {
