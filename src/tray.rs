@@ -24,6 +24,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
     let item_clear_hist = MenuItem::new("🗑  Effacer l'historique", true, None);
     let item_reload     = MenuItem::new("↺  Recharger la config", true, None);
     let item_drop_file  = MenuItem::new("📂 Transcrire un fichier...", true, None);
+    let item_reformulate = MenuItem::new("✨ Reformuler sélection", true, None);
     let item_open_log   = MenuItem::new("📄 Ouvrir le log", true, None);
     let item_open_dir   = MenuItem::new("📁 Ouvrir le dossier Dictum", true, None);
     let item_about      = MenuItem::new(
@@ -56,6 +57,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
         // Système
         &item_devices,
         &item_drop_file,
+        &item_reformulate,
         &item_open_log,
         &item_open_dir,
         &item_about,
@@ -276,6 +278,30 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                 let cfg = state.config.lock().unwrap().clone();
                 std::thread::spawn(move || {
                     crate::dropper::open(cfg);
+                });
+            } else if event.id == item_reformulate.id() {
+                let cfg = state.config.lock().unwrap().clone();
+                std::thread::spawn(move || {
+                    // Récupérer le texte sélectionné
+                    match crate::reformulate::get_selected_text() {
+                        Some(text) if !text.is_empty() => {
+                            log::info!("Reformulation : {} chars sélectionnés", text.len());
+                            match crate::reformulate::reformulate(&text, &cfg.reformulation_style, &cfg.ollama_model, &cfg.ollama_url) {
+                                Ok(result) => {
+                                    // Injecter le résultat
+                                    crate::inject::inject_text(&result, &cfg);
+                                    log::info!("Reformulation injectée ({} chars)", result.len());
+                                }
+                                Err(e) => {
+                                    log::error!("Reformulation échouée : {e}");
+                                    crate::notify::show_toast("Dictum — Reformulation", &format!("Erreur : {e}"));
+                                }
+                            }
+                        }
+                        _ => {
+                            crate::notify::show_toast("Dictum — Reformulation", "Aucun texte sélectionné.");
+                        }
+                    }
                 });
             } else if event.id == item_devices.id() {
                 let devices = crate::audio::list_devices();
