@@ -1,5 +1,29 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.1.0 — BATCH MODE + CLI COMPLET
+
+### Feature majeure
+- CLI `--batch f1.wav f2.wav [--output-dir dir/]` : transcription en lot
+
+### CLI complet (depuis v1.0.0)
+Toutes les commandes disponibles :
+- `--batch`, `--version-full`, `--diagnose`, `--config-check`, `--config-reset`
+- `--stats`, `--search`, `--export`, `--export-csv`, `--update-check`
+- `--list-models`, `--list-devices`, `--list-languages`
+- `--set-lang`, `--set-hotkey`, `--set-model`, `--set-beep`, `--set-silence`, `--set-mic`
+- `--add-sub`, `--rm-sub`, `--list-subs`
+- `--profile`, `--test-mic`
+- `--open-config`, `--open-dir`
+- `--reset-history`
+
+### Chiffres v1.1.0
+- Config : **165 méthodes**
+- History : **68 méthodes**
+- Total API : **233 méthodes**
+- Commits : **517+**
+
+---
+
 ## 2026-06-07 — v1.0.9 — CLI MICRO + STATS SESSION
 
 ### Ajouté

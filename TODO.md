@@ -86,7 +86,16 @@
 - [x] Fallback clipboard injection
 - [x] Typographie française chevrons
 
-## v1.1 — Prochaines étapes
+## v1.1 — Atteint 2026-06-07
+
+- [x] CLI complet (25+ commandes)
+- [x] Mode batch (--batch)
+- [x] Test micro (--test-mic)
+- [x] Gestion substitutions CLI (--add-sub, --rm-sub, --list-subs)
+- [x] Profiles CLI (--profile)
+- [x] Tray stats session
+
+## v1.2 — Prochaines étapes
 
 - [ ] Tester l'application sur une machine fraîche (wizard + dictée)
 - [ ] Fenêtre paramètres graphique egui (remplace Notepad)
