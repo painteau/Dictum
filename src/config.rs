@@ -762,6 +762,17 @@ impl Config {
         )
     }
     pub fn can_transcribe(&self) -> bool { self.is_fully_ready() }
+    pub fn is_optimized_for_speed(&self) -> bool {
+        self.uses_medium_model() && self.effective_threads() >= 4 && self.inject_delay_ms <= 80
+    }
+    pub fn is_optimized_for_quality(&self) -> bool {
+        self.uses_large_model() && self.whisper_temperature == 0.0
+    }
+    pub fn estimated_transcription_time(&self, audio_secs: f32) -> f32 {
+        let factor: f32 = if self.uses_large_model() { 3.0 } else { 1.5 };
+        let thread_factor = (self.effective_threads() as f32 / 4.0).min(2.0);
+        audio_secs * factor / thread_factor
+    }
     pub fn recording_is_limited(&self) -> bool { self.max_record_secs < 60 }
     pub fn silence_detection_active(&self) -> bool { self.silence_threshold > 0.001 }
     pub fn has_min_record_limit(&self) -> bool { self.min_record_ms > 0 }
