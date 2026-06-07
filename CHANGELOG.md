@@ -1,5 +1,18 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.4.4 — API Config enrichie
+
+### Ajouté
+- `config.rs` : `is_model_ready()`, `is_whisper_cli_ready()`, `reset_to_default()`
+- `transcribe.rs` : `is_ready()` utilise les nouveaux helpers avec logs détaillés
+- `setup.rs` : `needs_setup()` utilise les helpers, log ce qui manque
+- `tray.rs` : utilise `Config::reset_to_default()`
+- `main.rs` : log arrêt enrichi (transcriptions + historique)
+- `audio.rs` : messages `expect` en français
+- `tray.rs` : message `expect` icône en français
+
+---
+
 ## 2026-06-07 — v0.4.3 — Logs 100% français
 
 ### Corrigé
