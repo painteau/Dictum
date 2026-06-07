@@ -1,5 +1,15 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.2.4 — CLI CONFIG BACKUP/RESTORE
+
+### Ajouté
+- CLI `--config-export [chemin]` : exporte la config en JSON
+- CLI `--config-import chemin.json` : importe une config depuis un fichier
+- Config 210 méthodes : `beep_freq/duration_display`, `is_production_config`, `export_json_to`
+- **305 méthodes API** (210 Config + 95 History) | 562 commits
+
+---
+
 ## 2026-06-07 — v1.2.3 — 300 MÉTHODES API MILESTONE
 
 ### Triple milestone
