@@ -1,5 +1,15 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.1.4 — CLI UTILITAIRES + 255 MÉTHODES
+
+### Ajouté
+- CLI `--last` : affiche dernière dictée (stdout, pipe-friendly)
+- CLI `--copy-last` : copie dernière dictée dans le presse-papiers
+- Config 180 méthodes : builders `with_pause_media/silence/max_history/hotkey_key/microphone`
+- **255 méthodes API** (180 Config + 75 History) | 531 commits
+
+---
+
 ## 2026-06-07 — v1.1.3 — 250 MÉTHODES API MILESTONE
 
 ### Milestone
