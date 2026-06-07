@@ -1,5 +1,19 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.4.0 — TRAD + DRAG & DROP + CUDA
+
+### Features majeures
+- **Traduction automatique locale** : Whisper `--task translate` → transcription en anglais. Config `translate_to = "en"`. Activable depuis settings Avancé.
+- **Drag & drop transcription** : fenêtre egui dédiée, glisser WAV → texte affiché + copie presse-papiers. Accessible depuis tray "Transcrire un fichier..."
+- **Support CUDA auto** : champ `use_cuda` en config, auto-activé dans wizard si GPU NVIDIA capable. Visible dans settings Avancé.
+
+### TODO coché
+- [x] Traduction automatique locale
+- [x] Transcription drag & drop fichier audio
+- [x] Support CUDA via feature flag
+
+---
+
 ## 2026-06-07 — v1.3.4 — 366 MÉTHODES API
 
 ### Ajouté

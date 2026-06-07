@@ -106,12 +106,12 @@
 ## v0.6 — Roadmap (intégré dans v0.8)
 
 - [ ] Fenêtre paramètres graphique (egui) — remplace Notepad
-- [ ] Traduction automatique locale
+- [x] Traduction automatique locale
 - [ ] Reformulation IA 7 styles
-- [ ] Transcription drag & drop fichier audio/vidéo
+- [x] Transcription drag & drop fichier audio/vidéo
 - [ ] Mode sélection (reformule texte sélectionné)
 - [ ] Moteur Parakeet (600 MB, plus rapide)
-- [ ] Support CUDA via feature flag
+- [x] Support CUDA via feature flag
 - [x] Rotation automatique fichier log
 - [x] Notification Windows toast (au lieu de dialog bloquant)
 - [ ] Configuration hotkey live (sans redémarrage)
