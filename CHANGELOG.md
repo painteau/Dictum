@@ -1,5 +1,15 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.4.5 — Finitions API
+
+### Ajouté
+- `config.rs` : `log_summary()` affiche les flags actifs (beep, typo_fr, auto_enter...)
+- `config.rs` : sanitize `log_level` invalide avec warn
+- `tray.rs` : Ouvrir le log respecte `EDITOR` env var
+- `tray.rs` : À propos affiche état modèle et whisper-cli (✓/✗)
+
+---
+
 ## 2026-06-07 — v0.4.4 — API Config enrichie
 
 ### Ajouté
