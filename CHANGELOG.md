@@ -1,5 +1,31 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.6.0 — Milestone Config 45 méthodes
+
+### Milestone
+`Config` atteint 45 méthodes publiques. API complète, expressive, zéro warning.
+
+### Depuis v0.5.8
+- `config.rs` : `from_json_string()`, `to_json_string()`, `defaults()`
+- `config.rs` : `log_level_display()` avec emoji 🟢🔵🟡
+- `config.rs` : `config_version_display()`, `microphone_display()`
+- `config.rs` : `audio_input_display()`, `substitutions_display()`
+
+### Catalogue complet Config (45 méthodes)
+load, save, load_from, save_to, open_in_editor, open_data_dir, reset_to_default,
+validate, is_ready_message, full_status, description, log_summary, app_version,
+model_name, language_display, hotkey_string, profile_name, whisper_speed_label,
+silence_level_label, beep_description, inject_mode_label, threads_display,
+record_duration_label, microphone_display, audio_input_display,
+substitutions_display, inject_delay_display, max_history_display,
+record_config_display, whisper_config_display, config_version_display,
+log_level_display, to_json_string, from_json_string, defaults,
+is_model_ready, is_whisper_cli_ready, is_fully_ready,
+has_substitutions, substitution_count, apply_substitutions,
+data_dir, models_dir, log_path, history_export_path
+
+---
+
 ## 2026-06-07 — v0.5.8 — UX logs enrichis
 
 ### Ajouté
