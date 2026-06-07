@@ -34,6 +34,7 @@ fn key_from_str(s: &str) -> Key {
         "BACKSPACE" => Key::Backspace,
         "DELETE" | "DEL" => Key::Delete,
         "ENTER" | "RETURN" => Key::Return,
+        "ESCAPE" | "ESC" => Key::Escape,
         "NUMLOCK" => Key::NumLock,
         "KPMINUS" | "NUMPADMINUS" => Key::KpMinus,
         "KPPLUS" | "NUMPADPLUS" => Key::KpPlus,
