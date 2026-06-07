@@ -17,7 +17,8 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
     let item_devices   = MenuItem::new("🎙  Microphones", true, None);
     let item_copy_last   = MenuItem::new("📋 Copier dernière dictée", true, None);
     let item_copy_all    = MenuItem::new("📋 Copier tout l'historique", true, None);
-    let item_export_hist = MenuItem::new("💾 Exporter historique", true, None);
+    let item_export_hist = MenuItem::new("💾 Exporter historique (Markdown)", true, None);
+    let item_export_csv  = MenuItem::new("📊 Exporter historique (CSV)", true, None);
     let item_reset_cfg  = MenuItem::new("🔧 Réinitialiser la config", true, None);
     let item_session_stats = MenuItem::new("📊 Statistiques session", true, None);
     let item_clear_hist = MenuItem::new("🗑  Effacer l'historique", true, None);
@@ -47,6 +48,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
         &item_copy_last,
         &item_copy_all,
         &item_export_hist,
+        &item_export_csv,
         &item_session_stats,
         &item_clear_hist,
         &PredefinedMenuItem::separator(),
@@ -184,6 +186,19 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                         std::process::Command::new("notepad").arg(&export_path).spawn().ok();
                     }
                     Err(e) => show_dialog("Dictum", &format!("Erreur export : {e}")),
+                }
+            } else if event.id == item_export_csv.id() {
+                let ts = std::time::SystemTime::now()
+                    .duration_since(std::time::UNIX_EPOCH)
+                    .unwrap_or_default().as_secs();
+                let export_path = crate::config::Config::data_dir()
+                    .join(format!("history-{}.csv", ts));
+                let csv = state.history.lock().unwrap().export_csv();
+                match std::fs::write(&export_path, &csv) {
+                    Ok(_) => {
+                        std::process::Command::new("notepad").arg(&export_path).spawn().ok();
+                    }
+                    Err(e) => show_dialog("Dictum", &format!("Erreur export CSV : {e}")),
                 }
             } else if event.id == item_clear_hist.id() {
                 state.history.lock().unwrap().clear();
