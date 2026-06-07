@@ -1,5 +1,21 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.7.0 — MODE LIVE STREAMING
+
+### Feature
+- **Mode live streaming** via `whisper-stream.exe` (whisper.cpp v1.8.6 x64)
+  - Tray : "🎙 Mode live" — cliquer pour démarrer/arrêter
+  - Chunks de 3s, fenêtre de 10s, filtre hallucinations
+  - Injection texte au fil de l'eau dès qu'un chunk est prêt
+  - Settings Avancé : téléchargement automatique de `whisper-stream.exe` depuis CDN
+  - `whisper-stream.exe` hébergé sur `cdn.breizhzion.com/dictum/` (390 KB)
+  - Compatible traduction (--task translate) et CUDA
+
+### TODO coché
+- [x] Mode live (streaming temps réel)
+
+---
+
 ## 2026-06-07 — v1.6.0 — API HTTP LOCALE
 
 ### Feature

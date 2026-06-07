@@ -12,6 +12,7 @@ mod config;
 mod downloader;
 mod dropper;
 mod history;
+mod live;
 mod reformulate;
 mod hotkey;
 mod inject;
@@ -180,6 +181,7 @@ pub struct AppState {
     pub is_transcribing: Arc<Mutex<bool>>,
     pub is_paused: Arc<Mutex<bool>>,
     pub session_count: Arc<Mutex<u32>>,
+    pub live_session: Arc<Mutex<live::LiveSession>>,
 }
 
 impl AppState {
@@ -191,6 +193,7 @@ impl AppState {
             is_transcribing: Arc::new(Mutex::new(false)),
             is_paused: Arc::new(Mutex::new(false)),
             session_count: Arc::new(Mutex::new(0)),
+            live_session: Arc::new(Mutex::new(live::LiveSession::new())),
         })
     }
 }

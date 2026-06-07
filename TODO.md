@@ -118,7 +118,7 @@
 
 ## v1.0 — Idées futures
 
-- [ ] Mode live (streaming temps réel)
+- [x] Mode live (streaming temps réel)
 - [ ] Plugin VS Code
 - [x] API locale HTTP pour intégrations tierces
 - [ ] Identification locuteurs (diarisation)

@@ -255,6 +255,36 @@ impl eframe::App for SettingsWindow {
                     if ui.checkbox(&mut self.cfg.api_enabled, "API HTTP locale (port 44880)").changed() { self.dirty = true; }
                     ui.label(RichText::new("Redémarrer Dictum pour activer/désactiver l'API.").color(Color32::GRAY).small());
 
+                    ui.add_space(8.0);
+                    ui.separator();
+                    ui.add_space(4.0);
+                    ui.label(RichText::new("Mode live streaming :").color(Color32::GRAY));
+                    let stream_ok = crate::live::is_stream_available();
+                    if stream_ok {
+                        ui.label(RichText::new("✓ whisper-stream.exe présent").color(Color32::from_rgb(80,200,120)).small());
+                    } else {
+                        ui.label(RichText::new("✗ whisper-stream.exe absent").color(Color32::from_rgb(220,80,80)).small());
+                        if ui.small_button("Télécharger whisper-stream.exe").clicked() {
+                            let url = "https://cdn.breizhzion.com/dictum/whisper-stream.exe";
+                            let dest = crate::config::Config::data_dir().join("whisper-stream.exe");
+                            std::thread::spawn(move || {
+                                if let Ok(mut resp) = reqwest::blocking::get(url) {
+                                    use std::io::Write;
+                                    if let Ok(mut f) = std::fs::File::create(&dest) {
+                                        let mut buf = vec![0u8; 65536];
+                                        loop {
+                                            use std::io::Read;
+                                            let n = resp.read(&mut buf).unwrap_or(0);
+                                            if n == 0 { break; }
+                                            f.write_all(&buf[..n]).ok();
+                                        }
+                                        log::info!("whisper-stream.exe téléchargé");
+                                    }
+                                }
+                            });
+                        }
+                    }
+
                     ui.add_space(4.0);
                     ui.horizontal(|ui| {
                         ui.label(RichText::new("Traduire vers (vide=off, 'en'=anglais) :").color(Color32::GRAY).small());

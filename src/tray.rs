@@ -12,6 +12,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
     let item_update    = MenuItem::new("🔄 Mise à jour disponible !", false, None);
     let item_sep_up    = PredefinedMenuItem::separator();
     let item_pause     = MenuItem::new("⏸  Pause dictée", true, None);
+    let item_live      = MenuItem::new("🎙  Mode live (streaming)", true, None);
     let item_settings  = MenuItem::new("⚙  Paramètres", true, None);
     let item_history   = MenuItem::new("📋 Historique (0)", true, None);
     let item_devices   = MenuItem::new("🎙  Microphones", true, None);
@@ -39,6 +40,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
         &item_sep_up,         // séparateur update
         // Contrôle
         &item_pause,
+        &item_live,
         &PredefinedMenuItem::separator(),
         // Config
         &item_settings,
@@ -93,13 +95,32 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
             }
         }
 
-        // Mettre à jour le label pause selon l'état
+        // Mettre à jour labels selon état
         let paused = *state.is_paused.lock().unwrap();
         item_pause.set_text(if paused { "▶  Reprendre dictée" } else { "⏸  Pause dictée" });
+        let live_running = state.live_session.lock().unwrap().is_running();
+        item_live.set_text(if live_running { "⏹  Arrêter mode live" } else { "🎙  Mode live (streaming)" });
 
         if let Ok(ref event) = menu_rx.try_recv() {
             log::debug!("Menu tray : event id={:?}", event.id);
-            if event.id == item_pause.id() {
+            if event.id == item_live.id() {
+                if !crate::live::is_stream_available() {
+                    show_dialog("Dictum — Mode live", "whisper-stream.exe introuvable.\nTélécharger via le wizard (paramètres → Avancé).");
+                } else {
+                    let cfg = state.config.lock().unwrap().clone();
+                    let (tx, rx) = crossbeam_channel::bounded::<String>(32);
+                    let cfg2 = cfg.clone();
+                    // Thread d'injection live
+                    std::thread::spawn(move || {
+                        for text in rx {
+                            crate::inject::inject_text(&text, &cfg2);
+                        }
+                    });
+                    state.live_session.lock().unwrap().toggle(cfg, tx);
+                    let running = state.live_session.lock().unwrap().is_running();
+                    log::info!("Mode live : {}", if running { "démarré" } else { "arrêté" });
+                }
+            } else if event.id == item_pause.id() {
                 let mut p = state.is_paused.lock().unwrap();
                 *p = !*p;
                 let new_state = *p;
