@@ -252,9 +252,13 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                 };
                 let score_label = config.score_label();
                 let score_breakdown = config.score_breakdown_display();
+                let lang_name = config.language_name();
+                let model_dname = config.model_display_name();
                 let msg = format!(
-                    "github.com/painteau/Dictum\n\n{}\n\nScore config : {}/100 ({})\n{}\n\n{}\n\nSession : {} transcription{}\nHistorique : {}\nConfig  : {}\nLog     : {}",
+                    "github.com/painteau/Dictum\n\n{}\nLangue : {} | Modèle : {}\n\nScore config : {}/100 ({})\n{}\n\n{}\n\nSession : {} transcription{}\nHistorique : {}\nConfig  : {}\nLog     : {}",
                     diagnostic,
+                    lang_name,
+                    model_dname,
                     score,
                     score_label,
                     score_breakdown,
