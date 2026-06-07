@@ -189,6 +189,7 @@ impl SetupWizard {
             whisper_temperature: 0.0,
             beep_start_freq: 800,
             beep_end_freq: 600,
+            beep_duration_ms: 80,
         }
     }
 

@@ -77,6 +77,9 @@ pub struct Config {
     /// Fréquence Hz du beep de fin d'enregistrement
     #[serde(default = "default_beep_end_freq")]
     pub beep_end_freq: u32,
+    /// Durée en ms des beeps
+    #[serde(default = "default_beep_duration")]
+    pub beep_duration_ms: u32,
 }
 
 impl Default for Config {
@@ -104,6 +107,7 @@ impl Default for Config {
             whisper_temperature: 0.0,
             beep_start_freq: 800,
             beep_end_freq: 600,
+            beep_duration_ms: 80,
         }
     }
 }
@@ -113,6 +117,7 @@ fn default_inject_delay() -> u64 { 80 }
 fn default_whisper_temperature() -> f32 { 0.0 }
 fn default_beep_start_freq() -> u32 { 800 }
 fn default_beep_end_freq() -> u32 { 600 }
+fn default_beep_duration() -> u32 { 80 }
 
 fn data_dir() -> PathBuf {
     dirs::data_local_dir()
