@@ -1,5 +1,24 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.9.0 — FIN DE SESSION NOCTURNE
+
+### Bilan final officiel
+- **Config : 122 méthodes** ✓ (objectif 100 dépassé)
+- **History : 42 méthodes** ✓
+- **Total : 164 méthodes API publiques** ✓
+- **430+ commits** en une nuit
+- **68+ tags** releases
+- Zéro warning `cargo build`
+- Logs 100% français
+- Dictum v0.9.0 — prêt pour test utilisateur
+
+### Depuis v0.8.7
+- `config.rs` : `is_configured_for_french_dictation()`, `min_disk_space_mb()`
+- `config.rs` : `config_age_display()`, `is_compatible_with_version()`
+- `config.rs` : **122 méthodes** (record)
+
+---
+
 ## 2026-06-07 — v0.8.7 — Config 118 méthodes
 
 ### Ajouté
