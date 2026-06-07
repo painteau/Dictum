@@ -1,5 +1,31 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.4.0 — Milestone matin
+
+### Milestone
+Config complète avec 20+ champs. Whisper optimisé. Logs exhaustifs.
+
+### Depuis v0.3.9
+- `config.rs` : `log_level` configurable (error/warn/info/debug/trace)
+- `config.rs` : sanitize valide `log_level`
+- `main.rs` : log niveau de log actif au démarrage
+- `main.rs` : log_level lu depuis config avant init_logger
+- `tray.rs` : log debug event id menu tray
+- `audio.rs` : log taille samples KB
+- `transcribe.rs` : timeout adaptatif vraiment utilisé dans subprocess
+- `transcribe.rs` : `transcribe_start` correctement nommé
+- `substitution.rs` : limite 100 règles max
+- `downloader.rs` : `user_agent()` helper, User-Agent cohérent
+
+### Config v0.4 — 22 champs configurables
+language, hotkey, model_path, auto_enter, french_typography, auto_capitalize,
+substitutions, microphone, max_record_secs, min_record_ms, max_history,
+beep_enabled, beep_start_freq, beep_end_freq, beep_duration_ms, silence_threshold,
+pause_media, prefix_space, whisper_threads, whisper_temperature, inject_delay_ms,
+whisper_no_speech, log_level
+
+---
+
 ## 2026-06-07 — v0.3.9 — Finitions 1h du matin
 
 ### Ajouté
