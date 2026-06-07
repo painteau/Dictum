@@ -1,5 +1,16 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.8.1 — Diagnostic intégré
+
+### Ajouté
+- `config.rs` : `diagnose()` — rapport diagnostic formaté ASCII complet
+- `tray.rs` : À propos utilise `diagnose()` au lieu du format manuel
+- `main.rs` : log debug `diagnose()` au démarrage en mode debug
+- `history.rs` : `longest_text_length()`, `shortest_text_length()`
+- Config : **101 méthodes** | History : **42 méthodes** | Total : **143** ✓
+
+---
+
 ## 2026-06-07 — v0.8.0 — BILAN FINAL NUIT
 
 ### Stats officielles de la nuit
