@@ -370,9 +370,10 @@ impl Config {
 
     pub fn full_status(&self) -> String {
         format!(
-            "Dictum v{} | Modèle: {} [{}] | Langue: {} | Hotkey: {}\nWhisper: threads={} temp={:.1} | Enregistrement: {} | Silence: {}\nInjection: [{}] | Beep: {}",
+            "Dictum v{} | Modèle: {} [{}|~{}MB|{}] | Langue: {} | Hotkey: {}\nWhisper: threads={} temp={:.1} | Enregistrement: {} | Silence: {}\nInjection: [{}] | Beep: {}",
             Self::app_version(),
             self.model_name(), if self.is_model_ready() { "✓" } else { "✗" },
+            self.model_size_mb_estimate(), self.performance_label(),
             self.language_display(),
             self.hotkey_string(),
             self.threads_display(), self.whisper_temperature,
