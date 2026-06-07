@@ -308,6 +308,16 @@ impl Config {
         if self.max_record_secs == 0 {
             issues.push("max_record_secs = 0 invalide".to_string());
         }
+        if self.silence_threshold >= 1.0 {
+            issues.push(format!("silence_threshold={} très élevé — aucune dictée passera", self.silence_threshold));
+        }
+        if self.inject_delay_ms > 500 {
+            issues.push(format!("inject_delay_ms={} élevé — injection lente", self.inject_delay_ms));
+        }
+        if !["auto","fr","en","de","es","it","pt","ja","zh","ko"].contains(&self.language.as_str())
+            && self.language != "auto" {
+            log::debug!("Langue '{}' non-standard — assurez-vous qu'elle est supportée par Whisper", self.language);
+        }
         issues
     }
 
