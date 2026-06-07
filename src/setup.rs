@@ -444,8 +444,11 @@ fn styled_button(text: &str) -> egui::Button<'_> {
 // ── Point d'entrée public ─────────────────────────────────────────────────────
 
 pub fn needs_setup(config: &Config) -> bool {
-    !config.model_path.exists()
-        || !Config::data_dir().join("whisper-cli.exe").exists()
+    let model_missing = !config.is_model_ready();
+    let cli_missing = !Config::is_whisper_cli_ready();
+    if model_missing { log::info!("Setup requis : modèle absent"); }
+    if cli_missing { log::info!("Setup requis : whisper-cli.exe absent"); }
+    model_missing || cli_missing
 }
 
 /// Lance le wizard et retourne la config finale. Bloque jusqu'à fermeture.
