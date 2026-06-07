@@ -80,6 +80,9 @@ pub struct Config {
     /// Durée en ms des beeps
     #[serde(default = "default_beep_duration")]
     pub beep_duration_ms: u32,
+    /// Niveau de log : "error", "warn", "info", "debug"
+    #[serde(default = "default_log_level")]
+    pub log_level: String,
 }
 
 impl Default for Config {
@@ -108,6 +111,7 @@ impl Default for Config {
             beep_start_freq: 800,
             beep_end_freq: 600,
             beep_duration_ms: 80,
+            log_level: "info".to_string(),
         }
     }
 }
@@ -118,6 +122,7 @@ fn default_whisper_temperature() -> f32 { 0.0 }
 fn default_beep_start_freq() -> u32 { 800 }
 fn default_beep_end_freq() -> u32 { 600 }
 fn default_beep_duration() -> u32 { 80 }
+fn default_log_level() -> String { "info".to_string() }
 
 fn data_dir() -> PathBuf {
     dirs::data_local_dir()

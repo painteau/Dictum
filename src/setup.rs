@@ -190,6 +190,7 @@ impl SetupWizard {
             beep_start_freq: 800,
             beep_end_freq: 600,
             beep_duration_ms: 80,
+            log_level: "info".to_string(),
         }
     }
 

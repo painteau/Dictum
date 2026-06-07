@@ -187,6 +187,13 @@ fn main() -> Result<()> {
     let debug_mode = std::env::args().any(|a| a == "--debug");
     if debug_mode {
         std::env::set_var("RUST_LOG", "debug");
+    } else if std::env::var("RUST_LOG").is_err() {
+        // Lire le niveau depuis la config si disponible
+        if let Ok(cfg) = Config::load() {
+            if !cfg.log_level.is_empty() {
+                std::env::set_var("RUST_LOG", &cfg.log_level);
+            }
+        }
     }
     init_logger();
     log::info!("Dictum v{} démarrage", env!("CARGO_PKG_VERSION"));
