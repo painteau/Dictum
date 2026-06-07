@@ -484,6 +484,11 @@ impl Config {
         }
     }
 
+    #[allow(dead_code)]
+    pub fn to_json_string(&self) -> String {
+        serde_json::to_string_pretty(self).unwrap_or_else(|_| "{}".to_string())
+    }
+
     pub fn log_level_display(&self) -> &str {
         match self.log_level.as_str() {
             "error" => "🔴 error",
