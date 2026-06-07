@@ -1,5 +1,17 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.9.8 — ICÔNE PAUSE + POLISH
+
+### Ajouté
+- Icône tray grise en mode pause (4 états : bleu/orange/rouge/gris)
+- Profiles config : `quiet`, `english`, `dictaphone`
+- CLI `--version-full` : arch, OS, whisper-cli présence
+- Wizard hotkey : avertissement touche sans modificateur
+- Log stats session à l'arrêt (mots + entrées)
+- Config 135 méthodes | Total API : **185 méthodes** | 464 commits
+
+---
+
 ## 2026-06-07 — v0.9.7 — CLI COMPLET + QUALITÉ
 
 ### Ajouté
