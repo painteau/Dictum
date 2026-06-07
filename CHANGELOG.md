@@ -1,5 +1,14 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.7.4 — Config 81 méthodes + predicats
+
+### Ajouté
+- `config.rs` : 10 predicats `is_*()` — is_french, is_auto_detect, is_beep_enabled, is_debug_mode...
+- `config.rs` : `with_model_name()`, `set_beep_freqs()`
+- Config : **81 méthodes** | Total : **111 méthodes API** ✓
+
+---
+
 ## 2026-06-07 — v0.7.3 — Config 71 méthodes + fluent API
 
 ### Ajouté
