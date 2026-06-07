@@ -1,5 +1,20 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.9.4 — QUALITÉ + ROBUSTESSE
+
+### Ajouté
+- History : 50 méthodes — `first_entry`, `text_at`, `timestamp_at`, `count_words_in`
+- Rotation log automatique : 5 MB max, 3 fichiers conservés (flexi_logger)
+- Vérification espace disque avant téléchargement modèle (GetDiskFreeSpaceExW)
+- Wizard : affichage espace disque selon modèle choisi (vert/rouge)
+- Tooltip tray : nombre de mots total dictés affiché
+- Filtre hallucinations Whisper : bigrammes répétés supprimés
+
+### Chiffres
+- History : **50 méthodes**, Config : **127 méthodes**, Total API : **177 méthodes**
+
+---
+
 ## 2026-06-07 — v0.9.3 — CLÔTURE SESSION
 
 ### Chiffres définitifs

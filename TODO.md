@@ -92,7 +92,7 @@
 - [ ] Mode sélection (reformule texte sélectionné)
 - [ ] Moteur Parakeet (600 MB, plus rapide)
 - [ ] Support CUDA via feature flag
-- [ ] Rotation automatique fichier log
+- [x] Rotation automatique fichier log
 - [ ] Notification Windows toast (au lieu de dialog bloquant)
 - [ ] Configuration hotkey live (sans redémarrage)
 
