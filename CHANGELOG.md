@@ -1,5 +1,16 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.3.7 — Config audio complète
+
+### Ajouté
+- `config.rs` : `beep_start_freq` (800Hz), `beep_end_freq` (600Hz), `beep_duration_ms` (80ms)
+- `config.rs` : sanitize valide fréquences (100-20000Hz) et durée (max 2000ms)
+- `transcribe.rs` : `--print-colors false` pour éviter codes ANSI dans stdout
+- `inject.rs` : `inject_raw()` API publique sans typographie
+- README : tous les paramètres beep dans le tableau config
+
+---
+
 ## 2026-06-07 — v0.3.6 — Robustesse avancée
 
 ### Ajouté
