@@ -2,6 +2,31 @@ use crate::config::Substitution;
 
 const MAX_RULES: usize = 100;
 
+/// Substitutions françaises prédéfinies courantes (abréviations SMS/oral)
+pub fn french_defaults() -> Vec<Substitution> {
+    vec![
+        sub("dc", "donc"),
+        sub("pk", "pourquoi"),
+        sub("pcq", "parce que"),
+        sub("pr", "pour"),
+        sub("tt", "tout"),
+        sub("tjs", "toujours"),
+        sub("jsp", "je ne sais pas"),
+        sub("jsuis", "je suis"),
+        sub("jvais", "je vais"),
+        sub("cad", "c'est-à-dire"),
+        sub("svp", "s'il vous plaît"),
+        sub("stp", "s'il te plaît"),
+        sub("rdv", "rendez-vous"),
+        sub("asap", "dès que possible"),
+        sub("ok", "d'accord"),
+    ]
+}
+
+fn sub(from: &str, to: &str) -> Substitution {
+    Substitution { from: from.to_string(), to: to.to_string(), case_insensitive: true }
+}
+
 pub fn apply(rules: &[Substitution], text: &str) -> String {
     if rules.is_empty() {
         return text.to_string();
