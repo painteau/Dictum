@@ -1,5 +1,17 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.8.5 — Score détaillé
+
+### Ajouté
+- `config.rs` : `score_breakdown()` — détail des points par critère
+- `config.rs` : `score_breakdown_display()` — affichage lisible
+- Config : **111 méthodes** | History : **42 méthodes** | Total : **153** ✓
+
+### Stats 3h du matin
+- **414 commits** | **66 tags** | **153 méthodes API**
+
+---
+
 ## 2026-06-07 — v0.8.4 — Score et qualité
 
 ### Ajouté
