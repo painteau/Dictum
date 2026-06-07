@@ -82,6 +82,11 @@ impl History {
         self.total_chars() / self.entries.len()
     }
 
+    #[allow(dead_code)]
+    pub fn last_timestamp(&self) -> Option<u64> {
+        self.entries.front().map(|e| e.timestamp)
+    }
+
     pub fn clear(&mut self) {
         self.entries.clear();
     }
