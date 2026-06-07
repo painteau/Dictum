@@ -156,6 +156,7 @@ pub fn apply_update(info: &UpdateInfo) -> Result<()> {
         .map_err(|e| anyhow!("Impossible de lancer l'installateur : {e}"))?;
 
     // Quitter pour laisser l'installateur remplacer l'exe
+    log::info!("Fermeture Dictum pour mise à jour v{}", info.version);
     std::process::exit(0);
 }
 
