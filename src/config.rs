@@ -1517,4 +1517,31 @@ impl Config {
     pub fn is_default_inject_delay(&self) -> bool {
         self.inject_delay_ms == 80
     }
+
+    #[allow(dead_code)]
+    pub fn has_model_medium(&self) -> bool {
+        self.model_path.to_string_lossy().contains("medium")
+    }
+
+    #[allow(dead_code)]
+    pub fn has_model_large(&self) -> bool {
+        self.model_path.to_string_lossy().contains("large")
+    }
+
+    #[allow(dead_code)]
+    pub fn model_display_name(&self) -> &str {
+        if self.has_model_large() { "large-v3" }
+        else if self.has_model_medium() { "medium" }
+        else { "inconnu" }
+    }
+
+    #[allow(dead_code)]
+    pub fn language_name(&self) -> &'static str {
+        match self.language.as_str() {
+            "fr" => "Français", "en" => "English", "de" => "Deutsch",
+            "es" => "Español", "it" => "Italiano", "pt" => "Português",
+            "ja" => "日本語", "zh" => "中文", "ru" => "Русский",
+            "ar" => "العربية", "auto" => "Auto-détection", _ => "Autre",
+        }
+    }
 }
