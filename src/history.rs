@@ -594,6 +594,40 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn text_length_at(&self, idx: usize) -> usize {
+        self.entries.get(idx).map(|e| e.text.len()).unwrap_or(0)
+    }
+
+    #[allow(dead_code)]
+    pub fn replace_at(&mut self, idx: usize, new_text: String) -> bool {
+        if let Some(e) = self.entries.get_mut(idx) {
+            e.text = new_text;
+            true
+        } else {
+            false
+        }
+    }
+
+    #[allow(dead_code)]
+    pub fn is_entry_long(&self, idx: usize, min_chars: usize) -> bool {
+        self.entries.get(idx).map(|e| e.text.len() >= min_chars).unwrap_or(false)
+    }
+
+    #[allow(dead_code)]
+    pub fn count_entries_in_last_hour(&self) -> usize {
+        self.has_recent_entry(3600) as usize;
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap_or_default().as_secs();
+        self.entries.iter().filter(|e| now.saturating_sub(e.timestamp) <= 3600).count()
+    }
+
+    #[allow(dead_code)]
+    pub fn iter_texts(&self) -> impl Iterator<Item = &str> {
+        self.entries.iter().map(|e| e.text.as_str())
+    }
+
+    #[allow(dead_code)]
     pub fn avg_words_per_entry(&self) -> usize {
         if self.is_empty() { return 0; }
         self.words_count() / self.len()
