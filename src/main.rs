@@ -232,6 +232,25 @@ fn main() -> Result<()> {
             println!("Dictum v{}", env!("CARGO_PKG_VERSION"));
             return Ok(());
         }
+        Some("--version-full") => {
+            println!("Dictum v{}", env!("CARGO_PKG_VERSION"));
+            println!("Build  : {} ({})", env!("CARGO_PKG_VERSION"), std::env::consts::ARCH);
+            println!("Target : {}-{}", std::env::consts::OS, std::env::consts::ARCH);
+            // Afficher l'info whisper-cli si disponible
+            let cli = Config::data_dir().join("whisper-cli.exe");
+            if cli.exists() {
+                if let Ok(out) = std::process::Command::new(&cli).arg("--version").output() {
+                    let ver = String::from_utf8_lossy(&out.stdout);
+                    let ver = ver.trim();
+                    if !ver.is_empty() { println!("whisper  : {}", ver); }
+                }
+                println!("whisper-cli.exe : présent");
+            } else {
+                println!("whisper-cli.exe : absent");
+            }
+            println!("Data dir : {}", Config::data_dir().display());
+            return Ok(());
+        }
         Some("--help") | Some("-h") => {
             println!("Dictum v{} — Dictée vocale locale\n", env!("CARGO_PKG_VERSION"));
             println!("Usage:");
