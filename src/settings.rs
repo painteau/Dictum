@@ -244,6 +244,13 @@ impl eframe::App for SettingsWindow {
 
                     ui.add_space(8.0);
                     if ui.checkbox(&mut self.cfg.whisper_no_speech, "Filtre no-speech Whisper").changed() { self.dirty = true; }
+                    if ui.checkbox(&mut self.cfg.use_cuda, "Accélération GPU CUDA").changed() { self.dirty = true; }
+
+                    ui.add_space(4.0);
+                    ui.horizontal(|ui| {
+                        ui.label(RichText::new("Traduire vers (vide=off, 'en'=anglais) :").color(Color32::GRAY).small());
+                        if ui.text_edit_singleline(&mut self.cfg.translate_to).changed() { self.dirty = true; }
+                    });
 
                     ui.add_space(8.0);
                     ui.label(RichText::new(format!("Score config : {}/100", self.cfg.score())).color(Color32::GRAY).small());
