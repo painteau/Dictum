@@ -282,9 +282,9 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
         let recording = *state.is_recording.lock().unwrap();
         let transcribing = *state.is_transcribing.lock().unwrap();
         let count = *state.session_count.lock().unwrap();
-        let (desc, hotkey_str) = {
+        let (desc, hotkey_str, lang_emoji) = {
             let cfg = state.config.lock().unwrap();
-            (cfg.description(), cfg.hotkey_string())
+            (cfg.description(), cfg.hotkey_string(), cfg.language_emoji().to_string())
         };
         let words = state.history.lock().unwrap().words_count();
         let is_paused = *state.is_paused.lock().unwrap();
@@ -295,7 +295,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
         } else if transcribing {
             "Transcription en cours...".to_string()
         } else if count > 0 {
-            format!("{} — {} dictée{} ({} mots)", desc, count, if count > 1 { "s" } else { "" }, words)
+            format!("{} {} — {} dictée{} ({} mots)", lang_emoji, desc, count, if count > 1 { "s" } else { "" }, words)
         } else {
             format!("{} — Maintenir {}", desc, hotkey_str)
         };
