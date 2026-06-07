@@ -763,6 +763,16 @@ impl Config {
         )
     }
     pub fn can_transcribe(&self) -> bool { self.is_fully_ready() }
+    pub fn recommend_model(has_fast_cpu: bool, vram_mb: u32) -> &'static str {
+        if vram_mb >= 4096 { "large-v3" }
+        else if has_fast_cpu { "medium" }
+        else { "medium" }
+    }
+
+    pub fn recommend_threads(cpu_cores: usize) -> u32 {
+        (cpu_cores.min(8) as u32).max(2)
+    }
+
     pub fn model_size_mb_estimate(&self) -> u32 {
         let name = self.model_name();
         if name.contains("large") { 3000 }
