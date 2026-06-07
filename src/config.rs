@@ -779,6 +779,19 @@ impl Config {
         self.config_version >= min_version
     }
 
+    pub fn total_config_fields() -> usize { 23 }
+
+    pub fn required_fields_present(&self) -> bool {
+        !self.hotkey.key.is_empty() && !self.language.is_empty()
+    }
+
+    pub fn optional_fields_count(&self) -> usize {
+        let mut count = 0;
+        if self.microphone.is_some() { count += 1; }
+        if !self.substitutions.is_empty() { count += self.substitutions.len(); }
+        count
+    }
+
     pub fn recommend_model(has_fast_cpu: bool, vram_mb: u32) -> &'static str {
         if vram_mb >= 4096 { "large-v3" }
         else if has_fast_cpu { "medium" }
