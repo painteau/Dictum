@@ -197,7 +197,11 @@ fn main() -> Result<()> {
     }
     init_logger();
     let log_level = std::env::var("RUST_LOG").unwrap_or_else(|_| "info".to_string());
-    log::info!("Dictum v{} démarrage [log={}]", env!("CARGO_PKG_VERSION"), log_level);
+    let log_label = match log_level.as_str() {
+        "error" => "🔴 error", "warn" => "🟡 warn", "info" => "🟢 info",
+        "debug" => "🔵 debug", "trace" => "⚪ trace", other => other,
+    };
+    log::info!("Dictum v{} démarrage [{}]", env!("CARGO_PKG_VERSION"), log_label);
     if let Ok(c) = Config::load() {
         log::info!("{} | {}", c.config_version_display(), c.is_ready_message());
     }
