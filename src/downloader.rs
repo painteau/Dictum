@@ -166,13 +166,16 @@ where
     log::info!("Téléchargement terminé : {:.1} MB en {:.0}s ({:.1} MB/s)", total_mb, elapsed_secs, speed_mb);
 
     let actual_hash = hex::encode(hasher.finalize());
-    if !entry.sha256.is_empty() && actual_hash != entry.sha256 {
-        std::fs::remove_file(dest).ok();
-        return Err(anyhow!(
-            "Checksum invalide !\nAttendu  : {}\nObtenu   : {}",
-            entry.sha256,
-            actual_hash
-        ));
+    if !entry.sha256.is_empty() {
+        if actual_hash != entry.sha256 {
+            std::fs::remove_file(dest).ok();
+            return Err(anyhow!(
+                "Checksum invalide !\nAttendu  : {}\nObtenu   : {}",
+                entry.sha256,
+                actual_hash
+            ));
+        }
+        log::info!("SHA256 vérifié ✓ : {}", &actual_hash[..16]);
     }
 
     Ok(())
