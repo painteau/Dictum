@@ -121,12 +121,10 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                     }
                 }
             } else if event.id == item_settings.id() {
-                if let Err(e) = crate::config::Config::open_in_editor() {
-                    log::error!("Impossible d'ouvrir la config : {e}");
-                    // Fallback : ouvrir le dossier Dictum dans l'explorateur
-                    let dir = crate::config::Config::data_dir();
-                    std::process::Command::new("explorer").arg(&dir).spawn().ok();
-                }
+                let cfg = state.config.lock().unwrap().clone();
+                std::thread::spawn(move || {
+                    crate::settings::open(cfg);
+                });
             } else if event.id == item_history.id() {
                 let hist = state.history.lock().unwrap();
                 let msg = if hist.is_empty() {

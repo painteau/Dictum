@@ -14,6 +14,7 @@ mod hotkey;
 mod inject;
 mod media;
 mod notify;
+mod settings;
 mod setup;
 mod substitution;
 mod transcribe;
