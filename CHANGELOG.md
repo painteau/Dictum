@@ -1,5 +1,19 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.4.1 — Logs exhaustifs
+
+### Ajouté
+- `hotkey.rs` : log info à chaque press et release
+- `inject.rs` : log info après injection réussie
+- `audio.rs` : log micro actif en info
+- `config.rs` : `log_summary()` résumé compact
+- `main.rs` : `log_summary()` au démarrage et après reload
+- `substitution.rs` : early return si aucune règle
+- `downloader.rs` : log Skip avec taille MB
+- `transcribe.rs` : log preview 50 chars et facteur temps réel
+
+---
+
 ## 2026-06-07 — v0.4.0 — Milestone matin
 
 ### Milestone
