@@ -308,6 +308,7 @@ fn main() -> Result<()> {
             println!("  --open-config         Ouvrir la config dans l'éditeur");
             println!("  --open-dir            Ouvrir le dossier Dictum");
             println!("  --stats               Statistiques historique de dictée");
+            println!("  --batch f1.wav f2.wav Transcrire plusieurs fichiers en lot");
             println!("  --search <texte>      Rechercher dans l'historique");
             println!("  --diagnose            Rapport complet : fichiers, audio, réseau, config");
             println!("  --config-check        Valider la configuration sans démarrer");
@@ -503,6 +504,57 @@ fn main() -> Result<()> {
                     Err(e) => { println!("Erreur sauvegarde : {e}"); std::process::exit(1); }
                 }
             }
+            return Ok(());
+        }
+        Some("--batch") => {
+            // dictum --batch *.wav [--output-dir chemin]
+            let output_dir = args.windows(2)
+                .find(|w| w[0] == "--output-dir")
+                .map(|w| std::path::PathBuf::from(&w[1]));
+
+            let files: Vec<std::path::PathBuf> = args.iter()
+                .skip(2)
+                .filter(|a| !a.starts_with("--"))
+                .filter(|a| {
+                    // Skip la valeur après --output-dir
+                    !args.windows(2).any(|w| w[0] == "--output-dir" && &w[1] == *a)
+                })
+                .map(std::path::PathBuf::from)
+                .filter(|p| p.exists())
+                .collect();
+
+            if files.is_empty() {
+                println!("Usage : dictum --batch fichier1.wav fichier2.wav [--output-dir dossier/]");
+                std::process::exit(1);
+            }
+
+            let cfg = Config::load().unwrap_or_default();
+            println!("Batch : {} fichier(s)...", files.len());
+            let mut success = 0usize;
+            let mut errors = 0usize;
+
+            for path in &files {
+                print!("  {} ... ", path.display());
+                match read_audio_file(path) {
+                    Ok(samples) => match crate::transcribe::transcribe(&samples, &cfg) {
+                        Ok(text) if text.is_empty() => {
+                            println!("[silence]");
+                        }
+                        Ok(text) => {
+                            let out = output_dir.as_ref()
+                                .map(|d| d.join(path.with_extension("txt").file_name().unwrap()))
+                                .unwrap_or_else(|| path.with_extension("txt"));
+                            std::fs::write(&out, &text).ok();
+                            println!("→ {} ({} mots)", out.display(), text.split_whitespace().count());
+                            success += 1;
+                        }
+                        Err(e) => { println!("erreur transcription : {e}"); errors += 1; }
+                    },
+                    Err(e) => { println!("erreur lecture : {e}"); errors += 1; }
+                }
+            }
+            println!("\nBatch terminé : {} succès, {} erreur(s)", success, errors);
+            if errors > 0 { std::process::exit(1); }
             return Ok(());
         }
         Some("--test-mic") => {
