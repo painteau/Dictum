@@ -507,6 +507,23 @@ fn main() -> Result<()> {
             }
             return Ok(());
         }
+        Some("--rm-sub") => {
+            let from = args.get(2).map(String::as_str).unwrap_or("");
+            if from.is_empty() {
+                println!("Usage : dictum --rm-sub \"depuis\"");
+                std::process::exit(1);
+            }
+            let mut cfg = Config::load().unwrap_or_default();
+            if cfg.remove_substitution_by_from(from) {
+                match cfg.save() {
+                    Ok(_) => println!("Substitution supprimée : {:?}", from),
+                    Err(e) => { println!("Erreur : {e}"); std::process::exit(1); }
+                }
+            } else {
+                println!("Substitution non trouvée : {:?}", from);
+            }
+            return Ok(());
+        }
         Some("--list-subs") => {
             match Config::load() {
                 Ok(cfg) => {
