@@ -1,5 +1,16 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.8.7 — Config 118 méthodes
+
+### Ajouté
+- `config.rs` : `recommend_model()` et `recommend_threads()` — conseils hardware
+- `config.rs` : `model_size_mb_estimate()` — taille estimée modèle
+- `config.rs` : `performance_label()` — Rapide/Standard/Qualité/Haute qualité
+- `config.rs` : `estimated_transcription_time()` — estimation durée transcription
+- Config : **118 méthodes** | Total : **160 méthodes API** ✓
+
+---
+
 ## 2026-06-07 — v0.8.6 — Bilan final 3h30
 
 ### Stats officielles finales
