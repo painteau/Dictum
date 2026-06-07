@@ -178,8 +178,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                 };
                 let log_path = crate::config::Config::data_dir().join("dictum.log");
                 let config_path = crate::config::Config::data_dir().join("config.json");
-                let cpu_threads = std::thread::available_parallelism()
-                    .map(|n| n.get().min(8)).unwrap_or(4);
+                let cpu_threads = config.threads_display();
                 let model_status = if config.is_model_ready() { "✓ présent" } else { "✗ MANQUANT" };
                 let cli_status = if crate::config::Config::is_whisper_cli_ready() { "✓ présent" } else { "✗ MANQUANT" };
                 let msg = format!(
