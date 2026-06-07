@@ -1,5 +1,15 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.0.8 — CLI PROFILES + API 233 MÉTHODES
+
+### Ajouté
+- CLI `--profile <nom>` : applique un profil en une commande (6 profiles)
+- Config 165 méthodes : `is_chinese/japanese/arabic/russian`, `hotkey_is_function_key`
+- History 68 méthodes : `count_chars_total`, `texts_ending_with`, `has_entry_with_min_chars`, `last_n`
+- **233 méthodes API** (165 Config + 68 History) | 512 commits
+
+---
+
 ## 2026-06-07 — v1.0.7 — DIAGNOSTIC + LANGUE HELPERS
 
 ### Ajouté
