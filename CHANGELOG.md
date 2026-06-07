@@ -1,5 +1,19 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.5.1 — Helpers finaux
+
+### Ajouté
+- `config.rs` : `threads_display()` — "auto (max 8)" ou "4"
+- `config.rs` : `record_duration_label()` — "300ms–30s"
+- `config.rs` : `log_summary()` enrichi avec durée enregistrement et threads
+- `history.rs` : `last_timestamp()`, `total_chars()`, `average_length()`
+- `tray.rs` : À propos affiche stats historique (nb + total chars)
+- `tray.rs` : utilise `threads_display()`
+- `main.rs` : log historique avec stats complets
+- `main.rs` : log enregistrement utilise `record_duration_label()`
+
+---
+
 ## 2026-06-07 — v0.5.0 — Config API complète
 
 ### Milestone
