@@ -1,5 +1,17 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.3.8 — Nettoyage output Whisper
+
+### Ajouté
+- `transcribe.rs` : `strip_ansi()` supprime codes ESC résiduels
+- `transcribe.rs` : normalisation CRLF→LF stdout Windows
+- `transcribe.rs` : `--print-special false`, `--word-thold 0.01`
+- `transcribe.rs` : log info whisper threads/temp/lang par transcription
+- `updater.rs` : log version actuelle vs dernière
+- `config.rs` : `Config::app_version()` helper statique
+
+---
+
 ## 2026-06-07 — v0.3.7 — Config audio complète
 
 ### Ajouté
