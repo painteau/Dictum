@@ -250,15 +250,14 @@ impl Config {
             if self.auto_enter { Some("auto_enter") } else { None },
         ].iter().filter_map(|&o| o).collect();
         let flags_str = if flags.is_empty() { "aucun".to_string() } else { flags.join(",") };
-        log::info!("Config résumé : lang={} model={} hotkey={} threads={} temp={:.1} silence={} beep={} flags=[{}]",
+        log::info!("Config résumé : lang={} model=[{}|{}] hotkey={} threads={} silence={} inject=[{}]",
             self.language_display(),
             self.model_name(),
+            self.whisper_speed_label(),
             self.hotkey_string(),
             if self.whisper_threads == 0 { "auto".to_string() } else { self.whisper_threads.to_string() },
-            self.whisper_temperature,
             self.silence_level_label(),
-            self.beep_description(),
-            flags_str
+            self.inject_mode_label()
         );
     }
 
