@@ -436,6 +436,10 @@ impl Config {
         !self.substitutions.is_empty()
     }
 
+    pub fn apply_substitutions(&self, text: &str) -> String {
+        crate::substitution::apply(&self.substitutions, text)
+    }
+
     pub fn language_display(&self) -> String {
         match self.language.as_str() {
             "auto" => "Auto-détection".to_string(),
