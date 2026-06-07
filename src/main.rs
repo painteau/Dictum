@@ -339,6 +339,28 @@ fn main() -> Result<()> {
             println!("\nDétection automatique : utiliser \"auto\"");
             return Ok(());
         }
+        Some("--export-csv") => {
+            match History::load() {
+                Ok(h) => {
+                    if h.is_empty() {
+                        println!("Historique vide.");
+                        return Ok(());
+                    }
+                    let ts = std::time::SystemTime::now()
+                        .duration_since(std::time::UNIX_EPOCH)
+                        .unwrap_or_default().as_secs();
+                    let out = args.get(2)
+                        .map(std::path::PathBuf::from)
+                        .unwrap_or_else(|| std::path::PathBuf::from(format!("dictum-history-{}.csv", ts)));
+                    match std::fs::write(&out, h.export_csv()) {
+                        Ok(_) => println!("Exporté CSV : {} ({} entrées)", out.display(), h.len()),
+                        Err(e) => { println!("Erreur : {e}"); std::process::exit(1); }
+                    }
+                }
+                Err(e) => { println!("Erreur : {e}"); std::process::exit(1); }
+            }
+            return Ok(());
+        }
         Some("--export") => {
             let out_path = args.get(2)
                 .map(std::path::PathBuf::from)
