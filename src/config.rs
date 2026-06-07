@@ -288,4 +288,13 @@ impl Config {
     pub fn has_substitutions(&self) -> bool {
         !self.substitutions.is_empty()
     }
+
+    pub fn hotkey_string(&self) -> String {
+        format!("{}{}{}{}",
+            if self.hotkey.ctrl  { "Ctrl+" } else { "" },
+            if self.hotkey.alt   { "Alt+"  } else { "" },
+            if self.hotkey.shift { "Shift+"} else { "" },
+            self.hotkey.key
+        )
+    }
 }
