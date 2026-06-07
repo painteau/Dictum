@@ -1473,4 +1473,29 @@ impl Config {
             "ar" => "🇸🇦", "auto" => "🌐", _ => "🌍",
         }
     }
+
+    #[allow(dead_code)]
+    pub fn has_high_thread_count(&self) -> bool {
+        self.whisper_threads > 8
+    }
+
+    #[allow(dead_code)]
+    pub fn has_custom_beep(&self) -> bool {
+        self.beep_start_freq != 800 || self.beep_end_freq != 600
+    }
+
+    #[allow(dead_code)]
+    pub fn record_limit_category(&self) -> &'static str {
+        match self.max_record_secs {
+            0..=10 => "très court",
+            11..=30 => "court",
+            31..=120 => "normal",
+            _ => "long",
+        }
+    }
+
+    #[allow(dead_code)]
+    pub fn is_same_model(&self, other: &Config) -> bool {
+        self.model_path == other.model_path
+    }
 }
