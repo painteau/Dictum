@@ -693,6 +693,24 @@ impl Config {
 
     pub fn is_using_cuda(&self) -> bool { false }
     pub fn needs_wizard(&self) -> bool { !self.is_fully_ready() }
+
+    pub fn diagnose(&self) -> String {
+        let issues = self.validate();
+        let ok = "✓".to_string();
+        let nok = "✗".to_string();
+        format!(
+            "=== Dictum {} Diagnostic ===\nModèle   : {} {}\nCLI      : {} {}\nConfig   : {} v{}\nProfil   : {}\nThreads  : {}\nSilence  : {}\nBeep     : {}\n{}\n===",
+            Self::app_version(),
+            if self.is_model_ready() { &ok } else { &nok }, self.model_name(),
+            if Self::is_whisper_cli_ready() { &ok } else { &nok }, "whisper-cli.exe",
+            ok, self.config_version,
+            self.profile_name(),
+            self.threads_display(),
+            self.silence_level_label(),
+            self.beep_description(),
+            if issues.is_empty() { "✓ Tout est OK".to_string() } else { format!("⚠ {} problème(s) :\n{}", issues.len(), issues.iter().map(|i| format!("  • {i}")).collect::<Vec<_>>().join("\n")) }
+        )
+    }
     pub fn can_transcribe(&self) -> bool { self.is_fully_ready() }
     pub fn recording_is_limited(&self) -> bool { self.max_record_secs < 60 }
     pub fn silence_detection_active(&self) -> bool { self.silence_threshold > 0.001 }
