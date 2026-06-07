@@ -1,5 +1,17 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.4.9 — Helpers expressifs
+
+### Ajouté
+- `config.rs` : `silence_level_label()` — "normal", "élevé", "désactivé"...
+- `config.rs` : `beep_description()` — "800Hz/600Hz 80ms" ou "désactivé"
+- `config.rs` : `language_display()` — "Français", "English", "Auto-détection"...
+- `config.rs` : `log_summary()` enrichi avec silence level et beep
+- `transcribe.rs` : log RMS avec silence_level_label()
+- `main.rs` : log beep_description() au démarrage
+
+---
+
 ## 2026-06-07 — v0.4.8 — API finale
 
 ### Ajouté
