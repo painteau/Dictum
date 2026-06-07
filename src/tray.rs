@@ -329,5 +329,5 @@ fn make_icon(recording: bool, transcribing: bool) -> Icon {
         }
     }
 
-    Icon::from_rgba(rgba, size, size).expect("Failed to create tray icon")
+    Icon::from_rgba(rgba, size, size).expect("Impossible de créer l'icône tray")
 }
