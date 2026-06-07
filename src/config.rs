@@ -1396,4 +1396,31 @@ impl Config {
 
     #[allow(dead_code)]
     pub fn set_log_info(&mut self) -> &mut Self { self.log_level = "info".into(); self }
+
+    #[allow(dead_code)]
+    pub fn beep_start_freq_display(&self) -> String {
+        format!("{}Hz", self.beep_start_freq)
+    }
+
+    #[allow(dead_code)]
+    pub fn beep_end_freq_display(&self) -> String {
+        format!("{}Hz", self.beep_end_freq)
+    }
+
+    #[allow(dead_code)]
+    pub fn beep_duration_display(&self) -> String {
+        format!("{}ms", self.beep_duration_ms)
+    }
+
+    #[allow(dead_code)]
+    pub fn is_production_config(&self) -> bool {
+        self.is_fully_ready() && self.score() >= 80
+    }
+
+    #[allow(dead_code)]
+    pub fn export_json_to(&self, path: &std::path::Path) -> anyhow::Result<()> {
+        let json = serde_json::to_string_pretty(self)?;
+        std::fs::write(path, json)?;
+        Ok(())
+    }
 }
