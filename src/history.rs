@@ -83,6 +83,16 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn longest_entry(&self) -> Option<&HistoryEntry> {
+        self.entries.iter().max_by_key(|e| e.text.len())
+    }
+
+    #[allow(dead_code)]
+    pub fn shortest_entry(&self) -> Option<&HistoryEntry> {
+        self.entries.iter().min_by_key(|e| e.text.len())
+    }
+
+    #[allow(dead_code)]
     pub fn stats_summary(&self) -> String {
         if self.is_empty() {
             return "Historique vide".to_string();
