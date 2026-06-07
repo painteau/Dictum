@@ -1,5 +1,16 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.5.3 — History API avancée
+
+### Ajouté
+- `history.rs` : `search()` — recherche case-insensitive
+- `history.rs` : `filter_by_min_length()` — filtre par longueur minimale
+- `config.rs` : `validate()` vérifie extension modèle et temperature élevée
+- `config.rs` : `is_ready_message()` — message lisible état Dictum
+- `main.rs` : log `is_ready_message()` au démarrage
+
+---
+
 ## 2026-06-07 — v0.5.2 — Validation et diagnostics
 
 ### Ajouté
