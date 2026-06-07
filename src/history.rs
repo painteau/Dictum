@@ -691,6 +691,35 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn max_word_count(&self) -> usize {
+        self.entries.iter().map(|e| e.text.split_whitespace().count()).max().unwrap_or(0)
+    }
+
+    #[allow(dead_code)]
+    pub fn min_word_count(&self) -> usize {
+        self.entries.iter().map(|e| e.text.split_whitespace().count()).min().unwrap_or(0)
+    }
+
+    #[allow(dead_code)]
+    pub fn has_entries_with_word(&self, word: &str) -> bool {
+        let w = word.to_lowercase();
+        self.entries.iter().any(|e| e.text.to_lowercase().split_whitespace().any(|ww| ww == w))
+    }
+
+    #[allow(dead_code)]
+    pub fn entries_with_word(&self, word: &str) -> Vec<&HistoryEntry> {
+        let w = word.to_lowercase();
+        self.entries.iter().filter(|e| {
+            e.text.to_lowercase().split_whitespace().any(|ww| ww == w.as_str())
+        }).collect()
+    }
+
+    #[allow(dead_code)]
+    pub fn total_punctuation(&self) -> usize {
+        self.entries.iter().map(|e| e.text.chars().filter(|c| ".,;:!?".contains(*c)).count()).sum()
+    }
+
+    #[allow(dead_code)]
     pub fn avg_words_per_entry(&self) -> usize {
         if self.is_empty() { return 0; }
         self.words_count() / self.len()
