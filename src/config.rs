@@ -71,6 +71,12 @@ pub struct Config {
     /// Température whisper (0.0=déterministe, 1.0=créatif) — défaut 0.0 pour dictée
     #[serde(default = "default_whisper_temperature")]
     pub whisper_temperature: f32,
+    /// Fréquence Hz du beep de début d'enregistrement
+    #[serde(default = "default_beep_start_freq")]
+    pub beep_start_freq: u32,
+    /// Fréquence Hz du beep de fin d'enregistrement
+    #[serde(default = "default_beep_end_freq")]
+    pub beep_end_freq: u32,
 }
 
 impl Default for Config {
@@ -96,6 +102,8 @@ impl Default for Config {
             inject_delay_ms: 80,
             whisper_no_speech: false,
             whisper_temperature: 0.0,
+            beep_start_freq: 800,
+            beep_end_freq: 600,
         }
     }
 }
@@ -103,6 +111,8 @@ impl Default for Config {
 fn default_config_version() -> u32 { 1 }
 fn default_inject_delay() -> u64 { 80 }
 fn default_whisper_temperature() -> f32 { 0.0 }
+fn default_beep_start_freq() -> u32 { 800 }
+fn default_beep_end_freq() -> u32 { 600 }
 
 fn data_dir() -> PathBuf {
     dirs::data_local_dir()

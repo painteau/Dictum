@@ -187,6 +187,8 @@ impl SetupWizard {
             inject_delay_ms: 80,
             whisper_no_speech: false,
             whisper_temperature: 0.0,
+            beep_start_freq: 800,
+            beep_end_freq: 600,
         }
     }
 

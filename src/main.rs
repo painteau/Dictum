@@ -347,7 +347,7 @@ fn main() -> Result<()> {
                             continue;
                         }
                         let config = state.config.lock().unwrap().clone();
-                        if config.beep_enabled { audio::beep(800, 80); }
+                        if config.beep_enabled { audio::beep(config.beep_start_freq, 80); }
                         if config.pause_media { media::toggle_media(); }
                         match audio::RecordHandle::start(config.microphone.as_deref(), config.max_record_secs) {
                             Ok(handle) => {
