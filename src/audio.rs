@@ -129,7 +129,8 @@ impl RecordHandle {
         let _ = self.stop_tx.send(());
         let samples = self.samples_rx.recv().unwrap_or_default();
         let duration_secs = samples.len() as f32 / 16000.0;
-        log::info!("Enregistrement arrêté : {:.1}s ({} samples)", duration_secs, samples.len());
+        let size_kb = samples.len() * 4 / 1024;
+        log::info!("Enregistrement arrêté : {:.1}s ({} samples, {} KB f32)", duration_secs, samples.len(), size_kb);
         samples
     }
 }
