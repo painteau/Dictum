@@ -1,5 +1,15 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.5.8 — UX logs enrichis
+
+### Ajouté
+- `config.rs` : `log_level_display()` — emoji 🟢 info, 🔵 debug, etc.
+- `config.rs` : `config_version_display()` — "config v1 | app v0.5.0"
+- `main.rs` : emoji niveau log dans message démarrage
+- `main.rs` : `config_version_display()` + `is_ready_message()` au démarrage
+
+---
+
 ## 2026-06-07 — v0.5.7 — Helpers audio et micro
 
 ### Ajouté
