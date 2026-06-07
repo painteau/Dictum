@@ -524,6 +524,21 @@ fn main() -> Result<()> {
             }
             return Ok(());
         }
+        Some("--word-count") => {
+            match History::load() {
+                Ok(h) => {
+                    println!("Mots total : {}", h.words_count());
+                    println!("Mots aujourd'hui : {}", h.words_today());
+                    println!("Chars total : {}", h.total_chars());
+                    println!("Entrées : {}", h.len());
+                    if !h.is_empty() {
+                        println!("Moy. par dictée : {:.1} mots", h.avg_words_per_entry() as f32);
+                    }
+                }
+                Err(e) => { println!("Erreur : {e}"); std::process::exit(1); }
+            }
+            return Ok(());
+        }
         Some("--top-words") => {
             let n = args.get(2).and_then(|s| s.parse::<usize>().ok()).unwrap_or(10);
             match History::load() {
