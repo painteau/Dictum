@@ -181,7 +181,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                 let msg = format!(
                     "Dictum v{}\ngithub.com/painteau/Dictum\n\nModèle  : {} ({})\nwhisper : {}\nLangue  : {}\nHotkey  : {}\nThreads : {}\n\nSession : {} transcription{}\nConfig  : {}\nLog     : {}",
                     env!("CARGO_PKG_VERSION"),
-                    config.model_path.file_name().and_then(|n| n.to_str()).unwrap_or("?"),
+                    config.model_name(),
                     model_status,
                     cli_status,
                     config.language,
