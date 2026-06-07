@@ -322,12 +322,7 @@ fn main() -> Result<()> {
         }
         if cfg.pause_media { log::info!("Pause médias : activée"); }
         log::info!("Beep : {}", cfg.beep_description());
-        log::info!("Whisper : threads={} temp={:.1} no_speech={} vitesse={}",
-            if cfg.whisper_threads == 0 { "auto".to_string() } else { cfg.whisper_threads.to_string() },
-            cfg.whisper_temperature,
-            cfg.whisper_no_speech,
-            cfg.whisper_speed_label()
-        );
+        log::info!("Whisper : {}", cfg.whisper_config_display());
         log::info!("Injection : mode=[{}] délai={}ms", cfg.inject_mode_label(), cfg.inject_delay_ms);
         log::info!("Enregistrement : durée=[{}] silence=[{}]",
             cfg.record_duration_label(), cfg.silence_level_label());
