@@ -249,6 +249,7 @@ fn main() -> Result<()> {
     log::info!("Dictum v{} démarrage [{}]", env!("CARGO_PKG_VERSION"), log_label);
     if let Ok(c) = Config::load() {
         log::info!("{} | {}", c.config_version_display(), c.is_ready_message());
+        log::info!("Config : score={}/100 subs={} {}", c.score(), c.substitutions_count(), c.config_summary_oneliner());
         log::debug!("\n{}", c.diagnose());
     }
 
