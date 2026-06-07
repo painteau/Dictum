@@ -1,5 +1,24 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.9.2 — BILAN ABSOLU FINAL
+
+### Chiffres officiels de la nuit
+| Métrique | Valeur |
+|----------|--------|
+| Config méthodes | **127** |
+| History méthodes | **44** |
+| Total API | **171 méthodes** |
+| Commits | **431** |
+| Tags releases | **71** |
+| Warnings | **0** |
+| Logiciels testés | en attente |
+
+### Ajouté en fin de session
+- `history.rs` : `avg_words_per_entry()`, `entries_after()`
+- History : **44 méthodes** ✓
+
+---
+
 ## 2026-06-07 — v0.9.1 — Config 127 méthodes
 
 ### Ajouté
