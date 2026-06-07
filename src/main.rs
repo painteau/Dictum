@@ -275,14 +275,7 @@ fn main() -> Result<()> {
     // Premier lancement : wizard si aucun modèle ou whisper-cli absent
     {
         let config = Config::load()?;
-        log::info!("Config : langue={}, hotkey={}{}{}{}, modèle={}",
-            config.language,
-            if config.hotkey.ctrl { "Ctrl+" } else { "" },
-            if config.hotkey.alt  { "Alt+"  } else { "" },
-            if config.hotkey.shift{ "Shift+"} else { "" },
-            config.hotkey.key,
-            config.model_path.file_name().and_then(|n| n.to_str()).unwrap_or("?")
-        );
+        config.log_summary();
         if config.config_version < 1 {
             log::warn!("Config version {} détectée — réinitialisation", config.config_version);
             Config::default().save()?;
