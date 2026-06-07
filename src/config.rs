@@ -763,6 +763,14 @@ impl Config {
         )
     }
     pub fn can_transcribe(&self) -> bool { self.is_fully_ready() }
+    pub fn is_configured_for_french_dictation(&self) -> bool {
+        self.is_french() && self.french_typography && self.auto_capitalize
+    }
+
+    pub fn min_disk_space_mb(&self) -> u32 {
+        self.model_size_mb_estimate() + 100 // modèle + binaires
+    }
+
     pub fn recommend_model(has_fast_cpu: bool, vram_mb: u32) -> &'static str {
         if vram_mb >= 4096 { "large-v3" }
         else if has_fast_cpu { "medium" }
