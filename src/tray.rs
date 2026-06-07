@@ -103,7 +103,13 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                     std::process::Command::new("explorer").arg(&dir).spawn().ok();
                 }
             } else if event.id == item_history.id() {
-                let msg = state.history.lock().unwrap().as_display_string();
+                let hist = state.history.lock().unwrap();
+                let msg = if hist.is_empty() {
+                    "Aucun historique.".to_string()
+                } else {
+                    hist.as_display_string()
+                };
+                drop(hist);
                 show_dialog("Dictum — Historique", &msg);
             } else if event.id == item_copy_last.id() {
                 let last = state.history.lock().unwrap().last_text();
