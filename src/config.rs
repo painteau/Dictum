@@ -1044,4 +1044,26 @@ impl Config {
     pub fn min_record_ms_display(&self) -> String {
         format!("{}ms", self.min_record_ms)
     }
+
+    #[allow(dead_code)]
+    pub fn silence_threshold_display(&self) -> String {
+        format!("{:.4}", self.silence_threshold)
+    }
+
+    #[allow(dead_code)]
+    pub fn is_low_silence_threshold(&self) -> bool {
+        self.silence_threshold < 0.003
+    }
+
+    #[allow(dead_code)]
+    pub fn is_high_silence_threshold(&self) -> bool {
+        self.silence_threshold > 0.02
+    }
+
+    #[allow(dead_code)]
+    pub fn config_summary_oneliner(&self) -> String {
+        format!("model={} lang={} hotkey={} beep={} typo_fr={}",
+            self.model_name(), self.language, self.hotkey_string(),
+            self.beep_enabled, self.french_typography)
+    }
 }
