@@ -165,18 +165,22 @@ impl History {
     }
 
     /// Exporte l'historique complet dans un fichier texte.
-    pub fn export_to_file(&self, path: &std::path::Path) -> anyhow::Result<()> {
-        let header = format!("# Historique Dictum — {} entrée(s)\n\n", self.entries.len());
+    pub fn to_markdown(&self) -> String {
+        let header = format!("# Historique Dictum — {}\n\n", self.stats_summary());
         let content = self.entries
             .iter()
             .enumerate()
             .map(|(i, e)| {
                 let time = format_timestamp(e.timestamp);
-                format!("## {} — [{}]\n{}\n", i + 1, time, e.text)
+                format!("## {} — [{}] ({} chars)\n\n{}\n", i + 1, time, e.text.len(), e.text)
             })
             .collect::<Vec<_>>()
-            .join("\n");
-        std::fs::write(path, format!("{}{}", header, content))?;
+            .join("\n---\n\n");
+        format!("{}{}", header, content)
+    }
+
+    pub fn export_to_file(&self, path: &std::path::Path) -> anyhow::Result<()> {
+        std::fs::write(path, self.to_markdown())?;
         Ok(())
     }
 
