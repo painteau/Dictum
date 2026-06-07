@@ -470,6 +470,18 @@ impl Config {
     }
 
     #[allow(dead_code)]
+    pub fn set_silence_threshold(&mut self, threshold: f32) -> &mut Self {
+        self.silence_threshold = threshold.clamp(0.0, 1.0);
+        self
+    }
+
+    #[allow(dead_code)]
+    pub fn set_threads(&mut self, threads: u32) -> &mut Self {
+        self.whisper_threads = threads.min(32);
+        self
+    }
+
+    #[allow(dead_code)]
     pub fn set_model(&mut self, model_path: std::path::PathBuf) -> &mut Self {
         self.model_path = model_path;
         self
