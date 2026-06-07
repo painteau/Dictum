@@ -1,6 +1,6 @@
 [package]
 name = "dictum"
-version = "1.3.1"
+version = "1.3.2"
 edition = "2021"
 description = "Windows voice dictation powered by local Whisper AI"
 

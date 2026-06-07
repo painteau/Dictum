@@ -1,5 +1,15 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.3.2 — ABOUT AMÉLIORÉ + 349 MÉTHODES
+
+### Ajouté
+- About tray : langue + modèle affichés en clair
+- Config 229 méthodes : `has_model_medium/large`, `model_display_name`, `language_name`
+- History 120 méthodes : `longest_word_in`, `sentence_count_at`, `avg_sentence_length_at`, `has_question_at`, `texts_as_vec`
+- **349 méthodes API** (229 Config + 120 History) | 585 commits
+
+---
+
 ## 2026-06-07 — v1.3.1 — 340 MÉTHODES API
 
 ### Ajouté
