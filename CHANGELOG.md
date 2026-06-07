@@ -1,5 +1,24 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.6.0 — API HTTP LOCALE
+
+### Feature
+- **API HTTP locale** sur `127.0.0.1:44880` (activable dans settings Avancé)
+  - `GET /status` — état JSON (recording, transcribing, paused, session_count, hotkey, model, language, version)
+  - `GET /history` — historique JSON
+  - `GET /config` — config complète JSON
+  - `POST /inject` — injecter du texte (body = texte brut)
+  - `POST /pause` — toggle pause, retourne `{"paused":true/false}`
+  - `POST /reload` — recharger la config
+  - `POST /reformulate` — reformuler via Ollama (body JSON `{text, style}`)
+  - CORS activé (`Access-Control-Allow-Origin: *`)
+- Activable depuis settings onglet Avancé — redémarrage requis
+
+### TODO coché
+- [x] API locale HTTP pour intégrations tierces
+
+---
+
 ## 2026-06-07 — v1.5.0 — REFORMULATION OLLAMA LOCAL
 
 ### Feature majeure

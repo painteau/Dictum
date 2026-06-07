@@ -120,6 +120,6 @@
 
 - [ ] Mode live (streaming temps réel)
 - [ ] Plugin VS Code
-- [ ] API locale HTTP pour intégrations tierces
+- [x] API locale HTTP pour intégrations tierces
 - [ ] Identification locuteurs (diarisation)
 - [ ] Interface multi-langue
