@@ -246,13 +246,10 @@ impl Config {
             if self.auto_enter { Some("auto_enter") } else { None },
         ].iter().filter_map(|&o| o).collect();
         let flags_str = if flags.is_empty() { "aucun".to_string() } else { flags.join(",") };
-        log::info!("Config résumé : lang={} model={} hotkey={}{}{}{} threads={} temp={:.1} flags=[{}]",
+        log::info!("Config résumé : lang={} model={} hotkey={} threads={} temp={:.1} flags=[{}]",
             self.language,
             self.model_path.file_name().and_then(|n| n.to_str()).unwrap_or("?"),
-            if self.hotkey.ctrl  { "Ctrl+" } else { "" },
-            if self.hotkey.alt   { "Alt+"  } else { "" },
-            if self.hotkey.shift { "Shift+"} else { "" },
-            self.hotkey.key,
+            self.hotkey_string(),
             if self.whisper_threads == 0 { "auto".to_string() } else { self.whisper_threads.to_string() },
             self.whisper_temperature,
             flags_str
