@@ -1,5 +1,16 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.5.6 — API centralisée
+
+### Ajouté
+- `config.rs` : `apply_substitutions()` — délègue directement à substitution::apply()
+- `main.rs` : utilise `config.apply_substitutions()` — simplifié
+
+### Bilan nuit — 30+ méthodes Config
+Toute la logique métier passée par des méthodes expressives de Config.
+
+---
+
 ## 2026-06-07 — v0.5.5 — Description et profils
 
 ### Ajouté
