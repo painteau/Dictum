@@ -323,9 +323,15 @@ impl Config {
         if self.inject_delay_ms > 500 {
             issues.push(format!("inject_delay_ms={} élevé — injection lente", self.inject_delay_ms));
         }
-        if !["auto","fr","en","de","es","it","pt","ja","zh","ko"].contains(&self.language.as_str())
-            && self.language != "auto" {
-            log::debug!("Langue '{}' non-standard — assurez-vous qu'elle est supportée par Whisper", self.language);
+        if self.model_path.exists() {
+            if let Some(ext) = self.model_path.extension() {
+                if ext != "bin" {
+                    issues.push(format!("Modèle '{}' n'est pas un .bin", self.model_path.display()));
+                }
+            }
+        }
+        if self.whisper_temperature > 0.5 {
+            issues.push(format!("whisper_temperature={:.1} élevé — risque d'hallucinations", self.whisper_temperature));
         }
         issues
     }
