@@ -1,5 +1,24 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.8.6 — Bilan final 3h30
+
+### Stats officielles finales
+- **Config : 116 méthodes** ✓
+- **History : 42 méthodes** ✓
+- **Total API : 158 méthodes publiques** ✓
+- **420 commits** en une nuit
+- **67 tags** releases CI/CD
+- Zéro warning `cargo build`
+- Logs 100% français
+
+### Ajouté depuis v0.8.5
+- `config.rs` : `model_size_mb_estimate()` — estimation taille modèle
+- `config.rs` : `performance_label()`, `is_optimized_for_speed()`, `is_optimized_for_quality()`
+- `config.rs` : `estimated_transcription_time()`
+- `full_status()` affiche taille MB et label performance
+
+---
+
 ## 2026-06-07 — v0.8.5 — Score détaillé
 
 ### Ajouté
