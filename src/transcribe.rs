@@ -105,7 +105,8 @@ pub fn transcribe(samples: &[f32], config: &Config) -> Result<String> {
         .arg("--best-of").arg("1")
         .arg("--beam-size").arg("1")
         .arg("--print-colors").arg("false")
-        .arg("--print-special").arg("false");
+        .arg("--print-special").arg("false")
+        .arg("--word-thold").arg("0.01");
 
     if config.whisper_no_speech {
         cmd.arg("--no-speech-thold").arg("0.6");
