@@ -1,5 +1,18 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.9.9 — CLI EXHAUSTIF + CONFIG 138 MÉTHODES
+
+### Ajouté
+- CLI `--list-models` : liste modèles CDN avec statut local
+- CLI `--open-config` : ouvrir la config dans l'éditeur
+- CLI `--open-dir` : ouvrir le dossier Dictum dans Explorer
+- Config 138 méthodes : `remove_substitution_by_from`, `find_substitution`, `min_record_ms_display`
+- Tray : menu historique affiche nb entrées ET nb mots
+- Hotkey : log conseil admin si rdev échoue
+- 470 commits | **188 méthodes API** (138 Config + 50 History)
+
+---
+
 ## 2026-06-07 — v0.9.8 — ICÔNE PAUSE + POLISH
 
 ### Ajouté
