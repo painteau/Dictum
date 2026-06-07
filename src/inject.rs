@@ -1,5 +1,6 @@
 use enigo::{Direction, Enigo, Key, Keyboard, Settings};
 use crate::config::Config;
+use arboard;
 
 /// Inject texte brut sans aucun traitement typographique ni capitalisation.
 #[allow(dead_code)]
@@ -62,7 +63,34 @@ pub fn inject_text(text: &str, config: &Config) {
             }
             log::info!("Texte injecté ({} chars)", text.len());
         }
-        Err(e) => log::error!("Enigo init échoué : {e}"),
+        Err(e) => {
+            log::error!("Enigo init échoué : {e} — fallback clipboard");
+            clipboard_paste_fallback(&text);
+        }
+    }
+}
+
+/// Fallback : copie le texte dans le presse-papiers et simule Ctrl+V.
+fn clipboard_paste_fallback(text: &str) {
+    match arboard::Clipboard::new() {
+        Ok(mut cb) => {
+            if cb.set_text(text).is_err() {
+                log::error!("Fallback clipboard : impossible d'écrire dans le presse-papiers");
+                return;
+            }
+            std::thread::sleep(std::time::Duration::from_millis(50));
+            let settings = Settings::default();
+            match Enigo::new(&settings) {
+                Ok(mut enigo) => {
+                    let _ = enigo.key(Key::Control, Direction::Press);
+                    let _ = enigo.key(Key::Unicode('v'), Direction::Click);
+                    let _ = enigo.key(Key::Control, Direction::Release);
+                    log::info!("Texte injecté via fallback clipboard ({} chars)", text.len());
+                }
+                Err(e2) => log::error!("Fallback clipboard : Ctrl+V échoué : {e2}"),
+            }
+        }
+        Err(e) => log::error!("Fallback clipboard inaccessible : {e}"),
     }
 }
 
