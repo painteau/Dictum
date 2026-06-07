@@ -293,6 +293,21 @@ impl Config {
         self.substitutions.len()
     }
 
+    pub fn full_status(&self) -> String {
+        format!(
+            "Dictum v{} | Modèle: {} [{}] | Langue: {} | Hotkey: {}\nWhisper: threads={} temp={:.1} | Enregistrement: {} | Silence: {}\nInjection: [{}] | Beep: {}",
+            Self::app_version(),
+            self.model_name(), if self.is_model_ready() { "✓" } else { "✗" },
+            self.language_display(),
+            self.hotkey_string(),
+            self.threads_display(), self.whisper_temperature,
+            self.record_duration_label(),
+            self.silence_level_label(),
+            self.inject_mode_label(),
+            self.beep_description()
+        )
+    }
+
     pub fn threads_display(&self) -> String {
         if self.whisper_threads == 0 {
             format!("auto (max {})", std::thread::available_parallelism().map(|n| n.get().min(8)).unwrap_or(4))
