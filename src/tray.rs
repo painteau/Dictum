@@ -175,6 +175,7 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
                 let hist_stats = state.history.lock().unwrap().stats_summary();
                 let log_path = crate::config::Config::log_path();
                 let config_path = crate::config::Config::data_dir().join("config.json");
+                let score = config.score();
                 let diagnostic = config.diagnose();
                 let issues = config.validate();
                 let issues_str = if issues.is_empty() {
