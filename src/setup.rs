@@ -409,6 +409,15 @@ impl SetupWizard {
         );
         ui.label(RichText::new(format!("Raccourci : {}", combo)).color(Color32::from_rgb(100, 160, 255)));
 
+        // Avertissement si touche lettre/espace sans modificateur
+        let is_simple_key = ["Space", "Home", "End", "PageUp", "PageDown"].contains(&self.hotkey_key.as_str())
+            || (self.hotkey_key.len() == 1 && self.hotkey_key.chars().all(|c| c.is_alphabetic()));
+        let no_modifier = !self.hotkey_ctrl && !self.hotkey_alt && !self.hotkey_shift;
+        if is_simple_key && no_modifier {
+            ui.add_space(4.0);
+            ui.label(RichText::new("⚠ Sans modificateur, cette touche peut interférer avec la frappe normale.").color(Color32::from_rgb(220, 160, 50)).small());
+        }
+
         ui.add_space(24.0);
         if ui.add(styled_button("Télécharger le modèle →")).clicked() {
             self.start_download();
