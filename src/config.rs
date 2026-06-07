@@ -693,6 +693,9 @@ impl Config {
 
     pub fn is_using_cuda(&self) -> bool { false }
     pub fn needs_wizard(&self) -> bool { !self.is_fully_ready() }
+    pub fn can_transcribe(&self) -> bool { self.is_fully_ready() }
+    pub fn recording_is_limited(&self) -> bool { self.max_record_secs < 60 }
+    pub fn silence_detection_active(&self) -> bool { self.silence_threshold > 0.001 }
     pub fn uses_large_model(&self) -> bool { self.model_name().contains("large") }
     pub fn uses_medium_model(&self) -> bool { self.model_name().contains("medium") }
     pub fn is_low_latency(&self) -> bool {
