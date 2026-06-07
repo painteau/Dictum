@@ -1,5 +1,26 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.7.3 — Config 71 méthodes + fluent API
+
+### Ajouté
+- `config.rs` : `set_prefix_space()`, `set_whisper_temperature()`, `set_no_speech()`
+- `config.rs` : `set_log_level()`, `set_inject_delay()`
+- `config.rs` : `set_beep_freqs()` — configure start/end/duration en une fois
+- `config.rs` : `with_model_name()` — sélectionne modèle par nom court
+- Config : **71 méthodes** | Total API : **101 méthodes** ✓
+
+### Bilan final de la nuit (v0.1.0 → v0.7.3)
+- **380+ commits** — nuit de travail intensif
+- **54 tags** — CI/CD toutes les 10-15 min
+- **71 méthodes Config** + **30 méthodes History** = **101 méthodes API**
+- Zéro warning `cargo build`
+- Logs 100% français
+- Validation config complète
+- Diagnostics exhaustifs
+- API fluent style
+
+---
+
 ## 2026-06-07 — v0.7.2 — Config 66 méthodes
 
 ### Ajouté
