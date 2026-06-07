@@ -325,6 +325,32 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn oldest_n(&self, n: usize) -> Vec<&HistoryEntry> {
+        self.entries.iter().rev().take(n).collect()
+    }
+
+    #[allow(dead_code)]
+    pub fn average_timestamp_gap(&self) -> Option<u64> {
+        if self.entries.len() < 2 { return None; }
+        let ts: Vec<u64> = self.entries.iter().map(|e| e.timestamp).collect();
+        let gaps: Vec<u64> = ts.windows(2).map(|w| w[0].saturating_sub(w[1])).collect();
+        let sum: u64 = gaps.iter().sum();
+        Some(sum / gaps.len() as u64)
+    }
+
+    #[allow(dead_code)]
+    pub fn to_plain_text(&self) -> String {
+        self.entries.iter().map(|e| e.text.as_str()).collect::<Vec<_>>().join("\n")
+    }
+
+    #[allow(dead_code)]
+    pub fn truncate_to(&mut self, n: usize) {
+        while self.entries.len() > n {
+            self.entries.pop_back();
+        }
+    }
+
+    #[allow(dead_code)]
     pub fn avg_words_per_entry(&self) -> usize {
         if self.is_empty() { return 0; }
         self.words_count() / self.len()
