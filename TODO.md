@@ -123,3 +123,11 @@
 - [x] API locale HTTP pour intégrations tierces
 - [ ] Identification locuteurs (diarisation)
 - [ ] Interface multi-langue
+
+## v2.0 — Support Mac
+
+- [ ] Garder winapi derrière #[cfg(windows)], alternatives Mac pour Beep / MessageBox / mutex / disk space
+- [ ] whisper-cli Mac ARM64 + x64 sur dictum.breizhzion.com
+- [ ] CI GitHub Actions matrix : macos-latest
+- [ ] Installer .dmg (via create-dmg ou cargo-bundle)
+- [ ] Tester rdev + enigo + cpal + tray-icon sur macOS
