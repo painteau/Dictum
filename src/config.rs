@@ -436,6 +436,18 @@ impl Config {
         !self.substitutions.is_empty()
     }
 
+    pub fn substitutions_display(&self) -> String {
+        if self.substitutions.is_empty() {
+            "aucune".to_string()
+        } else {
+            let previews: Vec<String> = self.substitutions.iter().take(3)
+                .map(|s| format!("{}→{}", s.from, s.to))
+                .collect();
+            let more = if self.substitutions.len() > 3 { format!(" +{}", self.substitutions.len() - 3) } else { String::new() };
+            format!("{}{}", previews.join(", "), more)
+        }
+    }
+
     pub fn apply_substitutions(&self, text: &str) -> String {
         crate::substitution::apply(&self.substitutions, text)
     }
