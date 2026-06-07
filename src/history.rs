@@ -411,6 +411,28 @@ impl History {
     }
 
     #[allow(dead_code)]
+    pub fn top_words(&self, n: usize) -> Vec<(String, usize)> {
+        let freq = self.word_frequency();
+        let mut list: Vec<(String, usize)> = freq.into_iter().collect();
+        list.sort_by(|a, b| b.1.cmp(&a.1));
+        list.truncate(n);
+        list
+    }
+
+    #[allow(dead_code)]
+    pub fn has_entry_older_than(&self, secs: u64) -> bool {
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap_or_default().as_secs();
+        self.entries.iter().any(|e| now.saturating_sub(e.timestamp) > secs)
+    }
+
+    #[allow(dead_code)]
+    pub fn entries_with_char(&self, ch: char) -> Vec<&HistoryEntry> {
+        self.entries.iter().filter(|e| e.text.contains(ch)).collect()
+    }
+
+    #[allow(dead_code)]
     pub fn avg_words_per_entry(&self) -> usize {
         if self.is_empty() { return 0; }
         self.words_count() / self.len()
