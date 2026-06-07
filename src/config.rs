@@ -101,6 +101,9 @@ pub struct Config {
     /// Activer le mode sélection (Ctrl+texte sélectionné → reformulation)
     #[serde(default)]
     pub selection_mode: bool,
+    /// Activer l'API HTTP locale (port 44880)
+    #[serde(default)]
+    pub api_enabled: bool,
 }
 
 impl Default for Config {
@@ -136,6 +139,7 @@ impl Default for Config {
             ollama_model: default_ollama_model(),
             reformulation_style: default_reformulation_style(),
             selection_mode: false,
+            api_enabled: false,
         }
     }
 }

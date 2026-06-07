@@ -237,6 +237,7 @@ impl SetupWizard {
             ollama_model: "llama3".to_string(),
             reformulation_style: "formel".to_string(),
             selection_mode: false,
+            api_enabled: false,
         }
     }
 

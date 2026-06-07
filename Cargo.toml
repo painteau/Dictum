@@ -49,6 +49,9 @@ arboard = "3"
 # Log vers fichier
 flexi_logger = "0.28"
 
+# API HTTP locale
+tiny_http = "0.12"
+
 
 [target.'cfg(windows)'.dependencies]
 winapi = { version = "0.3", features = ["winuser", "shellapi", "fileapi", "synchapi", "winerror"] }

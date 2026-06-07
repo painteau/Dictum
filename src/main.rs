@@ -6,6 +6,7 @@ use anyhow::Result;
 use crossbeam_channel::bounded;
 
 
+mod api;
 mod audio;
 mod config;
 mod downloader;
@@ -1138,6 +1139,14 @@ fn main() -> Result<()> {
                 }
             }
         });
+    }
+
+    // API HTTP locale (si activée dans la config)
+    if state.config.lock().unwrap().api_enabled {
+        let api_state = state.clone();
+        let api_tx = event_tx.clone();
+        api::start(api_state, api_tx);
+        log::info!("API HTTP locale activée sur port {}", api::API_PORT);
     }
 
     // Notification de démarrage (non bloquante)

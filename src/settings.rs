@@ -252,6 +252,8 @@ impl eframe::App for SettingsWindow {
                     ui.add_space(8.0);
                     if ui.checkbox(&mut self.cfg.whisper_no_speech, "Filtre no-speech Whisper").changed() { self.dirty = true; }
                     if ui.checkbox(&mut self.cfg.use_cuda, "Accélération GPU CUDA").changed() { self.dirty = true; }
+                    if ui.checkbox(&mut self.cfg.api_enabled, "API HTTP locale (port 44880)").changed() { self.dirty = true; }
+                    ui.label(RichText::new("Redémarrer Dictum pour activer/désactiver l'API.").color(Color32::GRAY).small());
 
                     ui.add_space(4.0);
                     ui.horizontal(|ui| {
