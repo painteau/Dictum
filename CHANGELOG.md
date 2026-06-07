@@ -1,5 +1,18 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.9.6 — PAUSE, TYPO, HOTKEYS
+
+### Ajouté
+- Mode pause/reprendre via menu tray (hotkey ignorée si en pause, tooltip mis à jour)
+- Typographie française : guillemets droits `"texte"` → `« texte »` automatique
+- Hotkey : support touches lettres A-Z (avec modificateur Ctrl/Alt/Shift)
+- Notification ballon Windows quand une mise à jour est disponible (PowerShell toast)
+- Config 132 méthodes : `from_json_str`, `substitutions_count`, `record_max_secs_display`, hotkey helpers
+- CLI `--export [chemin]` : exporte l'historique en Markdown
+- 453 commits total
+
+---
+
 ## 2026-06-07 — v0.9.5 — CLI ENRICHI + ROBUSTESSE INJECTION
 
 ### Ajouté

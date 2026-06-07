@@ -93,7 +93,7 @@
 - [ ] Moteur Parakeet (600 MB, plus rapide)
 - [ ] Support CUDA via feature flag
 - [x] Rotation automatique fichier log
-- [ ] Notification Windows toast (au lieu de dialog bloquant)
+- [x] Notification Windows toast (au lieu de dialog bloquant)
 - [ ] Configuration hotkey live (sans redémarrage)
 
 ## v1.0 — Idées futures
