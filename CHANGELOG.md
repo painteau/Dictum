@@ -1,5 +1,18 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v1.0.3 — WIZARD MIC + CLI COMPLET
+
+### Ajouté
+- Wizard : étape sélection microphone (entre langue et hotkey)
+- CLI `--export-csv` : export historique en CSV
+- CLI `--update-check` : vérifie mise à jour sans démarrer
+- Notification toast toggle pause/reprendre
+- Config 145 méthodes : `is_valid_language_code`, `hotkey_modifier_count`, `is_language`
+- Injection par chunks 500 chars (longs textes)
+- **203 méthodes API** (145 Config + 58 History) | 487 commits
+
+---
+
 ## 2026-06-07 — v1.0.2 — 200 MÉTHODES API MILESTONE
 
 ### Chiffres
