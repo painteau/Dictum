@@ -1,5 +1,16 @@
 # CHANGELOG — Dictum
 
+## 2026-06-07 — v0.9.7 — CLI COMPLET + QUALITÉ
+
+### Ajouté
+- CLI `--search <texte>` : recherche dans l'historique
+- CLI `--diagnose` : rapport complet fichiers/audio/réseau/config/score
+- Substitutions prédéfinies françaises : 15 abréviations (dc, pk, stp, svp...)
+- Wizard : vitesse téléchargement MB/s en temps réel
+- 458 commits | **182 méthodes API** (132 Config + 50 History)
+
+---
+
 ## 2026-06-07 — v0.9.6 — PAUSE, TYPO, HOTKEYS
 
 ### Ajouté
