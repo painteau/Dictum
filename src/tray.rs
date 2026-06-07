@@ -224,9 +224,16 @@ pub fn run(state: AppState, event_tx: Sender<AppEvent>) -> Result<()> {
             }
         }
 
-        // Mettre à jour le label historique avec le nombre d'entrées
-        let hist_count = state.history.lock().unwrap().len();
-        item_history.set_text(format!("📋 Historique ({})", hist_count));
+        // Mettre à jour le label historique avec le nombre d'entrées et mots
+        let (hist_count, hist_words) = {
+            let h = state.history.lock().unwrap();
+            (h.len(), h.words_count())
+        };
+        item_history.set_text(if hist_words > 0 {
+            format!("📋 Historique ({} entrées, {} mots)", hist_count, hist_words)
+        } else {
+            format!("📋 Historique ({})", hist_count)
+        });
 
         // Update tooltip + icône selon état
         let recording = *state.is_recording.lock().unwrap();
